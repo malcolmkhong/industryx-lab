@@ -5,7 +5,7 @@ import { externalLinks, siteConfig } from '@/config/site'
 export function Footer() {
   return (
     <footer className="border-t border-white/5 bg-card/20" role="contentinfo">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-12">
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-5 pt-12 pb-safe-5 sm:px-6">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
           <div className="flex items-center gap-2.5 text-foreground">
             <span className="grid h-7 w-7 place-items-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/25">

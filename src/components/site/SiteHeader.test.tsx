@@ -15,15 +15,25 @@ describe('SiteHeader', () => {
     expect(source).not.toContain('useState')
   })
 
-  it('centers navigation between the brand and mobile control columns', () => {
+  it('uses a compact mobile header without constraining the brand to one grid column', () => {
     render(<SiteHeader />)
 
     const headerLayout = screen.getByRole('banner').firstElementChild
     const desktopNavigation = screen.getByRole('navigation', { name: 'Main navigation' })
 
-    expect(headerLayout).toHaveClass('grid', 'grid-cols-[1fr_auto_1fr]')
+    expect(headerLayout).toHaveClass('flex', 'md:grid', 'md:grid-cols-[1fr_auto_1fr]')
     expect(desktopNavigation).toHaveClass('justify-self-center')
     expect(screen.getByRole('link', { name: 'IndustryX Lab' })).toHaveClass('justify-self-start')
-    expect(screen.getByRole('button', { name: 'Open menu' })).toHaveClass('justify-self-end')
+    expect(screen.getByText('IndustryX Lab')).toHaveClass('whitespace-nowrap')
+  })
+
+  it('keeps the viewport-fixed mobile drawer outside the animated header', () => {
+    render(<SiteHeader />)
+
+    const menuTrigger = screen.getByRole('button', { name: 'Open menu' })
+    const mobileNavigation = menuTrigger.closest('details')
+
+    expect(screen.getByRole('banner')).not.toContainElement(mobileNavigation)
+    expect(menuTrigger).toHaveClass('group-open/mobile:invisible')
   })
 })

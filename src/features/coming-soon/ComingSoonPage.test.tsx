@@ -86,4 +86,22 @@ describe('ComingSoonPage', () => {
       'overflow-hidden',
     )
   })
+
+  it('keeps the simulated composer placeholder contained on narrow screens', () => {
+    render(<ComingSoonPage route={comingSoonRoutes[0]} />)
+
+    expect(screen.getByLabelText('Message input preview')).toHaveClass('truncate')
+    expect(screen.getByLabelText('Simulated agent tools')).toHaveClass(
+      'grid',
+      'grid-cols-2',
+      'sm:flex',
+    )
+  })
+
+  it('lets the workspace preview flow naturally instead of forcing a full-viewport reservation', () => {
+    render(<ComingSoonPage route={comingSoonRoutes[0]} />)
+
+    const main = screen.getByRole('main')
+    expect(main).not.toHaveClass('min-h-[calc(100vh-4rem)]')
+  })
 })

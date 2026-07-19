@@ -8,16 +8,16 @@ import moonCoder from '@/assets/moon-coder.webp'
 
 export function Install() {
   return (
-    <section id="install" className="border-t border-white/5 bg-card/20 py-24 sm:py-32">
-      <div className="mx-auto max-w-6xl px-6">
+    <section id="install" className="border-t border-white/5 bg-card/20 py-16 sm:py-24 lg:py-32">
+      <div className="mx-auto max-w-6xl px-5 sm:px-6">
         <SectionHeading
           label="GET STARTED"
           title="Zero to first commit in about a minute."
           sub="Three steps — activate the invite, install the CLI, ship something. The invite link applies your code automatically."
         />
 
-        <div className="mt-16 grid items-start gap-12 lg:grid-cols-[1fr_340px]">
-          <div className="flex flex-col gap-10">
+        <div className="mt-10 grid items-start gap-12 sm:mt-16 lg:grid-cols-[1fr_340px]">
+          <div className="flex flex-col gap-8 sm:gap-10">
             <Reveal>
               <div className="flex gap-5">
                 <span className="font-mono text-sm text-primary">01</span>
@@ -53,12 +53,12 @@ export function Install() {
                     {installCommands.map((cmd) => (
                       <div
                         key={cmd.id}
-                        className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-white/8 bg-background/70 px-4 py-3">
-                        <div className="flex min-w-0 flex-col gap-1">
+                        className="flex items-center gap-3 rounded-xl border border-white/8 bg-background/70 px-4 py-3">
+                        <div className="flex min-w-0 flex-1 flex-col gap-1">
                           <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">
                             {cmd.label}
                           </span>
-                          <code className="break-all font-mono text-xs text-foreground/85 sm:text-sm">
+                          <code className="block max-w-full overflow-x-auto whitespace-nowrap font-mono text-xs text-foreground/85 sm:text-sm">
                             {cmd.command}
                           </code>
                         </div>
@@ -75,8 +75,8 @@ export function Install() {
                 <span className="font-mono text-sm text-primary">03</span>
                 <div className="flex flex-1 flex-col gap-4">
                   <h3 className="text-lg font-semibold tracking-tight">Launch and log in</h3>
-                  <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-white/8 bg-background/70 px-4 py-3">
-                    <code className="font-mono text-xs text-foreground/85 sm:text-sm">
+                  <div className="flex items-center gap-3 rounded-xl border border-white/8 bg-background/70 px-4 py-3">
+                    <code className="block min-w-0 flex-1 overflow-x-auto whitespace-nowrap font-mono text-xs text-foreground/85 sm:text-sm">
                       cd your-project <span className="text-muted-foreground">&&</span> kimi
                     </code>
                     <CopyButton text={'cd your-project && kimi'} label="Copy launch command" />

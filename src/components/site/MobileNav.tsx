@@ -4,11 +4,11 @@ import { navigationGroups, routePaths } from '@/config/routes'
 
 export function MobileNav() {
   return (
-    <details className="mobile-navigation justify-self-end md:hidden" data-mobile-navigation>
+    <details className="mobile-navigation group/mobile md:hidden" data-mobile-navigation>
       <summary
         role="button"
         aria-label="Open menu"
-        className="inline-flex h-11 w-11 cursor-pointer list-none items-center justify-center justify-self-end rounded-lg text-muted-foreground hover:bg-white/5 hover:text-foreground focus-visible-ring touch-manipulation [&::-webkit-details-marker]:hidden"
+        className="fixed right-3 top-2.5 z-[70] inline-flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-lg text-muted-foreground hover:bg-white/5 hover:text-foreground focus-visible-ring touch-manipulation group-open/mobile:invisible sm:right-5 [&::-webkit-details-marker]:hidden"
       >
         <Menu className="h-7 w-7" aria-hidden="true" />
       </summary>
@@ -24,7 +24,7 @@ export function MobileNav() {
           role="dialog"
           aria-modal="true"
           aria-label="Mobile navigation"
-          className="absolute inset-y-0 right-0 w-full max-w-sm border-l border-white/10 bg-background p-6 sm:max-w-md"
+          className="absolute inset-y-0 right-0 h-dvh w-full max-w-sm overflow-y-auto border-l border-white/10 bg-background p-5 sm:max-w-md sm:p-6"
         >
           <div className="flex h-full flex-col">
             <div className="mb-8 flex items-center justify-between">

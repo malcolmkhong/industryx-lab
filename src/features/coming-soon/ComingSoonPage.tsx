@@ -19,7 +19,7 @@ export function ComingSoonPage({
 }: ComingSoonPageProps) {
   const safeInvitationHref = invitationHref.trim()
   return (
-    <main id="main-content" className="relative mx-auto min-h-[calc(100vh-4rem)] max-w-6xl overflow-hidden px-6 pb-20 pt-28" role="main">
+    <main id="main-content" className="relative mx-auto max-w-6xl overflow-hidden px-5 pb-12 pt-24 sm:px-6 sm:pb-20 sm:pt-28" role="main">
       <span className="coming-soon-ambient pointer-events-none absolute right-[8%] top-24 h-56 w-56 rounded-full bg-primary/[0.06] blur-3xl" aria-hidden="true" />
 
       <header className="relative mx-auto max-w-3xl text-center">
@@ -27,7 +27,7 @@ export function ComingSoonPage({
           <span className="coming-soon-status-dot h-2 w-2 rounded-full bg-primary" aria-hidden="true" />
           {comingSoonContent.status}
         </div>
-        <h1 className="mt-6 text-balance text-4xl font-semibold tracking-[-0.035em] text-foreground sm:text-5xl">
+        <h1 className="mt-6 text-balance text-3xl font-semibold tracking-[-0.035em] text-foreground sm:text-5xl">
           {route.pageName} {comingSoonContent.headingSuffix}
         </h1>
         <p className="mx-auto mt-5 max-w-[68ch] text-pretty text-base leading-7 text-muted-foreground sm:text-lg">
@@ -76,7 +76,7 @@ export function ComingSoonPage({
         </nav>
       </header>
 
-      <div className="relative mt-12 sm:mt-14">
+      <div className="relative mt-10 sm:mt-14">
         <div className="mb-3 flex items-center gap-2 text-xs text-muted-foreground">
           <Wrench className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
           <span>{comingSoonContent.previewDisclosure}</span>

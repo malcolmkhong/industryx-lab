@@ -6,8 +6,8 @@ import { KimiDesktop } from './KimiDesktop'
 
 export function Desktop() {
   return (
-    <section id="desktop" className="relative py-24 sm:py-32">
-      <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 lg:grid-cols-[0.78fr_1.22fr] lg:gap-16">
+    <section id="desktop" className="relative py-16 sm:py-24 lg:py-32">
+      <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 sm:px-6 lg:grid-cols-[0.78fr_1.22fr] lg:gap-16">
         <div>
           <SectionHeading
             label={desktopSectionContent.label}

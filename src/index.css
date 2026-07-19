@@ -91,6 +91,19 @@
 }
 
 @layer utilities {
+  .pb-safe-2 {
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+  }
+  .pb-safe-5 {
+    padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+  }
+  .pb-safe-6 {
+    padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+  }
+  .bottom-safe-3 {
+    bottom: calc(0.75rem + env(safe-area-inset-bottom));
+  }
+
   .bg-grid {
     background-image:
       linear-gradient(to right, rgb(255 255 255 / 0.035) 1px, transparent 1px),

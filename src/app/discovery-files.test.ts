@@ -17,9 +17,12 @@ describe('crawler discovery entry points', () => {
   })
 
   it('allows live retrieval crawlers and documents the training-bot decision', () => {
-    const rules = robots().rules
+    const robotsConfig = robots()
+    const rules = robotsConfig.rules
     const entries = Array.isArray(rules) ? rules : [rules]
     const allowedAgents = entries.flatMap((entry) => Array.isArray(entry.userAgent) ? entry.userAgent : [entry.userAgent])
+
+    expect(robotsConfig).not.toHaveProperty('host')
 
     for (const agent of ['OAI-SearchBot', 'ChatGPT-User', 'PerplexityBot', 'Perplexity-User', 'Claude-SearchBot', 'Claude-User', 'Googlebot', 'Google-Extended', 'Bingbot']) {
       expect(allowedAgents).toContain(agent)

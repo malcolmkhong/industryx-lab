@@ -6,14 +6,14 @@ import invitationCard from '@/assets/invitation-card.webp'
 
 export function Invite() {
   return (
-    <section id="invite" className="relative overflow-hidden py-24 sm:py-32">
+    <section id="invite" className="relative overflow-hidden pt-24 pb-safe-6 sm:pt-32">
       <div className="bg-grid mask-fade-edges absolute inset-0 opacity-60" aria-hidden="true" />
       <div
         className="absolute left-1/2 top-1/2 h-[420px] w-[680px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[130px]"
         aria-hidden="true"
       />
 
-      <div className="relative mx-auto max-w-6xl px-6">
+      <div className="relative mx-auto max-w-6xl px-5 sm:px-6">
         <div className="grid items-center gap-14 lg:grid-cols-[0.85fr_1.15fr]">
           {/* the invitation card */}
           <Reveal className="mx-auto w-full max-w-sm">

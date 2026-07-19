@@ -24,6 +24,5 @@ export default function robots(): MetadataRoute.Robots {
       ...trainingAgents.map((userAgent) => ({ userAgent, disallow: '/' })),
     ],
     sitemap: `${siteConfig.url}/sitemap.xml`,
-    host: siteConfig.url,
   }
 }

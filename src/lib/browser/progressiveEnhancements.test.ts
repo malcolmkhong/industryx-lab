@@ -44,4 +44,98 @@ describe('progressive enhancements', () => {
     expect(document.querySelector('[data-guide-progress-percent]')).toHaveTextContent('50%')
     expect(firstStage.closest('[data-stage-complete]')).toHaveAttribute('data-stage-complete', 'true')
   })
+
+  it('reveals mobile page actions only after meaningful scrolling', () => {
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: 700 })
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 0, writable: true })
+    document.body.innerHTML = '<div data-mobile-scroll-actions data-visible="false"></div>'
+
+    installProgressiveEnhancements()
+
+    const actions = document.querySelector('[data-mobile-scroll-actions]')
+    expect(actions).toHaveAttribute('data-visible', 'false')
+
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 701, writable: true })
+    window.dispatchEvent(new Event('scroll'))
+    expect(actions).toHaveAttribute('data-visible', 'true')
+  })
+
+  it('syncs the mobile contents bar label to the currently active heading', () => {
+    document.body.innerHTML = `
+      <a data-toc-link="alpha" href="#alpha">Alpha</a>
+      <a data-toc-link="beta" href="#beta">Beta</a>
+      <h2 id="alpha">Alpha heading</h2>
+      <h2 id="beta">Beta heading</h2>
+      <details data-mobile-contents>
+        <summary><span data-mobile-contents-label>init</span></summary>
+      </details>
+    `
+
+    installProgressiveEnhancements()
+
+    const label = document.querySelector('[data-mobile-contents-label]')
+    expect(label?.textContent).toBe('Beta')
+  })
+
+  it('closes the mobile contents overlay on Escape', () => {
+    document.body.innerHTML = `
+      <details data-mobile-contents open>
+        <summary>x</summary>
+      </details>
+    `
+
+    installProgressiveEnhancements()
+
+    const details = document.querySelector('[data-mobile-contents]') as HTMLDetailsElement
+    expect(details.open).toBe(true)
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+    expect(details.open).toBe(false)
+  })
+
+  it('closes the mobile contents overlay when a link inside it is clicked', () => {
+    document.body.innerHTML = `
+      <details data-mobile-contents open>
+        <summary>x</summary>
+        <a href="#alpha">Alpha</a>
+      </details>
+    `
+
+    installProgressiveEnhancements()
+
+    const details = document.querySelector('[data-mobile-contents]') as HTMLDetailsElement
+    const link = details.querySelector('a') as HTMLAnchorElement
+    link.click()
+    expect(details.open).toBe(false)
+  })
+
+  it('fills the reading progress bar as the user scrolls through the main element', () => {
+    const main = document.createElement('main')
+    let rectTop = 0
+    main.getBoundingClientRect = () => ({
+      top: rectTop,
+      bottom: rectTop + 2000,
+      height: 2000,
+      left: 0,
+      right: 0,
+      width: 390,
+      x: 0,
+      y: rectTop,
+      toJSON: () => ({}),
+    })
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: 800 })
+
+    main.innerHTML =
+      '<div data-reading-progress><div data-reading-progress-fill style="width:0%"></div></div>'
+    document.body.innerHTML = ''
+    document.body.appendChild(main)
+
+    installProgressiveEnhancements()
+
+    rectTop = -600
+    window.dispatchEvent(new Event('scroll'))
+
+    const fill = main.querySelector<HTMLElement>('[data-reading-progress-fill]')
+    expect(fill?.style.width).toBe('50%')
+  })
 })

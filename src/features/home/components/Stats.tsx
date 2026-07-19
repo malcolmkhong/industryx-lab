@@ -32,7 +32,7 @@ export function Stats() {
           <Reveal
             key={stat.label}
             delay={i * 90}
-            className="flex flex-col items-center gap-2 px-6 py-10 text-center">
+            className="flex flex-col items-center gap-2 px-5 py-7 text-center sm:px-6 sm:py-10">
             <dl data-testid="verified-statistic" className="flex flex-col items-center gap-2">
               <dt className="sr-only">{stat.label}</dt>
               <dd className="font-mono text-3xl font-semibold tracking-tight text-foreground sm:text-4xl" aria-label={stat.value}>

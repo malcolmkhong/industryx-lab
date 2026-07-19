@@ -26,6 +26,11 @@ export function installProgressiveEnhancements() {
     document.body.classList.remove('mobile-navigation-open')
   }
 
+  const closeMobileContents = () => {
+    const contents = document.querySelector('[data-mobile-contents]')
+    if (contents instanceof HTMLDetailsElement) contents.open = false
+  }
+
   const markActiveNavigation = (pathname = window.location.pathname) => {
     const normalized = pathname.length > 1 ? pathname.replace(/\/$/, '') : pathname
     all<HTMLElement>('[data-nav-exact]').forEach((link) => {
@@ -34,6 +39,26 @@ export function installProgressiveEnhancements() {
     all<HTMLElement>('[data-nav-prefix]').forEach((group) => {
       group.dataset.active = String(normalized.startsWith(group.dataset.navPrefix || '/missing'))
     })
+  }
+
+  const updateMobileScrollActions = () => {
+    const visible = window.scrollY > window.innerHeight
+    all<HTMLElement>('[data-mobile-scroll-actions]').forEach((actions) => {
+      actions.dataset.visible = String(visible)
+    })
+  }
+
+  const updateReadingProgress = () => {
+    const bar = document.querySelector('[data-reading-progress]')
+    if (!(bar instanceof HTMLElement)) return
+    const main = bar.closest('main')
+    if (!main) return
+    const rect = main.getBoundingClientRect()
+    const total = rect.height - window.innerHeight
+    const scrolled = Math.max(0, -rect.top)
+    const percent = total > 0 ? Math.min(100, (scrolled / total) * 100) : 0
+    const fill = bar.querySelector<HTMLElement>('[data-reading-progress-fill]')
+    if (fill) fill.style.width = `${percent}%`
   }
 
   const fallbackCopy = (text: string) => {
@@ -100,9 +125,13 @@ export function installProgressiveEnhancements() {
     const links = all<HTMLElement>('[data-toc-link]')
     if (links.length === 0) return
     let activeId = links[0].dataset.tocLink
-    links.forEach((link) => {
+    let activeIndex = 0
+    links.forEach((link, index) => {
       const heading = document.getElementById(link.dataset.tocLink || '')
-      if (heading && heading.getBoundingClientRect().top <= 112) activeId = heading.id
+      if (heading && heading.getBoundingClientRect().top <= 112) {
+        activeId = heading.id
+        activeIndex = index
+      }
     })
     links.forEach((link) => {
       const active = link.dataset.tocLink === activeId
@@ -110,6 +139,15 @@ export function installProgressiveEnhancements() {
       if (active) link.setAttribute('aria-current', 'location')
       else link.removeAttribute('aria-current')
     })
+    const activeLink = links[activeIndex]
+    const label = document.querySelector('[data-mobile-contents-label]')
+    const position = document.querySelector('[data-mobile-contents-position]')
+    if (label instanceof HTMLElement && activeLink) {
+      label.textContent = (activeLink.textContent || '').trim()
+    }
+    if (position instanceof HTMLElement) {
+      position.textContent = `${activeIndex + 1} / ${links.length}`
+    }
   }
 
   let headingFrame = 0
@@ -141,9 +179,11 @@ export function installProgressiveEnhancements() {
     }
 
     if (event.target.closest('[data-mobile-navigation-close]')) closeMobileNavigation()
+    if (event.target.closest('[data-mobile-contents-close]')) closeMobileContents()
     const link = event.target.closest('a[href]')
     if (link instanceof HTMLAnchorElement) {
       if (link.closest('[data-mobile-navigation]')) closeMobileNavigation()
+      if (link.closest('[data-mobile-contents]')) closeMobileContents()
       if (link.origin === window.location.origin) markActiveNavigation(link.pathname)
     }
   })
@@ -173,6 +213,7 @@ export function installProgressiveEnhancements() {
     if (event.key === 'Escape') {
       closeDesktopMenus()
       closeMobileNavigation()
+      closeMobileContents()
     }
     if (event.key === 'ArrowDown' && event.target instanceof Element) {
       const trigger = event.target.closest('[data-nav-trigger]')
@@ -202,11 +243,27 @@ export function installProgressiveEnhancements() {
           ?.focus()
       }
     }
+    if (navigation instanceof HTMLDetailsElement && navigation.matches('[data-mobile-contents]')) {
+      document.body.classList.toggle('mobile-contents-open', navigation.open)
+      if (navigation.open) {
+        navigation
+          .querySelector<HTMLElement>('[data-mobile-contents-close-button]')
+          ?.focus()
+      } else {
+        navigation.querySelector<HTMLElement>('summary')?.focus()
+      }
+    }
   }, true)
 
-  window.addEventListener('scroll', scheduleHeadingUpdate, { passive: true })
+  window.addEventListener('scroll', () => {
+    scheduleHeadingUpdate()
+    updateMobileScrollActions()
+    updateReadingProgress()
+  }, { passive: true })
   window.addEventListener('popstate', () => markActiveNavigation())
   markActiveNavigation()
+  updateMobileScrollActions()
   updateGuideProgress()
   updateActiveHeading()
+  updateReadingProgress()
 }

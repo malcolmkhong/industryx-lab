@@ -6,7 +6,7 @@ import { CliAnimation } from './CliAnimation'
 
 export function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden pb-20 pt-32 sm:pt-40">
+    <section id="top" className="relative overflow-hidden pb-16 pt-24 sm:pb-20 sm:pt-40">
       {/* backdrop */}
       <div className="bg-grid mask-fade-edges absolute inset-0" aria-hidden="true" />
       <div
@@ -21,7 +21,7 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="relative mx-auto max-w-6xl px-6">
+      <div className="relative mx-auto max-w-6xl px-5 sm:px-6">
         <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="flex flex-col items-start gap-7">
             <Reveal priority>

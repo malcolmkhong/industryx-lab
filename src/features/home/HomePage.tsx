@@ -18,7 +18,7 @@ export function HomePage() {
           <Desktop />
           <Features />
           <Install />
-          <div className="mx-auto max-w-6xl px-6 py-8">
+          <div className="mx-auto max-w-6xl px-5 py-8 sm:px-6">
             <EditorialByline />
           </div>
           <Banner />

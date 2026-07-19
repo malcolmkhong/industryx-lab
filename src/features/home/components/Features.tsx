@@ -26,21 +26,21 @@ const FEATURE_ICONS: Record<WhyKimiCodeIcon, LucideIcon> = {
 
 export function Features() {
   return (
-    <section id="why" className="relative py-24 sm:py-32">
-      <div className="mx-auto max-w-6xl px-6">
+    <section id="why" className="relative py-16 sm:py-24 lg:py-32">
+      <div className="mx-auto max-w-6xl px-5 sm:px-6">
         <SectionHeading
           label={whyKimiCodeContent.label}
           title={whyKimiCodeContent.title}
           sub={whyKimiCodeContent.description}
         />
 
-        <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid gap-4 sm:mt-16 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
           {whyKimiCodeContent.features.map((feature, index) => {
             const Icon = FEATURE_ICONS[feature.icon]
 
             return (
               <Reveal key={feature.id} delay={(index % 3) * 100}>
-                <div className="group flex h-full flex-col gap-4 rounded-2xl border border-white/5 bg-card/40 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:bg-card/70">
+                <div className="group flex h-full flex-col gap-3 rounded-2xl border border-white/5 bg-card/40 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:bg-card/70 sm:gap-4 sm:p-7">
                   <span
                     className="grid h-11 w-11 place-items-center rounded-xl border border-white/10 bg-white/5 text-primary transition-colors group-hover:border-primary/40 group-hover:text-primary focus-visible:border-primary/40 focus-visible:text-primary"
                     aria-hidden="true"

@@ -12,7 +12,7 @@ export function WorkspaceComposer() {
           <span className="coming-soon-status-dot h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
         </div>
         <label htmlFor="coming-soon-message" className="sr-only">{desktop.inputLabel}</label>
-        <input id="coming-soon-message" type="text" disabled placeholder={desktop.inputPlaceholder} className="h-14 w-full min-w-0 bg-transparent px-1 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed" />
+        <input id="coming-soon-message" type="text" disabled placeholder={desktop.inputPlaceholder} className="h-14 w-full min-w-0 truncate bg-transparent px-1 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed" />
         <div className="flex items-center justify-between gap-3">
           <button type="button" disabled aria-label="Attach file — unavailable while in development" className="grid h-9 w-9 place-items-center rounded-full text-muted-foreground disabled:cursor-not-allowed">
             <Paperclip className="h-4 w-4" aria-hidden="true" />
@@ -26,9 +26,9 @@ export function WorkspaceComposer() {
         </div>
       </div>
 
-      <div className="mt-3 flex flex-wrap justify-center gap-2" aria-label="Simulated agent tools">
+      <div className="mt-3 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-center" aria-label="Simulated agent tools">
         {desktop.toolChips.map((tool) => (
-          <button key={tool} type="button" disabled className="min-h-9 rounded-full border border-white/[0.09] bg-white/[0.025] px-3 text-[11px] text-muted-foreground disabled:cursor-default">
+          <button key={tool} type="button" disabled className="min-h-9 w-full rounded-full border border-white/[0.09] bg-white/[0.025] px-3 text-[11px] text-muted-foreground disabled:cursor-default sm:w-auto">
             {tool}
           </button>
         ))}

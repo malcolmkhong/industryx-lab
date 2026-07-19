@@ -21,10 +21,10 @@ describe('Nav', () => {
     render(<Nav />)
 
     expect(screen.getAllByRole('link', { name: 'HOME' })[0]).toHaveAttribute('href', routePaths.home)
-    expect(screen.getAllByRole('link', { name: 'Beginner' }).length).toBeGreaterThan(0)
-    expect(screen.getAllByRole('link', { name: 'Intermediate' }).length).toBeGreaterThan(0)
-    expect(screen.getAllByRole('link', { name: 'Advanced' }).length).toBeGreaterThan(0)
-    expect(screen.getAllByRole('link', { name: 'Expert' }).length).toBeGreaterThan(0)
+    expect(screen.getByRole('menuitem', { name: 'Beginner' })).toHaveAttribute('href', routePaths.beginner)
+    expect(screen.getByRole('menuitem', { name: 'Intermediate' })).toBeInTheDocument()
+    expect(screen.getByRole('menuitem', { name: 'Advanced' })).toBeInTheDocument()
+    expect(screen.getByRole('menuitem', { name: 'Expert' })).toBeInTheDocument()
 
     expect(screen.queryByRole('link', { name: /invite/i })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: /sign in/i })).not.toBeInTheDocument()
