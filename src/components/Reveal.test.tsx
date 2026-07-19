@@ -14,6 +14,18 @@ afterEach(() => {
 })
 
 describe('Reveal hydration', () => {
+  it('renders priority content visibly in static HTML', () => {
+    const html = renderToString(
+      <Reveal priority>
+        Above-the-fold content
+      </Reveal>,
+    )
+
+    expect(html).not.toContain('opacity-0')
+    expect(html).not.toContain('translate-y-6')
+    expect(html).toContain('Above-the-fold content')
+  })
+
   it('keeps the first client markup equal to the static HTML', async () => {
     const windowDescriptor = Object.getOwnPropertyDescriptor(globalThis, 'window')
     Object.defineProperty(globalThis, 'window', { configurable: true, value: undefined })

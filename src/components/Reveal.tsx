@@ -6,13 +6,14 @@ interface RevealProps {
   children: ReactNode
   delay?: number
   className?: string
+  priority?: boolean
 }
 
-export function Reveal({ children, delay = 0, className = '' }: RevealProps) {
+export function Reveal({ children, delay = 0, className = '', priority = false }: RevealProps) {
   const { ref, inView } = useInView<HTMLDivElement>()
   const prefersReducedMotion = usePrefersReducedMotion()
 
-  if (prefersReducedMotion) {
+  if (priority || prefersReducedMotion) {
     return <div ref={ref} className={className}>{children}</div>
   }
 

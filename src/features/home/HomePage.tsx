@@ -59,15 +59,17 @@ export function HomePage() {
     <>
       <main id="main-content" role="main">
         <Hero />
-        <Stats />
-        <Desktop />
-        <Features />
-        <Install />
-        <div className="mx-auto max-w-6xl px-6 py-8">
-          <EditorialByline />
+        <div className="content-visibility-auto">
+          <Stats />
+          <Desktop />
+          <Features />
+          <Install />
+          <div className="mx-auto max-w-6xl px-6 py-8">
+            <EditorialByline />
+          </div>
+          <Banner />
+          <Invite />
         </div>
-        <Banner />
-        <Invite />
       </main>
       <MobileCTA />
     </>

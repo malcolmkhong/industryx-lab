@@ -186,6 +186,11 @@
   text-shadow: 0 0 22px hsl(var(--primary) / 0.85);
 }
 
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 7200px;
+}
+
 /* Reduced motion: disable animations */
 @media (prefers-reduced-motion: reduce) {
   .animate-drift,

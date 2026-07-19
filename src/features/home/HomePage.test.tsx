@@ -5,6 +5,17 @@ import { HomePage } from './HomePage'
 afterEach(cleanup)
 
 describe('HomePage', () => {
+  it('defers below-the-fold rendering work', () => {
+    const { container } = render(<HomePage />)
+
+    const deferredContent = container.querySelector('.content-visibility-auto')
+    const stats = screen.getByRole('heading', { name: 'Key Statistics' })
+    const hero = screen.getByRole('heading', { name: /stop typing/i })
+
+    expect(deferredContent).toContainElement(stats.closest('section'))
+    expect(deferredContent).not.toContainElement(hero.closest('section'))
+  })
+
   it('places the Kimi desktop explanation between statistics and features', () => {
     render(<HomePage />)
 

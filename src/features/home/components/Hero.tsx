@@ -24,14 +24,14 @@ export function Hero() {
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="flex flex-col items-start gap-7">
-            <Reveal>
+            <Reveal priority>
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3.5 py-1.5 font-mono text-xs text-primary" aria-hidden="true">
                 <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
                 Now powered by Kimi K3
               </span>
             </Reveal>
 
-            <Reveal delay={80}>
+            <Reveal priority>
               <h1 className="text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl md:text-6xl">
                 Stop typing.
                 <br />
@@ -39,7 +39,7 @@ export function Hero() {
               </h1>
             </Reveal>
 
-            <Reveal delay={160}>
+            <Reveal priority>
               <p className="max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">
                 Kimi Code is Moonshot AI's agentic coding CLI. It reads your codebase, edits files,
                 runs commands, and loops on its own output until the job is done — while you stay in
@@ -47,7 +47,7 @@ export function Hero() {
               </p>
             </Reveal>
 
-            <Reveal delay={240} className="w-full max-w-lg">
+            <Reveal priority className="w-full max-w-lg">
               <div className="flex flex-col gap-4 rounded-2xl border border-primary/20 bg-primary/[0.06] p-5 backdrop-blur sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex flex-col gap-1.5">
                   <span className="font-mono text-[11px] tracking-[0.25em] text-primary">
@@ -72,7 +72,7 @@ export function Hero() {
               </div>
             </Reveal>
 
-            <Reveal delay={320}>
+            <Reveal priority>
               <div className="flex flex-wrap items-center gap-4">
                 <a
                   href={invitationLinks.redeem}
@@ -96,7 +96,7 @@ export function Hero() {
             </Reveal>
           </div>
 
-          <Reveal delay={200} className="lg:pl-4">
+          <Reveal priority className="lg:pl-4">
             <CliAnimation />
             <p className="mt-4 text-center font-mono text-xs text-muted-foreground/70">
               {cliAnimationContent.caption}
