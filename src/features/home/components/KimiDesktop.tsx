@@ -1,17 +1,8 @@
-import type { CSSProperties } from 'react'
-import {
-  ArrowUp,
-  Blocks,
-  Check,
-  Code2,
-  FileCode2,
-  FilePenLine,
-  FlaskConical,
-  History,
-  Plus,
-  Sparkles,
-} from 'lucide-react'
+'use client'
+
+import { ArrowUp, Blocks, Check, Code2, FileCode2, FilePenLine, FlaskConical, History, LoaderCircle, Plus, Sparkles } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
+import { useDesktopAnimation } from '@/hooks/useDesktopAnimation'
 
 interface ToolStep {
   icon: LucideIcon
@@ -32,7 +23,17 @@ const FINAL_LINES = [
 
 const HISTORY = ['Refactor auth module', 'Fix checkout race', 'Write API docs']
 
+// Pre-join FINAL_LINES the same way the renderer does (single space join)
+// so the hook's typewriter can advance through the same string.
+const FINAL_TEXT = FINAL_LINES.join(' ')
+
 export function KimiDesktop() {
+  const { stage, chars } = useDesktopAnimation({
+    stepCount: TOOL_STEPS.length,
+    finalTextLength: FINAL_TEXT.length,
+  })
+  const finished = chars >= FINAL_TEXT.length
+
   return (
     <div className="kimi-desktop-animation w-full overflow-hidden rounded-2xl border border-white/10 bg-white text-left shadow-[0_32px_90px_-24px_rgba(0,0,0,0.85)]">
       {/* window chrome */}
@@ -90,14 +91,22 @@ export function KimiDesktop() {
         <div className="flex min-w-0 flex-1 flex-col">
           <div className="flex h-[300px] flex-col gap-4 overflow-hidden px-4 py-4 sm:px-5">
             {/* user message */}
-            <div className="desktop-user-message flex justify-end">
+            <div
+              className={`desktop-user-message flex justify-end transition-all duration-500 ${
+                stage >= 1 ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'
+              }`}
+            >
               <div className="max-w-[85%] rounded-2xl rounded-br-md bg-zinc-100 px-3.5 py-2.5 text-[12.5px] leading-relaxed text-zinc-800">
                 Refactor the auth module — and make sure every test still passes.
               </div>
             </div>
 
             {/* assistant */}
-            <div className="desktop-assistant-message flex gap-2.5">
+            <div
+              className={`desktop-assistant-message flex gap-2.5 transition-all duration-500 ${
+                stage >= 2 ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'
+              }`}
+            >
               <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-zinc-900">
                 <Sparkles className="h-3 w-3 text-white" />
               </span>
@@ -111,31 +120,34 @@ export function KimiDesktop() {
                   </span>
                 </span>
 
-                {TOOL_STEPS.map((step, i) => (
-                  <div
-                    key={step.text}
-                    className="desktop-tool-step flex items-center gap-2 rounded-lg border border-zinc-200/80 bg-zinc-50/80 px-2.5 py-1.5"
-                    style={{ '--desktop-step-delay': `${2400 + i * 650}ms` } as CSSProperties}
-                  >
-                    <step.icon className="h-3.5 w-3.5 shrink-0 text-zinc-500" />
-                    <span className="min-w-0 flex-1 truncate text-[11.5px] text-zinc-600">
-                      {step.text}
-                    </span>
-                    <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
-                  </div>
-                ))}
+                {TOOL_STEPS.map((step, i) => {
+                  const revealed = stage >= 3 + i
+                  return (
+                    <div
+                      key={step.text}
+                      className={`desktop-tool-step flex items-center gap-2 rounded-lg border border-zinc-200/80 bg-zinc-50/80 px-2.5 py-1.5 transition-all duration-500 ${
+                        revealed ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'
+                      }`}
+                    >
+                      <step.icon className="h-3.5 w-3.5 shrink-0 text-zinc-500" />
+                      <span className="min-w-0 flex-1 truncate text-[11.5px] text-zinc-600">
+                        {step.text}
+                      </span>
+                      <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
+                    </div>
+                  )
+                })}
 
                 <p className="text-[12.5px] leading-relaxed text-zinc-800">
-                  {FINAL_LINES.map((line, index) => (
+                  <span className="desktop-response-line">
+                    {FINAL_TEXT.slice(0, Math.max(chars - 0, 0))}
+                  </span>
+                  {!finished ? (
                     <span
-                      key={line}
-                      className="desktop-response-line"
-                      style={{ '--desktop-line-delay': `${4550 + index * 700}ms` } as CSSProperties}
-                    >
-                      {line}{index < FINAL_LINES.length - 1 ? ' ' : null}
-                    </span>
-                  ))}
-                  <span className="desktop-response-caret ml-0.5 inline-block h-3.5 w-1.5 translate-y-0.5 bg-zinc-400" />
+                      className="desktop-response-caret ml-0.5 inline-block h-3.5 w-1.5 translate-y-0.5 animate-caret-blink bg-zinc-400"
+                      aria-hidden="true"
+                    />
+                  ) : null}
                 </p>
               </div>
             </div>
@@ -150,8 +162,17 @@ export function KimiDesktop() {
               <div className="flex items-center justify-between px-3 pb-2.5 pt-1.5">
                 <Plus className="h-4 w-4 text-zinc-400" />
                 <div className="flex items-center gap-2">
-                  <span className="rounded-full border border-zinc-200 px-2 py-0.5 text-[10px] font-medium text-zinc-500">
-                    K3 · Max
+                  <span
+                    role="status"
+                    aria-live="polite"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 px-2 py-0.5 text-[10px] font-medium text-zinc-500"
+                  >
+                    {finished ? (
+                      <Check className="h-3 w-3 text-emerald-500" />
+                    ) : (
+                      <LoaderCircle className="h-3 w-3 animate-spin" />
+                    )}
+                    {finished ? 'Done' : 'Working…'}
                   </span>
                   <span className="grid h-6 w-6 place-items-center rounded-full bg-zinc-900 text-white">
                     <ArrowUp className="h-3.5 w-3.5" />

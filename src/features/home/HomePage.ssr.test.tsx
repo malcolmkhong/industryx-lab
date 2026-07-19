@@ -27,9 +27,8 @@ describe('HomePage static rendering', () => {
       'utf8',
     )
 
-    expect(desktopSource).not.toMatch(/^['"]use client['"]/)
-    expect(desktopSource).not.toContain('useDesktopAnimation')
-    expect(desktopSource).not.toContain('useNearViewport')
+    expect(desktopSource).toMatch(/^['"]use client['"]/)
+    expect(desktopSource).toContain('useDesktopAnimation')
     expect(mobileCtaSource).not.toMatch(/^['"]use client['"]/)
     expect(mobileCtaSource).not.toContain('useEffect')
     expect(mobileCtaSource).not.toContain('useState')

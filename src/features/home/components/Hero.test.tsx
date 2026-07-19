@@ -20,7 +20,7 @@ describe('Hero', () => {
     expect(screen.queryByText('Kimi — Desktop')).not.toBeInTheDocument()
   })
 
-  it('keeps the complete CLI sequence in server HTML for CSS animation', () => {
+  it('keeps the complete CLI sequence in server HTML for animation', () => {
     render(<Hero />)
 
     const terminal = screen.getByRole('region', { name: 'Kimi CLI live activity' })
@@ -33,7 +33,7 @@ describe('Hero', () => {
       join(process.cwd(), 'src/features/home/components/CliAnimation.tsx'),
       'utf8',
     )
-    expect(source).not.toMatch(/^['"]use client['"]/)
-    expect(source).not.toContain('useCliAnimation')
+    expect(source).toMatch(/^['"]use client['"]/)
+    expect(source).toContain('useDesktopAnimation')
   })
 })

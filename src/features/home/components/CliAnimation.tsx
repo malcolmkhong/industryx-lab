@@ -1,4 +1,7 @@
-import type { CSSProperties } from 'react'
+'use client'
+
+import { Check, LoaderCircle } from 'lucide-react'
+import { useDesktopAnimation } from '@/hooks/useDesktopAnimation'
 import { cliAnimationContent, type CliLineTone } from '../content/cli'
 
 const LINE_COLORS: Record<CliLineTone, string> = {
@@ -8,6 +11,15 @@ const LINE_COLORS: Record<CliLineTone, string> = {
 }
 
 export function CliAnimation() {
+  const lines = cliAnimationContent.lines
+  const finalText = cliAnimationContent.finalText
+  const { stage, chars } = useDesktopAnimation({
+    stepCount: lines.length,
+    finalTextLength: finalText.length,
+  })
+
+  const finished = chars >= finalText.length
+
   return (
     <div
       role="region"
@@ -44,29 +56,51 @@ export function CliAnimation() {
         </div>
 
         <div className="mt-3 space-y-1.5" aria-live="off">
-          {cliAnimationContent.lines.map((line, index) => (
-            <p
-              key={line.id}
-              className={`cli-sequence-line break-words ${LINE_COLORS[line.tone]}`}
-              style={{ '--cli-line-delay': `${index * 650 - 500}ms` } as CSSProperties}
-            >
-              {line.prompt ? <span className="text-[#f7f4ec]">{line.prompt} </span> : null}
-              <span className={line.tone === 'command' ? 'text-[#b9d9ff]' : undefined}>
-                {line.text}
-              </span>
-            </p>
-          ))}
+          {lines.map((line, index) => {
+            const revealed = stage >= index + 1
+            return (
+              <p
+                key={line.id}
+                className={`break-words transition-all duration-500 ${
+                  revealed ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'
+                } ${LINE_COLORS[line.tone]}`}
+              >
+                {line.prompt ? <span className="text-[#f7f4ec]">{line.prompt} </span> : null}
+                <span className={line.tone === 'command' ? 'text-[#b9d9ff]' : undefined}>
+                  {line.text}
+                </span>
+              </p>
+            )
+          })}
 
           <p
-            className="cli-sequence-line break-words text-[#f4f2ea]"
-            style={{ '--cli-line-delay': '5000ms' } as CSSProperties}
+            className={`break-words text-[#f4f2ea] transition-all duration-500 ${
+              finished ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-100'
+            }`}
           >
-            {cliAnimationContent.finalText}
-            <span
-              className="ml-0.5 inline-block h-3 w-1 translate-y-0.5 animate-caret-blink bg-[#d9d5cb] motion-reduce:animate-none"
-              aria-hidden="true"
-            />
+            {finished ? finalText : finalText.slice(0, Math.max(chars, 0))}
+            {!finished ? (
+              <span
+                className="ml-0.5 inline-block h-3 w-1 translate-y-0.5 animate-caret-blink bg-[#d9d5cb] motion-reduce:animate-none"
+                aria-hidden="true"
+              />
+            ) : (
+              <span aria-hidden="true" className="ml-1 inline-flex items-center text-emerald-300">
+                <Check className="h-3 w-3" />
+              </span>
+            )}
           </p>
+
+          {!finished ? (
+            <p
+              role="status"
+              aria-live="polite"
+              className="flex items-center gap-1.5 text-[10px] text-[#9b9a92] sm:text-[11px]"
+            >
+              <LoaderCircle className="h-3 w-3 animate-spin" aria-hidden="true" />
+              Streaming…
+            </p>
+          ) : null}
         </div>
       </div>
     </div>
