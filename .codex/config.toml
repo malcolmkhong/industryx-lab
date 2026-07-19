@@ -6,4 +6,9 @@ default_tools_approval_mode = "writes"
 
 [mcp_servers.chrome-devtools]
 command = "npx"
-args = ["-y", "chrome-devtools-mcp@latest"]
+args = [
+  "-y",
+  "chrome-devtools-mcp@latest",
+  "--no-performance-crux",
+  "--no-usage-statistics",
+]
