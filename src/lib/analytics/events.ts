@@ -8,6 +8,15 @@ export const essentialEventNames = [
 export type EssentialEventName = (typeof essentialEventNames)[number]
 export type AiReferralSource = 'chatgpt' | 'perplexity' | 'claude' | 'gemini' | 'copilot' | 'kimi'
 
+export const aiReferralDomains: ReadonlyArray<[string, AiReferralSource]> = [
+  ['chatgpt.com', 'chatgpt'],
+  ['perplexity.ai', 'perplexity'],
+  ['claude.ai', 'claude'],
+  ['gemini.google.com', 'gemini'],
+  ['copilot.microsoft.com', 'copilot'],
+  ['kimi.com', 'kimi'],
+]
+
 export function isAnalyticsEnabled(measurementId?: string) {
   return Boolean(measurementId?.trim())
 }
@@ -26,16 +35,7 @@ export function detectAiReferral(referrer: string): AiReferralSource | null {
 
   try {
     const hostname = new URL(referrer).hostname.toLowerCase()
-    const sources: Array<[string, AiReferralSource]> = [
-      ['chatgpt.com', 'chatgpt'],
-      ['perplexity.ai', 'perplexity'],
-      ['claude.ai', 'claude'],
-      ['gemini.google.com', 'gemini'],
-      ['copilot.microsoft.com', 'copilot'],
-      ['kimi.com', 'kimi'],
-    ]
-
-    return sources.find(([domain]) => hostname === domain || hostname.endsWith(`.${domain}`))?.[1] ?? null
+    return aiReferralDomains.find(([domain]) => hostname === domain || hostname.endsWith(`.${domain}`))?.[1] ?? null
   } catch {
     return null
   }

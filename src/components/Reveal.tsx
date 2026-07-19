@@ -1,6 +1,4 @@
-import type { ReactNode } from 'react'
-import { useInView } from '@/hooks/useInView'
-import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
+import type { CSSProperties, ReactNode } from 'react'
 
 interface RevealProps {
   children: ReactNode
@@ -10,20 +8,17 @@ interface RevealProps {
 }
 
 export function Reveal({ children, delay = 0, className = '', priority = false }: RevealProps) {
-  const { ref, inView } = useInView<HTMLDivElement>()
-  const prefersReducedMotion = usePrefersReducedMotion()
-
-  if (priority || prefersReducedMotion) {
-    return <div ref={ref} className={className}>{children}</div>
+  if (priority) {
+    return <div className={className}>{children}</div>
   }
+
+  const style = { '--reveal-delay': `${delay}ms` } as CSSProperties
 
   return (
     <div
-      ref={ref}
-      className={`${className} transition-all duration-700 ease-out will-change-transform ${
-        inView ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
-      }`}
-      style={{ transitionDelay: `${delay}ms` }}
+      className={`${className} reveal-on-scroll`}
+      data-reveal="true"
+      style={style}
     >
       {children}
     </div>

@@ -1,11 +1,38 @@
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
+import { installProgressiveEnhancements } from '@/lib/browser/progressiveEnhancements'
 import { BeginnerPage } from './BeginnerPage'
 import { beginnerPageContent, beginnerStages } from './content'
 
 afterEach(cleanup)
 
+beforeAll(() => {
+  installProgressiveEnhancements()
+})
+
+afterAll(() => {
+  delete (window as Window & { __industryxEnhancementsInstalled?: boolean })
+    .__industryxEnhancementsInstalled
+})
+
 describe('Beginner page', () => {
+  it('keeps the long guide outside the React client bundle', () => {
+    for (const file of [
+      'src/features/beginner/BeginnerPage.tsx',
+      'src/features/beginner/components/StageSection.tsx',
+      'src/features/beginner/components/CodeCard.tsx',
+      'src/components/content/TableOfContents.tsx',
+    ]) {
+      const source = readFileSync(join(process.cwd(), file), 'utf8')
+      expect(source, file).not.toMatch(/^['"]use client['"]/)
+      expect(source, file).not.toContain('useGuideProgress')
+      expect(source, file).not.toContain('useActiveHeading')
+      expect(source, file).not.toContain('useCopy')
+    }
+  })
+
   it('keeps page-level copy in the Beginner content module', () => {
     expect(beginnerPageContent.hero.title).toBe('Build a task manager with Kimi Code')
     expect(beginnerPageContent.sections.beforeYouStart.title).toBe('Before you start')

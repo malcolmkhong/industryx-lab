@@ -1,5 +1,3 @@
-'use client'
-
 import { ArrowRight, BookOpen, CheckCircle2, ExternalLink, Sparkles, TerminalSquare } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -9,7 +7,6 @@ import { EditorialByline } from '@/components/seo/EditorialByline'
 import { routePaths } from '@/config/routes'
 import { beginnerGlossary, beginnerPageContent, beginnerPrerequisites, beginnerStages, safeBuildLoop } from './content'
 import { StageSection } from './components/StageSection'
-import { useGuideProgress } from './hooks/useGuideProgress'
 import { formatContent } from './utils/formatContent'
 
 const contents = [
@@ -21,7 +18,7 @@ const contents = [
 
 export function BeginnerPage() {
   const { breadcrumb, hero, journey, progress: progressContent, sections } = beginnerPageContent
-  const { completedCount, completedStages, progress, toggleStage } = useGuideProgress(beginnerStages.length)
+  const totalStages = beginnerStages.length
 
   return (
     <main id="main-content" className="mx-auto max-w-6xl px-6 pb-20 pt-28" role="main">
@@ -64,21 +61,27 @@ export function BeginnerPage() {
         <figcaption className="border-t border-white/10 px-5 py-3 text-sm leading-6 text-muted-foreground">{journey.caption}</figcaption>
       </figure>
 
-      <section className="mb-10 rounded-2xl border border-primary/20 bg-primary/[0.055] p-5 sm:p-6" aria-label={progressContent.ariaLabel}>
+      <section
+        className="mb-10 rounded-2xl border border-primary/20 bg-primary/[0.055] p-5 sm:p-6"
+        aria-label={progressContent.ariaLabel}
+        data-guide-progress
+        data-total-stages={totalStages}
+        data-status-template={progressContent.status}
+      >
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="font-mono text-xs font-semibold tracking-[0.14em] text-primary">{progressContent.eyebrow}</p>
-            <p className="mt-2 text-sm text-foreground">
+            <p className="mt-2 text-sm text-foreground" data-guide-progress-status>
               {formatContent(progressContent.status, {
-                completed: completedCount,
-                total: beginnerStages.length,
+                completed: 0,
+                total: totalStages,
               })}
             </p>
           </div>
-          <span className="font-mono text-lg font-semibold text-foreground">{progress}%</span>
+          <span className="font-mono text-lg font-semibold text-foreground" data-guide-progress-percent>0%</span>
         </div>
-        <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10" role="progressbar" aria-label={progressContent.completionAriaLabel} aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress}>
-          <div className="h-full rounded-full bg-primary transition-[width] duration-500" style={{ width: `${progress}%` }} />
+        <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10" role="progressbar" aria-label={progressContent.completionAriaLabel} aria-valuemin={0} aria-valuemax={100} aria-valuenow={0} data-guide-progressbar>
+          <div className="h-full rounded-full bg-primary transition-[width] duration-500" style={{ width: '0%' }} data-guide-progress-fill />
         </div>
       </section>
 
@@ -130,7 +133,7 @@ export function BeginnerPage() {
           </section>
 
           {beginnerStages.map((stage) => (
-            <StageSection key={stage.id} stage={stage} complete={completedStages.has(stage.id)} onToggle={() => toggleStage(stage.id)} />
+            <StageSection key={stage.id} stage={stage} />
           ))}
 
           <section id={sections.glossary.id} className="scroll-mt-24 border-t border-white/10 pt-10">
@@ -154,12 +157,15 @@ export function BeginnerPage() {
             <CheckCircle2 className="h-7 w-7 text-primary" aria-hidden="true" />
             <h2 className="mt-4 text-2xl font-semibold text-foreground">{sections.completion.title}</h2>
             <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">{sections.completion.description}</p>
-            <p className="mt-5 font-mono text-sm text-primary">
-              {completedCount === beginnerStages.length
-                ? sections.completion.allComplete
-                : formatContent(sections.completion.stagesRemaining, {
-                    remaining: beginnerStages.length - completedCount,
-                  })}
+            <p
+              className="mt-5 font-mono text-sm text-primary"
+              data-guide-completion
+              data-all-complete={sections.completion.allComplete}
+              data-remaining-template={sections.completion.stagesRemaining}
+            >
+              {formatContent(sections.completion.stagesRemaining, {
+                remaining: totalStages,
+              })}
             </p>
           </section>
         </article>

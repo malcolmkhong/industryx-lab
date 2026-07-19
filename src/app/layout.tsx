@@ -4,6 +4,8 @@ import { Analytics } from '@/components/analytics/Analytics'
 import { PageShell } from '@/components/site/PageShell'
 import { siteConfig } from '@/config/site'
 import '@/index.css'
+import '@/styles/progressive.css'
+import '@/styles/home-motion.css'
 
 export const viewport: Viewport = {
   colorScheme: 'dark',

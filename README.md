@@ -32,7 +32,7 @@ The sitemap includes only completed pages. Unfinished routes preserve their URLs
 - `robots.txt`, `sitemap.xml`, `llms.txt`, a real 404 page, Search Console/Bing verification support, schema checks, and Lighthouse CI.
 - Vercel Web Analytics for privacy-conscious page-view measurement, plus optional constrained GA4 events when `NEXT_PUBLIC_GA_ID` is configured.
 - WebP assets and visible author/review information.
-- Hydration-safe motion preferences shared by reveal and CLI animations.
+- CSS-driven reveal, CLI, desktop, and scroll animations with reduced-motion fallbacks.
 
 ## Technology
 
@@ -94,13 +94,15 @@ src/
 │   └── ui/              Reusable shadcn/ui primitives
 ├── config/              Routes, navigation, site identity, URLs, and commands
 ├── features/
-│   ├── beginner/        Guide UI, content contracts, stages, hooks, and schema
+│   ├── beginner/        Static guide UI, content contracts, stages, and schema
 │   ├── coming-soon/     Shared unfinished-route experience and simulation
-│   └── home/            Home sections, animation hooks, and schema
+│   └── home/            Home sections, static animations, and schema
 ├── hooks/               Cross-feature hooks
 ├── lib/
 │   ├── analytics/       Event allowlist, destination sanitizing, AI referral logic
+│   ├── browser/         Small post-hydration progressive enhancements
 │   └── seo/             Next metadata and structured-data builders
+├── styles/              Focused navigation and home-motion styles
 ├── test/                Global test setup
 └── index.css            Theme tokens, utilities, and animations
 public/                   Root-served static assets such as social images
@@ -115,8 +117,9 @@ Next route files stay small: they select content/configuration, export static me
 - App Router page files are Server Components unless browser interaction requires a client feature boundary.
 - `output: 'export'` produces static HTML and client assets; this hub does not depend on a production Node.js server.
 - The shared `PageShell` owns the persistent header, footer, background, and route content slot.
-- Interactive feature components own timers, observers, progress state, menus, and animations.
-- Browser preferences must use a stable server snapshot. `usePrefersReducedMotion` uses `useSyncExternalStore` so server HTML and the first client render remain identical.
+- Home, Beginner, navigation, guide progress, copy controls, and the table of contents remain server-rendered. One small post-hydration client boundary installs their browser behavior without hydrating those sections.
+- The Coming Soon simulation keeps its focused client boundary because its repeated streaming sequence requires timed state.
+- Motion preferences use CSS `prefers-reduced-motion`, keeping generated HTML and initial presentation deterministic.
 - Do not branch initial rendered markup with `typeof window`, `Date.now()`, `Math.random()`, or locale-dependent values.
 
 ## Search and measurement

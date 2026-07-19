@@ -10,7 +10,7 @@ module.exports = {
         'http://localhost/',
         'http://localhost/build-project/beginner.html',
       ],
-      numberOfRuns: 1,
+      numberOfRuns: 3,
       chromePath,
       puppeteerScript: 'scripts/lighthouse-setup.cjs',
       puppeteerLaunchOptions: {

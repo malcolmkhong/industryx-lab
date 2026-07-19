@@ -12,9 +12,10 @@ export default function robots(): MetadataRoute.Robots {
     'Claude-SearchBot',
     'Claude-User',
     'Googlebot',
+    'Google-Extended',
     'Bingbot',
   ]
-  const trainingAgents = ['GPTBot', 'ClaudeBot', 'CCBot', 'Google-Extended']
+  const trainingAgents = ['GPTBot', 'ClaudeBot', 'CCBot']
 
   return {
     rules: [

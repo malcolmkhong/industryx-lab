@@ -1,49 +1,32 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { afterEach, describe, expect, it } from 'vitest'
+import { cleanup, render, screen } from '@testing-library/react'
 import { routePaths } from '@/config/routes'
 import { Nav } from './Nav'
-
-vi.mock('next/navigation', () => ({ usePathname: () => '/build-project/beginner' }))
 
 afterEach(cleanup)
 
 describe('Nav', () => {
-  it('shows guide navigation without an invite or sign-in button', () => {
+  it('keeps navigation out of the React client bundle', () => {
+    const source = readFileSync(join(process.cwd(), 'src/components/site/Nav.tsx'), 'utf8')
+
+    expect(source).not.toMatch(/^['"]use client['"]/)
+    expect(source).not.toContain("from 'react'")
+    expect(source).not.toContain("from 'next/navigation'")
+    expect(source).not.toContain("import('./MobileNavDrawer')")
+  })
+
+  it('renders every destination in the initial accessible markup', () => {
     render(<Nav />)
 
-    expect(screen.getByRole('link', { name: 'HOME' })).toHaveAttribute('href', routePaths.home)
-    expect(screen.getByRole('button', { name: 'Build Project' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Explore Agent' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Agent Resources' })).toBeInTheDocument()
-
-    fireEvent.click(screen.getByRole('button', { name: 'Build Project' }))
-    expect(screen.getByRole('menuitem', { name: 'Beginner' })).toBeVisible()
-    expect(screen.getByRole('menuitem', { name: 'Intermediate' })).toBeVisible()
-    expect(screen.getByRole('menuitem', { name: 'Advanced' })).toBeVisible()
-    expect(screen.getByRole('menuitem', { name: 'Expert' })).toBeVisible()
+    expect(screen.getAllByRole('link', { name: 'HOME' })[0]).toHaveAttribute('href', routePaths.home)
+    expect(screen.getAllByRole('link', { name: 'Beginner' }).length).toBeGreaterThan(0)
+    expect(screen.getAllByRole('link', { name: 'Intermediate' }).length).toBeGreaterThan(0)
+    expect(screen.getAllByRole('link', { name: 'Advanced' }).length).toBeGreaterThan(0)
+    expect(screen.getAllByRole('link', { name: 'Expert' }).length).toBeGreaterThan(0)
 
     expect(screen.queryByRole('link', { name: /invite/i })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: /sign in/i })).not.toBeInTheDocument()
-  })
-
-  it('keeps a dropdown open briefly while the pointer crosses to it', () => {
-    vi.useFakeTimers()
-    try {
-      render(<Nav />)
-
-      const buildProject = screen.getByRole('button', { name: 'Build Project' })
-      const buildProjectGroup = buildProject.parentElement
-      if (!buildProjectGroup) throw new Error('Build Project group is missing')
-
-      fireEvent.mouseEnter(buildProjectGroup)
-      fireEvent.mouseLeave(buildProjectGroup, { relatedTarget: document.body })
-
-      expect(screen.getByRole('menu')).toBeVisible()
-
-      act(() => vi.advanceTimersByTime(180))
-      expect(screen.queryByRole('menu')).not.toBeInTheDocument()
-    } finally {
-      vi.useRealTimers()
-    }
   })
 })

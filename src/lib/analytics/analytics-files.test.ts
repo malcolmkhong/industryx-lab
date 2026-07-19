@@ -10,8 +10,9 @@ describe('analytics boundaries', () => {
   it('provides isolated analytics configuration, events, and rendering', () => {
     for (const file of [
       'src/lib/analytics/events.ts',
+      'src/lib/analytics/deferredScript.ts',
       'src/components/analytics/Analytics.tsx',
-      'src/components/analytics/AnalyticsEventTracker.tsx',
+      'src/components/analytics/DeferredGoogleAnalytics.tsx',
     ]) {
       expect(existsSync(resolve(root, file)), file).toBe(true)
     }

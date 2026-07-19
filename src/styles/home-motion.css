@@ -1,0 +1,69 @@
+@keyframes desktop-step-cycle {
+  0%,
+  4% {
+    opacity: 0;
+    transform: translateY(0.35rem);
+  }
+  10%,
+  88% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  96%,
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+
+@keyframes desktop-thinking-cycle {
+  0%,
+  8% {
+    opacity: 0;
+  }
+  12%,
+  25% {
+    opacity: 1;
+  }
+  32%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.desktop-user-message {
+  animation: desktop-step-cycle 12s ease-out infinite both;
+}
+
+.desktop-assistant-message {
+  animation: desktop-step-cycle 12s 700ms ease-out infinite both;
+}
+
+.desktop-thinking {
+  animation: desktop-thinking-cycle 12s 900ms ease-out infinite both;
+}
+
+.desktop-tool-step {
+  animation: desktop-step-cycle 12s var(--desktop-step-delay) ease-out infinite both;
+}
+
+.desktop-response-line {
+  animation: desktop-step-cycle 12s var(--desktop-line-delay) ease-out infinite both;
+}
+
+.desktop-response-caret {
+  animation: desktop-thinking-cycle 12s 6500ms ease-out infinite both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .desktop-user-message,
+  .desktop-assistant-message,
+  .desktop-thinking,
+  .desktop-tool-step,
+  .desktop-response-line,
+  .desktop-response-caret {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}

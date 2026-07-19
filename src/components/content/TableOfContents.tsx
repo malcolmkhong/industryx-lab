@@ -1,13 +1,9 @@
-import { useActiveHeading } from '@/hooks/useActiveHeading'
-
 export type TableOfContentsItem = {
   id: string
   label: string
 }
 
 export function TableOfContents({ items, variant = 'desktop' }: { items: TableOfContentsItem[]; variant?: 'desktop' | 'mobile' }) {
-  const activeId = useActiveHeading(items.map((item) => item.id))
-
   if (variant === 'mobile') {
     return (
       <details className="mb-8 rounded-xl border border-white/10 bg-card/70 p-4 xl:hidden">
@@ -28,22 +24,19 @@ export function TableOfContents({ items, variant = 'desktop' }: { items: TableOf
       <nav aria-label="Jump to" className="border-l border-white/10 pl-6">
         <p className="mb-4 font-mono text-xs font-semibold tracking-[0.16em] text-muted-foreground">JUMP TO</p>
         <ul className="space-y-1">
-          {items.map((item) => {
-            const active = item.id === activeId
-            return (
+          {items.map((item, index) => (
               <li key={item.id}>
                 <a
                   href={`#${item.id}`}
-                  aria-current={active ? 'location' : undefined}
-                  className={`block border-l-2 py-2 pl-3 text-sm transition-colors focus-visible-ring ${
-                    active ? '-ml-[25px] border-primary text-foreground' : '-ml-[25px] border-transparent text-muted-foreground hover:border-primary/45 hover:text-foreground'
-                  }`}
+                  aria-current={index === 0 ? 'location' : undefined}
+                  data-toc-link={item.id}
+                  data-active={index === 0 ? 'true' : 'false'}
+                  className="toc-link -ml-[25px] block border-l-2 border-transparent py-2 pl-3 text-sm text-muted-foreground transition-colors hover:border-primary/45 hover:text-foreground focus-visible-ring"
                 >
                   {item.label}
                 </a>
               </li>
-            )
-          })}
+          ))}
         </ul>
       </nav>
     </aside>

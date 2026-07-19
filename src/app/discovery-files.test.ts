@@ -21,14 +21,18 @@ describe('crawler discovery entry points', () => {
     const entries = Array.isArray(rules) ? rules : [rules]
     const allowedAgents = entries.flatMap((entry) => Array.isArray(entry.userAgent) ? entry.userAgent : [entry.userAgent])
 
-    for (const agent of ['OAI-SearchBot', 'ChatGPT-User', 'PerplexityBot', 'Perplexity-User', 'Claude-SearchBot', 'Claude-User', 'Googlebot', 'Bingbot']) {
+    for (const agent of ['OAI-SearchBot', 'ChatGPT-User', 'PerplexityBot', 'Perplexity-User', 'Claude-SearchBot', 'Claude-User', 'Googlebot', 'Google-Extended', 'Bingbot']) {
       expect(allowedAgents).toContain(agent)
     }
 
-    for (const agent of ['GPTBot', 'ClaudeBot', 'CCBot', 'Google-Extended']) {
+    for (const agent of ['GPTBot', 'ClaudeBot', 'CCBot']) {
       const policy = entries.find((entry) => entry.userAgent === agent)
       expect(policy?.disallow).toBe('/')
     }
+
+    const googleExtended = entries.find((entry) => entry.userAgent === 'Google-Extended')
+    expect(googleExtended?.allow).toBe('/')
+    expect(googleExtended?.disallow).toBeUndefined()
   })
 
   it('lists only completed canonical pages in the sitemap', () => {

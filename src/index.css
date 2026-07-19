@@ -191,6 +191,52 @@
   contain-intrinsic-block-size: auto 7200px;
 }
 
+@keyframes reveal-on-scroll {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cli-sequence-cycle {
+  0%,
+  4% {
+    opacity: 0;
+    transform: translateY(0.25rem);
+  }
+  8%,
+  88% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  96%,
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+
+.cli-sequence-line {
+  animation: cli-sequence-cycle 12s ease-out infinite both;
+  animation-delay: var(--cli-line-delay, 0ms);
+}
+
+@supports (animation-timeline: view()) {
+  .reveal-on-scroll {
+    animation-delay: var(--reveal-delay, 0ms);
+    animation-duration: 1ms;
+    animation-fill-mode: both;
+    animation-name: reveal-on-scroll;
+    animation-range: entry 0% entry 30%;
+    animation-timeline: view();
+    animation-timing-function: ease-out;
+  }
+}
+
 /* Reduced motion: disable animations */
 @media (prefers-reduced-motion: reduce) {
   .animate-drift,
@@ -202,5 +248,15 @@
   }
   .animate-industryx-glow {
     animation: none !important;
+  }
+  .reveal-on-scroll {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+  .cli-sequence-line {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
   }
 }

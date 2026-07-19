@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Footer } from './Footer'
 import { SiteHeader } from './SiteHeader'
+import { ProgressiveEnhancements } from './ProgressiveEnhancements'
 
 export function PageShell({ children }: { children: ReactNode }) {
   return (
@@ -14,6 +15,7 @@ export function PageShell({ children }: { children: ReactNode }) {
       <SiteHeader />
       {children}
       <Footer />
+      <ProgressiveEnhancements />
     </div>
   )
 }

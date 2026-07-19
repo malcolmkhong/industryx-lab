@@ -43,8 +43,8 @@ Shared modules must not import feature modules. Features may import shared modul
 - Metadata construction: `src/lib/seo/metadata.ts`.
 - Structured-data entities: `src/lib/seo/schema.ts` plus feature schema builders.
 - Analytics event names and sanitization: `src/lib/analytics/events.ts`.
-- Browser motion preference: `src/hooks/usePrefersReducedMotion.ts`.
-- Global theme and typography: `src/index.css` and `tailwind.config.js`.
+- Browser interaction enhancement: `src/lib/browser/progressiveEnhancements.ts`.
+- Global theme and typography: `src/index.css`, `src/styles`, and `tailwind.config.js`.
 
 Do not duplicate paths, URLs, commands, labels, section IDs, metadata, or reusable arrays. Derive table-of-contents links, breadcrumbs, schema, and navigation from their authoritative data.
 
@@ -55,7 +55,7 @@ Do not duplicate paths, URLs, commands, labels, section IDs, metadata, or reusab
 - Next Image must remain compatible with `images.unoptimized: true`, or the hosting architecture must be deliberately changed first.
 - Do not read `window` or `document` during server/static rendering. Browser access belongs in effects, event handlers, or hydration-safe external-store snapshots.
 - Never use a `typeof window` branch, browser media query, timestamp, random value, or locale-dependent value to produce different initial server and client markup.
-- Shared browser preferences must follow `usePrefersReducedMotion`: use `useSyncExternalStore` with a deterministic server snapshot, then update after hydration.
+- Prefer CSS `prefers-reduced-motion` for decorative motion. If browser state must affect React markup, use a deterministic server snapshot and update only after hydration.
 - Published pages must be indexable and included intentionally in `src/app/sitemap.ts`.
 - Unfinished routes must render the reusable Coming Soon page, remain at their requested URL, and be `noindex`.
 - Unknown routes must reach `src/app/not-found.tsx`; do not convert them to Coming Soon pages.

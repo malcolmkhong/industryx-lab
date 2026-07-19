@@ -1,6 +1,3 @@
-'use client'
-
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { MoonMark } from '@/components/MoonMark'
 import { routePaths } from '@/config/routes'
@@ -8,23 +5,8 @@ import { siteConfig } from '@/config/site'
 import { Nav } from './Nav'
 
 export function SiteHeader() {
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 12)
-
-    handleScroll()
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
   return (
-    <header
-      role="banner"
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled ? 'border-b border-white/5 bg-background/80 backdrop-blur-xl' : 'bg-transparent'
-      }`}
-    >
+    <header role="banner" className="site-header fixed inset-x-0 top-0 z-50">
       <div className="mx-auto grid h-16 max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-6">
         <Link
           href={routePaths.home}

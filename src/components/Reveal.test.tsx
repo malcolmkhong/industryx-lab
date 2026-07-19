@@ -14,6 +14,20 @@ afterEach(() => {
 })
 
 describe('Reveal hydration', () => {
+  it('marks non-priority content for CSS-driven reveal without hiding server HTML', () => {
+    const html = renderToString(
+      <Reveal delay={80} className="example">
+        Content
+      </Reveal>,
+    )
+
+    expect(html).toContain('data-reveal="true"')
+    expect(html).toContain('reveal-on-scroll')
+    expect(html).toContain('--reveal-delay:80ms')
+    expect(html).not.toContain('opacity-0')
+    expect(html).not.toContain('translate-y-6')
+  })
+
   it('renders priority content visibly in static HTML', () => {
     const html = renderToString(
       <Reveal priority>

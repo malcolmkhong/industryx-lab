@@ -1,12 +1,20 @@
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { cleanup, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 import { SiteHeader } from './SiteHeader'
-
-vi.mock('next/navigation', () => ({ usePathname: () => '/' }))
 
 afterEach(cleanup)
 
 describe('SiteHeader', () => {
+  it('renders as a server component without a scroll subscription', () => {
+    const source = readFileSync(join(process.cwd(), 'src/components/site/SiteHeader.tsx'), 'utf8')
+
+    expect(source).not.toMatch(/^['"]use client['"]/)
+    expect(source).not.toContain('useEffect')
+    expect(source).not.toContain('useState')
+  })
+
   it('centers navigation between the brand and mobile control columns', () => {
     render(<SiteHeader />)
 

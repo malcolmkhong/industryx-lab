@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import {
   ArrowUp,
   Blocks,
@@ -11,7 +12,6 @@ import {
   Sparkles,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { useDesktopAnimation } from '@/hooks/useDesktopAnimation'
 
 interface ToolStep {
   icon: LucideIcon
@@ -24,19 +24,17 @@ const TOOL_STEPS: ToolStep[] = [
   { icon: FlaskConical, text: 'Ran test suite — 148 / 148 passed' },
 ]
 
-const FINAL_TEXT =
-  'Done — the auth module is refactored and the suite is fully green. I replaced the token store, added refresh-token rotation, and removed three dead code paths.'
+const FINAL_LINES = [
+  'Done — the auth module is refactored and the suite is fully green.',
+  'I replaced the token store, added refresh-token rotation,',
+  'and removed three dead code paths.',
+]
 
 const HISTORY = ['Refactor auth module', 'Fix checkout race', 'Write API docs']
 
 export function KimiDesktop() {
-  const { stage, chars, typingStage } = useDesktopAnimation({
-    stepCount: TOOL_STEPS.length,
-    finalTextLength: FINAL_TEXT.length,
-  })
-
   return (
-    <div className="w-full overflow-hidden rounded-2xl border border-white/10 bg-white text-left shadow-[0_32px_90px_-24px_rgba(0,0,0,0.85)]">
+    <div className="kimi-desktop-animation w-full overflow-hidden rounded-2xl border border-white/10 bg-white text-left shadow-[0_32px_90px_-24px_rgba(0,0,0,0.85)]">
       {/* window chrome */}
       <div className="flex items-center gap-2 border-b border-zinc-200/80 bg-zinc-50 px-4 py-2.5">
         <span className="h-3 w-3 rounded-full bg-[#ff5f57]/80" />
@@ -92,43 +90,32 @@ export function KimiDesktop() {
         <div className="flex min-w-0 flex-1 flex-col">
           <div className="flex h-[300px] flex-col gap-4 overflow-hidden px-4 py-4 sm:px-5">
             {/* user message */}
-            <div
-              className={`flex justify-end transition-all duration-500 ${
-                stage >= 1 ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'
-              }`}
-            >
+            <div className="desktop-user-message flex justify-end">
               <div className="max-w-[85%] rounded-2xl rounded-br-md bg-zinc-100 px-3.5 py-2.5 text-[12.5px] leading-relaxed text-zinc-800">
                 Refactor the auth module — and make sure every test still passes.
               </div>
             </div>
 
             {/* assistant */}
-            <div
-              className={`flex gap-2.5 transition-all duration-500 ${
-                stage >= 2 ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'
-              }`}
-            >
+            <div className="desktop-assistant-message flex gap-2.5">
               <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-zinc-900">
                 <Sparkles className="h-3 w-3 text-white" />
               </span>
               <div className="flex min-w-0 flex-1 flex-col gap-2">
-                {stage === 2 && (
-                  <span className="flex items-center gap-1.5 text-[12px] text-zinc-400">
-                    Thinking
-                    <span className="flex gap-0.5">
-                      <span className="h-1 w-1 animate-bounce rounded-full bg-zinc-400 [animation-delay:0ms]" />
-                      <span className="h-1 w-1 animate-bounce rounded-full bg-zinc-400 [animation-delay:150ms]" />
-                      <span className="h-1 w-1 animate-bounce rounded-full bg-zinc-400 [animation-delay:300ms]" />
-                    </span>
+                <span className="desktop-thinking flex items-center gap-1.5 text-[12px] text-zinc-400">
+                  Thinking
+                  <span className="flex gap-0.5">
+                    <span className="h-1 w-1 animate-bounce rounded-full bg-zinc-400 [animation-delay:0ms]" />
+                    <span className="h-1 w-1 animate-bounce rounded-full bg-zinc-400 [animation-delay:150ms]" />
+                    <span className="h-1 w-1 animate-bounce rounded-full bg-zinc-400 [animation-delay:300ms]" />
                   </span>
-                )}
+                </span>
 
                 {TOOL_STEPS.map((step, i) => (
                   <div
                     key={step.text}
-                    className={`flex items-center gap-2 rounded-lg border border-zinc-200/80 bg-zinc-50/80 px-2.5 py-1.5 transition-all duration-500 ${
-                      stage >= 3 + i ? 'translate-y-0 opacity-100' : 'translate-y-1 opacity-0'
-                    }`}
+                    className="desktop-tool-step flex items-center gap-2 rounded-lg border border-zinc-200/80 bg-zinc-50/80 px-2.5 py-1.5"
+                    style={{ '--desktop-step-delay': `${2400 + i * 650}ms` } as CSSProperties}
                   >
                     <step.icon className="h-3.5 w-3.5 shrink-0 text-zinc-500" />
                     <span className="min-w-0 flex-1 truncate text-[11.5px] text-zinc-600">
@@ -138,14 +125,18 @@ export function KimiDesktop() {
                   </div>
                 ))}
 
-                {stage >= typingStage && (
-                  <p className="text-[12.5px] leading-relaxed text-zinc-800">
-                    {FINAL_TEXT.slice(0, chars)}
-                    {chars < FINAL_TEXT.length && (
-                      <span className="ml-0.5 inline-block h-3.5 w-1.5 translate-y-0.5 animate-caret-blink bg-zinc-400" />
-                    )}
-                  </p>
-                )}
+                <p className="text-[12.5px] leading-relaxed text-zinc-800">
+                  {FINAL_LINES.map((line, index) => (
+                    <span
+                      key={line}
+                      className="desktop-response-line"
+                      style={{ '--desktop-line-delay': `${4550 + index * 700}ms` } as CSSProperties}
+                    >
+                      {line}{index < FINAL_LINES.length - 1 ? ' ' : null}
+                    </span>
+                  ))}
+                  <span className="desktop-response-caret ml-0.5 inline-block h-3.5 w-1.5 translate-y-0.5 bg-zinc-400" />
+                </p>
               </div>
             </div>
           </div>

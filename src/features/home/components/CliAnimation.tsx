@@ -1,5 +1,5 @@
+import type { CSSProperties } from 'react'
 import { cliAnimationContent, type CliLineTone } from '../content/cli'
-import { useCliAnimation } from '../hooks/useCliAnimation'
 
 const LINE_COLORS: Record<CliLineTone, string> = {
   command: 'text-[#f4f2ea]',
@@ -8,11 +8,6 @@ const LINE_COLORS: Record<CliLineTone, string> = {
 }
 
 export function CliAnimation() {
-  const { finalCharacterCount, visibleLineCount } = useCliAnimation({
-    lineCount: cliAnimationContent.lines.length,
-    finalTextLength: cliAnimationContent.finalText.length,
-  })
-
   return (
     <div
       role="region"
@@ -49,10 +44,11 @@ export function CliAnimation() {
         </div>
 
         <div className="mt-3 space-y-1.5" aria-live="off">
-          {cliAnimationContent.lines.slice(0, visibleLineCount).map((line) => (
+          {cliAnimationContent.lines.map((line, index) => (
             <p
               key={line.id}
-              className={`break-words animate-in fade-in slide-in-from-bottom-1 duration-300 motion-reduce:animate-none ${LINE_COLORS[line.tone]}`}
+              className={`cli-sequence-line break-words ${LINE_COLORS[line.tone]}`}
+              style={{ '--cli-line-delay': `${index * 650 - 500}ms` } as CSSProperties}
             >
               {line.prompt ? <span className="text-[#f7f4ec]">{line.prompt} </span> : null}
               <span className={line.tone === 'command' ? 'text-[#b9d9ff]' : undefined}>
@@ -61,17 +57,16 @@ export function CliAnimation() {
             </p>
           ))}
 
-          {visibleLineCount === cliAnimationContent.lines.length ? (
-            <p className="break-words text-[#f4f2ea]">
-              {cliAnimationContent.finalText.slice(0, finalCharacterCount)}
-              {finalCharacterCount < cliAnimationContent.finalText.length ? (
-                <span
-                  className="ml-0.5 inline-block h-3 w-1 translate-y-0.5 animate-caret-blink bg-[#d9d5cb] motion-reduce:animate-none"
-                  aria-hidden="true"
-                />
-              ) : null}
-            </p>
-          ) : null}
+          <p
+            className="cli-sequence-line break-words text-[#f4f2ea]"
+            style={{ '--cli-line-delay': '5000ms' } as CSSProperties}
+          >
+            {cliAnimationContent.finalText}
+            <span
+              className="ml-0.5 inline-block h-3 w-1 translate-y-0.5 animate-caret-blink bg-[#d9d5cb] motion-reduce:animate-none"
+              aria-hidden="true"
+            />
+          </p>
         </div>
       </div>
     </div>

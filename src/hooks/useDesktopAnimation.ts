@@ -1,16 +1,23 @@
 import { useEffect, useState } from 'react'
 
 type DesktopAnimationOptions = {
+  active?: boolean
   stepCount: number
   finalTextLength: number
 }
 
-export function useDesktopAnimation({ stepCount, finalTextLength }: DesktopAnimationOptions) {
+export function useDesktopAnimation({
+  active = true,
+  stepCount,
+  finalTextLength,
+}: DesktopAnimationOptions) {
   const typingStage = 3 + stepCount
   const [stage, setStage] = useState(0)
   const [chars, setChars] = useState(0)
 
   useEffect(() => {
+    if (!active) return
+
     let timer: number
     if (stage === 0) {
       timer = window.setTimeout(() => setStage(1), 600)
@@ -30,7 +37,7 @@ export function useDesktopAnimation({ stepCount, finalTextLength }: DesktopAnima
     }
 
     return () => window.clearTimeout(timer)
-  }, [chars, finalTextLength, stage, typingStage])
+  }, [active, chars, finalTextLength, stage, typingStage])
 
   return { stage, chars, typingStage }
 }

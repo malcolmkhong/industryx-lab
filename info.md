@@ -26,15 +26,16 @@ Structure:
   src/components/site/         SiteHeader, Nav, PageShell, and Footer
   src/components/ui/           Reusable shadcn/ui primitives
   src/config/                  Routes, navigation, site, URLs, and commands
-  src/features/beginner/       Beginner content, UI, hooks, schema, and tests
+  src/features/beginner/       Static Beginner content, UI, schema, and tests
   src/features/coming-soon/    Reusable unfinished-route experience
-  src/features/home/           Home content, sections, animation, and schema
-  src/hooks/                   Cross-feature browser and presentation hooks
-                               Includes hydration-safe reduced-motion state
-  src/lib/analytics/           Analytics event contract and sanitization
+  src/features/home/           Home content, sections, CSS animation, and schema
+  src/hooks/                   Focused hooks for client-only experiences
+  src/lib/analytics/           Analytics contracts and deferred GA loader
+  src/lib/browser/             Post-hydration progressive enhancements
   src/lib/seo/                 Metadata and structured-data builders
+  src/styles/                  Navigation and home-motion styles
   src/test/                    Global Vitest setup
-  src/index.css                Global theme, utilities, and animations
+  src/index.css                Global theme, utilities, and shared animations
   scripts/validate-schema.mjs  Generated JSON-LD release gate
   scripts/lighthouse-setup.cjs Shared Chrome session for reliable LHCI runs
   .github/workflows/quality.yml Automated checks for PRs and main
@@ -70,8 +71,9 @@ Published routes:
 
 Rendering model:
   App route files and metadata are statically rendered.
-  Client boundaries own navigation, animations, progress, and browser events.
-  Browser preferences use useSyncExternalStore with a stable server snapshot.
+  Home, Beginner, navigation, progress, copy, and Jump to render as static HTML.
+  A small post-hydration client boundary adds browser-only behavior without
+  hydrating those sections; Coming Soon retains its focused client boundary.
 
 Repository boundary:
   This repository owns the public IndustryX Lab content hub.

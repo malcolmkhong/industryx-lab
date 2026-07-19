@@ -1,20 +1,10 @@
-import { Check, CheckCircle2, Circle, Clipboard, Clock3, ExternalLink, TriangleAlert } from 'lucide-react'
-import { useCopy } from '@/hooks/useCopy'
+import { Check, CheckCircle2, Circle, Clock3, ExternalLink, TriangleAlert } from 'lucide-react'
+import { CopyButton } from '@/components/CopyButton'
 import { beginnerPageContent, type BeginnerStage } from '../content'
 import { CodeCard } from './CodeCard'
 import { formatContent } from '../utils/formatContent'
 
-export function StageSection({
-  stage,
-  complete,
-  onToggle,
-}: {
-  stage: BeginnerStage
-  complete: boolean
-  onToggle: () => void
-}) {
-  const { copy } = useCopy()
-
+export function StageSection({ stage }: { stage: BeginnerStage }) {
   return (
     <section id={stage.id} className="scroll-mt-24 border-t border-white/10 pt-10">
       <div className="mb-5 flex flex-wrap items-center gap-3">
@@ -51,10 +41,15 @@ export function StageSection({
       <div className="mt-5 overflow-hidden rounded-xl border border-primary/25 bg-card/70">
         <div className="flex items-center justify-between border-b border-white/10 px-5 py-3">
           <span className="font-mono text-xs font-semibold tracking-[0.16em] text-primary">{beginnerPageContent.stageUi.prompt}</span>
-          <button type="button" onClick={() => copy(stage.prompt)} className="inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible-ring" aria-label={formatContent(beginnerPageContent.stageUi.copyPromptFor, { stage: stage.title })}>
-            <Clipboard className="h-3.5 w-3.5" aria-hidden="true" />
-            {beginnerPageContent.stageUi.copy}
-          </button>
+          <CopyButton
+            text={stage.prompt}
+            label={beginnerPageContent.stageUi.copy}
+            accessibleLabel={formatContent(beginnerPageContent.stageUi.copyPromptFor, {
+              stage: stage.title,
+            })}
+            variant="ghost"
+            className="h-auto px-0 py-0"
+          />
         </div>
         <p className="border-l-2 border-primary px-5 py-5 font-mono text-sm leading-7 text-foreground/90">{stage.prompt}</p>
       </div>
@@ -129,10 +124,19 @@ export function StageSection({
             </a>
           ))}
         </div>
-        <label className={`inline-flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-sm transition-colors focus-within:ring-2 focus-within:ring-ring ${complete ? 'border-primary/40 bg-primary/10 text-foreground' : 'border-white/10 bg-card/55 text-muted-foreground hover:text-foreground'}`}>
-          <input type="checkbox" checked={complete} onChange={onToggle} className="sr-only" aria-label={formatContent(beginnerPageContent.stageUi.markStageComplete, { stage: stage.title })} />
-          {complete ? <CheckCircle2 className="h-4 w-4 text-primary" aria-hidden="true" /> : <Circle className="h-4 w-4" aria-hidden="true" />}
-          {complete ? beginnerPageContent.stageUi.completed : beginnerPageContent.stageUi.markComplete}
+        <label className="guide-stage-toggle inline-flex cursor-pointer items-center gap-2 rounded-lg border border-white/10 bg-card/55 px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground focus-within:ring-2 focus-within:ring-ring" data-stage-complete="false">
+          <input
+            type="checkbox"
+            className="sr-only"
+            aria-label={formatContent(beginnerPageContent.stageUi.markStageComplete, {
+              stage: stage.title,
+            })}
+            data-guide-stage={stage.id}
+          />
+          <Circle className="guide-stage-incomplete-icon h-4 w-4" aria-hidden="true" />
+          <CheckCircle2 className="guide-stage-complete-icon hidden h-4 w-4 text-primary" aria-hidden="true" />
+          <span className="guide-stage-incomplete-label">{beginnerPageContent.stageUi.markComplete}</span>
+          <span className="guide-stage-complete-label hidden">{beginnerPageContent.stageUi.completed}</span>
         </label>
       </div>
     </section>
