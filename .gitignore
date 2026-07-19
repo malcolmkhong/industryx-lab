@@ -1,0 +1,24 @@
+# Dependencies and builds
+node_modules/
+dist/
+out/
+.next/
+coverage/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Tool caches and logs
+*.log
+.eslintcache
+.vite/
+.lighthouseci/
+*.tsbuildinfo
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

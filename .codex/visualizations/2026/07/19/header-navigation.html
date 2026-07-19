@@ -1,0 +1,55 @@
+<div id="header-navigation-visual">
+  <style>
+    #header-navigation-visual { color: var(--foreground); font-family: inherit; }
+    #header-navigation-visual .frame { display: grid; gap: 18px; }
+    #header-navigation-visual .label { color: var(--muted-foreground); font-size: .85em; margin: 0; }
+    #header-navigation-visual .bar { align-items: center; border-bottom: 1px solid var(--border); display: flex; gap: 16px; min-height: 64px; padding: 0 14px; }
+    #header-navigation-visual .brand { font-weight: 500; letter-spacing: .12em; margin-right: auto; white-space: nowrap; }
+    #header-navigation-visual .nav { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+    #header-navigation-visual a { color: var(--muted-foreground); padding: 7px 8px; text-decoration: none; white-space: nowrap; }
+    #header-navigation-visual a[aria-current="page"] { color: var(--foreground); font-weight: 500; }
+    #header-navigation-visual .language { border-left: 1px solid var(--border); color: var(--muted-foreground); padding-left: 14px; white-space: nowrap; }
+    #header-navigation-visual .cta { background: var(--primary); color: var(--primary-foreground); font-weight: 500; padding: 8px 12px; white-space: nowrap; }
+    #header-navigation-visual .mobile { display: none; }
+    #header-navigation-visual .mobile-menu { border-top: 1px solid var(--border); display: grid; gap: 4px; padding: 12px 14px 0; }
+    #header-navigation-visual .mobile-menu a { padding: 9px 0; }
+    @media (max-width: 720px) {
+      #header-navigation-visual .desktop { display: none; }
+      #header-navigation-visual .mobile { display: block; }
+      #header-navigation-visual .bar { gap: 10px; }
+    }
+  </style>
+  <div class="frame desktop" aria-label="Desktop header navigation">
+    <p class="label">Desktop</p>
+    <nav class="bar" aria-label="Primary navigation">
+      <span class="brand">KIMI CODE</span>
+      <span class="nav">
+        <a href="#" aria-current="page">Home</a>
+        <a href="#">Start Here</a>
+        <a href="#">Build ProjectFlow</a>
+        <a href="#">Reference</a>
+        <a href="#">Explore Kimi</a>
+        <a href="#">GitHub</a>
+      </span>
+      <span class="language">EN / 中文</span>
+      <a class="cta" href="#">Build ProjectFlow</a>
+    </nav>
+  </div>
+  <div class="frame mobile" aria-label="Mobile header navigation">
+    <p class="label">Mobile</p>
+    <nav class="bar" aria-label="Mobile primary navigation">
+      <span class="brand">KIMI CODE</span>
+      <span class="language">EN / 中文</span>
+      <a href="#" aria-label="Open menu">Menu</a>
+    </nav>
+    <div class="mobile-menu" aria-label="Expanded mobile navigation">
+      <a href="#" aria-current="page">Home</a>
+      <a href="#">Start Here</a>
+      <a href="#">Build ProjectFlow</a>
+      <a href="#">Reference</a>
+      <a href="#">Explore Kimi</a>
+      <a href="#">GitHub</a>
+      <a class="cta" href="#">Build ProjectFlow</a>
+    </div>
+  </div>
+</div>

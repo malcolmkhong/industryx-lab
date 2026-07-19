@@ -1,0 +1,158 @@
+<div id="kimi-guide-hub-mockup">
+  <style>
+    #kimi-guide-hub-mockup { color: var(--foreground); font-family: inherit; }
+    #kimi-guide-hub-mockup .shell { display: grid; gap: 18px; }
+    #kimi-guide-hub-mockup .site { min-width: 0; }
+    #kimi-guide-hub-mockup .topbar { align-items: center; border-bottom: 1px solid var(--border); display: flex; gap: 12px; min-height: 62px; padding: 0 16px; position: relative; }
+    #kimi-guide-hub-mockup .brand { font-weight: 500; letter-spacing: .12em; margin-right: auto; white-space: nowrap; }
+    #kimi-guide-hub-mockup .main-nav { align-items: center; display: flex; gap: 4px; }
+    #kimi-guide-hub-mockup .nav-link, #kimi-guide-hub-mockup .nav-trigger { background: transparent; border: 1px solid transparent; color: var(--muted-foreground); cursor: pointer; font: inherit; padding: 8px 10px; text-decoration: none; white-space: nowrap; }
+    #kimi-guide-hub-mockup .nav-link.is-active, #kimi-guide-hub-mockup .nav-trigger:hover, #kimi-guide-hub-mockup .nav-trigger:focus-visible, #kimi-guide-hub-mockup .nav-trigger[aria-expanded="true"] { border-color: var(--primary); color: var(--foreground); outline: none; }
+    #kimi-guide-hub-mockup .language { border-left: 1px solid var(--border); color: var(--muted-foreground); margin-left: 6px; padding-left: 12px; white-space: nowrap; }
+    #kimi-guide-hub-mockup .menu { background: var(--popover); border: 1px solid var(--border); display: none; min-width: 210px; padding: 8px; position: absolute; top: calc(100% + 6px); z-index: 2; }
+    #kimi-guide-hub-mockup .menu.is-open { display: grid; gap: 2px; }
+    #kimi-guide-hub-mockup .menu a { color: var(--popover-foreground); padding: 8px 9px; text-decoration: none; }
+    #kimi-guide-hub-mockup .menu a:hover, #kimi-guide-hub-mockup .menu a:focus-visible { background: var(--accent); color: var(--accent-foreground); outline: none; }
+    #kimi-guide-hub-mockup .dropdown-slot { position: relative; }
+    #kimi-guide-hub-mockup .dropdown-slot:nth-of-type(2) .menu { left: -52px; }
+    #kimi-guide-hub-mockup .dropdown-slot:nth-of-type(3) .menu { left: -24px; }
+    #kimi-guide-hub-mockup .stage { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr) 180px; padding: 30px 16px; }
+    #kimi-guide-hub-mockup .eyebrow { color: var(--primary); font-size: .85em; letter-spacing: .12em; margin: 0 0 8px; }
+    #kimi-guide-hub-mockup h2 { margin: 0 0 8px; }
+    #kimi-guide-hub-mockup p { margin: 0; }
+    #kimi-guide-hub-mockup .muted { color: var(--muted-foreground); }
+    #kimi-guide-hub-mockup .path { display: grid; gap: 8px; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 20px; }
+    #kimi-guide-hub-mockup .path a { border-bottom: 1px solid var(--border); color: var(--foreground); padding: 10px 0; text-decoration: none; }
+    #kimi-guide-hub-mockup .jump { border-left: 1px solid var(--border); display: grid; gap: 8px; height: fit-content; padding-left: 14px; position: sticky; top: 18px; }
+    #kimi-guide-hub-mockup .jump strong { font-weight: 500; }
+    #kimi-guide-hub-mockup .jump a { color: var(--muted-foreground); text-decoration: none; }
+    #kimi-guide-hub-mockup .jump a.is-current { color: var(--primary); }
+    #kimi-guide-hub-mockup .facts { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 22px; }
+    #kimi-guide-hub-mockup .facts span { color: var(--muted-foreground); }
+    #kimi-guide-hub-mockup .mobile-preview { border-top: 1px solid var(--border); display: none; padding-top: 18px; }
+    #kimi-guide-hub-mockup .mobile-bar { align-items: center; display: flex; gap: 12px; min-height: 54px; }
+    #kimi-guide-hub-mockup .drawer { border-left: 1px solid var(--border); display: grid; gap: 10px; margin-left: auto; padding: 14px; width: min(280px, 85%); }
+    #kimi-guide-hub-mockup details { border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    #kimi-guide-hub-mockup summary { cursor: pointer; font-weight: 500; }
+    #kimi-guide-hub-mockup details a { color: var(--muted-foreground); display: block; padding: 7px 0 0 12px; text-decoration: none; }
+    @media (max-width: 800px) {
+      #kimi-guide-hub-mockup .main-nav, #kimi-guide-hub-mockup .language { display: none; }
+      #kimi-guide-hub-mockup .mobile-preview { display: block; }
+      #kimi-guide-hub-mockup .stage { grid-template-columns: 1fr; }
+      #kimi-guide-hub-mockup .jump { display: none; }
+      #kimi-guide-hub-mockup .path { grid-template-columns: 1fr; }
+    }
+  </style>
+  <div class="shell">
+    <section class="site" aria-label="Desktop navigation mockup">
+      <header class="topbar">
+        <span class="brand">KIMI CODE</span>
+        <nav class="main-nav" aria-label="Primary navigation">
+          <a class="nav-link is-active" href="#home" data-page="home">HOME</a>
+          <span class="dropdown-slot">
+            <button class="nav-trigger" type="button" aria-expanded="false" aria-controls="build-menu" data-menu="build-menu">Build Project</button>
+            <span class="menu" id="build-menu">
+              <a href="#beginner" data-page="beginner">Beginner</a>
+              <a href="#intermediate" data-page="intermediate">Intermediate</a>
+              <a href="#advanced" data-page="advanced">Advanced</a>
+              <a href="#expert" data-page="expert">Expert</a>
+            </span>
+          </span>
+          <span class="dropdown-slot">
+            <button class="nav-trigger" type="button" aria-expanded="false" aria-controls="agent-menu" data-menu="agent-menu">Explore Agent</button>
+            <span class="menu" id="agent-menu">
+              <a href="#kimi" data-page="kimi">Kimi</a>
+              <a href="#minimax" data-page="minimax">MiniMax</a>
+              <a href="#codex" data-page="codex">Codex</a>
+            </span>
+          </span>
+          <span class="dropdown-slot">
+            <button class="nav-trigger" type="button" aria-expanded="false" aria-controls="github-menu" data-menu="github-menu">GitHub</button>
+            <span class="menu" id="github-menu">
+              <a href="#skills" data-page="skills">Skills</a>
+              <a href="#mcp" data-page="mcp">MCP</a>
+            </span>
+          </span>
+        </nav>
+        <span class="language">EN / 中文</span>
+      </header>
+      <main class="stage" id="mock-page">
+        <section>
+          <p class="eyebrow" id="mock-eyebrow">KIMI CODE</p>
+          <h2 id="mock-title">Stop typing. Start shipping.</h2>
+          <p class="muted" id="mock-copy">Kimi Code reads code, edits files, runs commands, and helps beginners turn an idea into a working project.</p>
+          <div class="path" id="mock-paths">
+            <a href="#beginner">Start Here<br><span class="muted">Learn vibe coding</span></a>
+            <a href="#beginner">Build ProjectFlow<br><span class="muted">First full-stack app</span></a>
+            <a href="#kimi">Explore Kimi<br><span class="muted">Skills, MCP, Zed</span></a>
+          </div>
+          <div class="facts" id="mock-facts"><span>1M token context</span><span>Subagents</span><span>MCP</span><span>Zed / ACP</span></div>
+        </section>
+        <aside class="jump" id="mock-jump" aria-label="Jump to section">
+          <strong>Jump to</strong>
+          <a class="is-current" href="#what">What is Kimi Code?</a>
+          <a href="#path">Choose your path</a>
+          <a href="#features">Why it helps</a>
+          <a href="#invite">Get invite code</a>
+        </aside>
+      </main>
+    </section>
+    <section class="mobile-preview" aria-label="Mobile navigation mockup">
+      <p class="eyebrow">MOBILE DRAWER</p>
+      <div class="mobile-bar"><span class="brand">KIMI CODE</span><span class="muted">EN / 中文</span><span>Menu</span></div>
+      <nav class="drawer" aria-label="Expanded mobile navigation">
+        <a href="#home">HOME</a>
+        <details open><summary>Build Project</summary><a href="#beginner">Beginner</a><a href="#intermediate">Intermediate</a><a href="#advanced">Advanced</a><a href="#expert">Expert</a></details>
+        <details><summary>Explore Agent</summary><a href="#kimi">Kimi</a><a href="#minimax">MiniMax</a><a href="#codex">Codex</a></details>
+        <details><summary>GitHub</summary><a href="#skills">Skills</a><a href="#mcp">MCP</a></details>
+      </nav>
+    </section>
+  </div>
+  <script>
+    (() => {
+      const root = document.getElementById('kimi-guide-hub-mockup');
+      const pages = {
+        home: { eyebrow: 'KIMI CODE', title: 'Stop typing. Start shipping.', copy: 'Keep current Kimi Code hero. Beginner learning path begins below it.', jump: ['What is Kimi Code?', 'Choose your path', 'Why it helps', 'Get invite code'], facts: ['1M token context', 'Subagents', 'MCP', 'Zed / ACP'] },
+        beginner: { eyebrow: 'BUILD PROJECT / BEGINNER', title: 'Build ProjectFlow from zero.', copy: 'A guided first full-stack project: Google sign-in, projects, tasks, Kanban, Supabase, and Vercel.', jump: ['Prepare tools', 'Google sign-in', 'Create database', 'Build tasks', 'Deploy'], facts: ['Next.js', 'Supabase', 'Tailwind CSS', 'Vercel'] },
+        intermediate: { eyebrow: 'BUILD PROJECT / INTERMEDIATE', title: 'Improve ProjectFlow.', copy: 'Add stronger task flows, better search, and polished responsive interactions.', jump: ['Plan changes', 'Refine workflow', 'Test changes', 'Ship update'], facts: ['Tasks', 'Filters', 'Testing', 'Deployment'] },
+        advanced: { eyebrow: 'BUILD PROJECT / ADVANCED', title: 'Build larger systems.', copy: 'Use Kimi Code to break a bigger product into safe, reviewable steps.', jump: ['Plan', 'Architecture', 'Implementation', 'Review'], facts: ['Planning', 'Subagents', 'MCP', 'Review'] },
+        expert: { eyebrow: 'BUILD PROJECT / EXPERT', title: 'Run expert workflows.', copy: 'Advanced documentation path for reliable multi-step agent work.', jump: ['Context', 'Automation', 'Quality', 'Operations'], facts: ['AGENTS.md', 'Skills', 'MCP', 'Automation'] },
+        kimi: { eyebrow: 'EXPLORE AGENT / KIMI', title: 'Understand Kimi Code.', copy: 'Move current Kimi Code features, installation guidance, quote, and invite content into a clear reference path.', jump: ['Overview', 'Install', 'Features', 'Zed / ACP', 'Next steps'], facts: ['CLI', 'Skills', 'MCP', 'Subagents'] },
+        minimax: { eyebrow: 'EXPLORE AGENT / MINIMAX', title: 'Explore MiniMax.', copy: 'Dedicated documentation route. Add verified product content before publishing.', jump: ['Overview', 'Setup', 'Workflows', 'Sources'], facts: ['Agent guide', 'Verified sources'] },
+        codex: { eyebrow: 'EXPLORE AGENT / CODEX', title: 'Explore Codex.', copy: 'Dedicated documentation route. Add verified product content before publishing.', jump: ['Overview', 'Setup', 'Workflows', 'Sources'], facts: ['Agent guide', 'Verified sources'] },
+        skills: { eyebrow: 'GITHUB / SKILLS', title: 'Use skills for repeatable work.', copy: 'Explain how reusable skill instructions help an agent follow a focused workflow.', jump: ['What skills do', 'Find skills', 'Install safely', 'Use a skill'], facts: ['Reusable workflows', 'Global skills'] },
+        mcp: { eyebrow: 'GITHUB / MCP', title: 'Connect tools with MCP.', copy: 'Explain MCP in beginner language and link to safe, verified setup guidance.', jump: ['What MCP is', 'When to use it', 'Connect tools', 'Stay safe'], facts: ['Tools', 'Data sources', 'Permissions'] }
+      };
+      const title = root.querySelector('#mock-title');
+      const eyebrow = root.querySelector('#mock-eyebrow');
+      const copy = root.querySelector('#mock-copy');
+      const jump = root.querySelector('#mock-jump');
+      const facts = root.querySelector('#mock-facts');
+      const path = root.querySelector('#mock-paths');
+      const closeMenus = () => root.querySelectorAll('.menu.is-open').forEach(menu => { menu.classList.remove('is-open'); root.querySelector('[data-menu="' + menu.id + '"]').setAttribute('aria-expanded', 'false'); });
+      const showPage = (name) => {
+        const page = pages[name];
+        if (!page) return;
+        eyebrow.textContent = page.eyebrow;
+        title.textContent = page.title;
+        copy.textContent = page.copy;
+        jump.innerHTML = '<strong>Jump to</strong>' + page.jump.map((item, index) => '<a' + (index === 0 ? ' class="is-current"' : '') + ' href="#">' + item + '</a>').join('');
+        facts.innerHTML = page.facts.map(item => '<span>' + item + '</span>').join('');
+        path.style.display = name === 'home' ? 'grid' : 'none';
+        root.querySelectorAll('.nav-link').forEach(link => link.classList.toggle('is-active', name === 'home' && link.dataset.page === 'home'));
+        closeMenus();
+      };
+      root.querySelectorAll('[data-menu]').forEach(button => {
+        button.addEventListener('click', () => {
+          const menu = root.querySelector('#' + button.dataset.menu);
+          const shouldOpen = !menu.classList.contains('is-open');
+          closeMenus();
+          if (shouldOpen) { menu.classList.add('is-open'); button.setAttribute('aria-expanded', 'true'); }
+        });
+      });
+      root.querySelectorAll('[data-page]').forEach(link => link.addEventListener('click', event => { event.preventDefault(); showPage(link.dataset.page); }));
+      root.addEventListener('focusout', () => setTimeout(() => { if (!root.contains(document.activeElement)) closeMenus(); }, 0));
+      document.addEventListener('click', event => { if (!root.contains(event.target)) closeMenus(); });
+    })();
+  </script>
+</div>

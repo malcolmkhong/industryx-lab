@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kimi Code Documentation | Build Project</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ffb4ab",
+                    "on-secondary-fixed-variant": "#41465d",
+                    "on-secondary-container": "#b3b7d3",
+                    "secondary": "#c1c5e1",
+                    "surface-variant": "#33343e",
+                    "surface-container-high": "#282a32",
+                    "on-primary-container": "#444e83",
+                    "surface-container": "#1d1f28",
+                    "surface-bright": "#373942",
+                    "on-secondary-fixed": "#151a2f",
+                    "tertiary-fixed-dim": "#bec5e9",
+                    "on-tertiary-container": "#49506f",
+                    "on-error-container": "#ffdad6",
+                    "tertiary": "#dbe0ff",
+                    "primary-fixed-dim": "#b9c3ff",
+                    "inverse-primary": "#515b91",
+                    "outline": "#90909a",
+                    "tertiary-fixed": "#dce1ff",
+                    "surface-dim": "#11131b",
+                    "on-tertiary-fixed-variant": "#3e4563",
+                    "primary": "#dcdfff",
+                    "inverse-on-surface": "#2e3039",
+                    "surface": "#11131b",
+                    "error-container": "#93000a",
+                    "on-primary-fixed": "#0a164a",
+                    "primary-fixed": "#dee1ff",
+                    "secondary-fixed": "#dde1fe",
+                    "on-background": "#e2e1ee",
+                    "surface-container-highest": "#33343e",
+                    "on-tertiary": "#282f4c",
+                    "secondary-fixed-dim": "#c1c5e1",
+                    "on-tertiary-fixed": "#131a35",
+                    "background": "#11131b",
+                    "on-surface-variant": "#c6c5d0",
+                    "on-error": "#690005",
+                    "inverse-surface": "#e2e1ee",
+                    "secondary-container": "#43485f",
+                    "on-primary-fixed-variant": "#394377",
+                    "surface-container-lowest": "#0c0e16",
+                    "tertiary-container": "#bdc4e8",
+                    "surface-container-low": "#191b24",
+                    "on-surface": "#e2e1ee",
+                    "surface-tint": "#b9c3ff",
+                    "outline-variant": "#45464f",
+                    "on-secondary": "#2a2f45",
+                    "on-primary": "#222c5f",
+                    "primary-container": "#b8c2ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "gutter": "24px",
+                    "unit": "4px",
+                    "stack-lg": "48px",
+                    "container-max": "1280px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "48px",
+                    "stack-md": "24px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "code-block": ["JetBrains Mono"],
+                    "body-lg": ["Inter"],
+                    "label-caps": ["JetBrains Mono"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["20px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "code-block": ["14px", {"lineHeight": "1.7", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #0a0c14; }
+        .glowing-border {
+            border: 1px solid #161b30;
+            transition: all 0.3s ease;
+        }
+        .glowing-border:hover {
+            border-color: #b8c2ff;
+            box-shadow: 0px 0px 8px rgba(184, 194, 255, 0.3);
+        }
+        .active-nav-line {
+            position: relative;
+        }
+        .active-nav-line::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 25%;
+            height: 50%;
+            width: 2px;
+            background-color: #b8c2ff;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #05060a; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #2e3552; border-radius: 2px; }
+    </style>
+</head>
+<body class="font-body-lg text-on-background selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-background dark:bg-background border-b border-surface-variant dark:border-surface-variant h-16">
+<div class="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto h-full">
+<div class="flex items-center gap-stack-md">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary tracking-tight">Kimi Code</span>
+</div>
+<nav class="hidden md:flex items-center gap-8 h-full">
+<a class="text-on-surface-variant dark:text-on-surface-variant font-body-lg text-body-lg hover:text-primary transition-colors duration-200" href="#">HOME</a>
+<!-- Build Project Active Dropdown Container -->
+<div class="relative group h-full flex items-center">
+<button class="text-primary font-bold border-b-2 border-primary pb-1 font-body-lg text-body-lg flex items-center gap-1">
+                        Build Project
+                        <span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<!-- Dropdown Menu -->
+<div class="absolute top-full left-0 w-64 bg-surface-container border border-surface-variant mt-0 py-2 shadow-2xl opacity-100 translate-y-0 transition-all">
+<div class="px-4 py-2 border-b border-surface-variant mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">SELECT LEVEL</span>
+</div>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-surface-variant text-primary font-bold bg-secondary-container/20 border-l-2 border-primary" href="#">
+<span class="material-symbols-outlined text-xl">school</span>
+<span class="font-body-sm text-body-sm">Beginner</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-surface-variant text-on-surface-variant" href="#">
+<span class="material-symbols-outlined text-xl">speed</span>
+<span class="font-body-sm text-body-sm">Intermediate</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-surface-variant text-on-surface-variant" href="#">
+<span class="material-symbols-outlined text-xl">psychology</span>
+<span class="font-body-sm text-body-sm">Advanced</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-surface-variant text-on-surface-variant" href="#">
+<span class="material-symbols-outlined text-xl">military_tech</span>
+<span class="font-body-sm text-body-sm">Expert</span>
+</a>
+</div>
+</div>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-body-lg text-body-lg hover:text-primary transition-colors duration-200" href="#">Explore Agent</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-body-lg text-body-lg hover:text-primary transition-colors duration-200" href="#">GitHub</a>
+</nav>
+<div class="flex items-center gap-4">
+<span class="text-on-surface-variant font-label-caps text-label-caps cursor-pointer hover:text-primary transition-colors">EN / 中文</span>
+<button class="bg-primary text-on-primary-fixed px-4 py-1.5 rounded-lg font-bold text-body-sm active:scale-95 transition-transform">
+                    Sign In
+                </button>
+</div>
+</div>
+</header>
+<!-- Main Layout Container -->
+<main class="pt-16 flex min-h-screen max-w-container-max mx-auto px-gutter relative">
+<!-- Left Sidebar (Optional Navigation Tree) -->
+<aside class="hidden lg:flex flex-col w-64 border-r border-surface-variant sticky top-16 h-[calc(100vh-64px)] py-stack-lg overflow-y-auto custom-scrollbar">
+<div class="mb-stack-lg">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant px-4 mb-4">DOCUMENTATION</h3>
+<nav class="flex flex-col">
+<a class="px-4 py-2 text-on-surface-variant hover:text-primary transition-colors font-body-sm text-body-sm" href="#">Introduction</a>
+<a class="px-4 py-2 text-on-surface-variant hover:text-primary transition-colors font-body-sm text-body-sm" href="#">Core Concepts</a>
+<div class="px-4 py-2 text-primary font-bold font-body-sm text-body-sm flex items-center justify-between active-nav-line">
+                        Guided Projects
+                        <span class="material-symbols-outlined text-xs">expand_more</span>
+</div>
+<div class="ml-4 flex flex-col border-l border-surface-variant">
+<a class="pl-4 pr-4 py-2 text-primary font-medium font-body-sm text-body-sm" href="#">E-commerce API</a>
+<a class="pl-4 pr-4 py-2 text-on-surface-variant hover:text-primary transition-colors font-body-sm text-body-sm" href="#">Real-time Chat</a>
+</div>
+</nav>
+</div>
+<div class="mt-auto p-4 bg-surface-container-low rounded-xl border border-surface-variant mx-4">
+<p class="text-on-surface-variant font-body-sm text-xs leading-relaxed mb-3">Stuck on a problem?</p>
+<button class="w-full py-2 bg-surface-variant text-primary text-xs font-bold rounded hover:bg-secondary-container transition-colors">Ask AI Assistant</button>
+</div>
+</aside>
+<!-- Center: Main Documentation Content -->
+<section class="flex-1 px-8 lg:px-12 py-stack-lg max-w-4xl">
+<nav class="flex items-center gap-2 text-on-surface-variant font-body-sm text-xs mb-8">
+<span>Docs</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span>Guided Projects</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary">E-commerce API</span>
+</nav>
+<article class="prose prose-invert max-w-none">
+<h1 class="font-headline-lg text-headline-lg text-primary mb-4">Building a Scalable E-commerce API</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-stack-lg">
+                    This guide covers the end-to-end process of building a robust e-commerce backend using Kimi's advanced code generation. We'll focus on database modeling, authentication, and order processing logic.
+                </p>
+<!-- Featured Image -->
+<div class="w-full h-80 rounded-xl overflow-hidden mb-stack-lg border border-surface-variant relative">
+<div class="w-full h-full bg-cover bg-center" data-alt="A highly sophisticated, cinematic 3D render of a dark tech architecture diagram. Glowing blue lines connect translucent glass cubes representing microservices in a deep black void. Neon periwinkle light illuminates the edges of the structures, creating a nocturnal engineering aesthetic. The atmosphere is professional, expansive, and high-precision." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBXaVlb63y4jmRYkBXrhbsWUMquljXNVT2L0Cmv_Jwq6Tn-ByFIFsG1CTgFnTqkjW_gOVVOoFCctNVO5fi_28qto7FrXxoCGs6tqLUFiZ4-bn8DsQyEJR644Yg6WjKdWa_oInfbL9ZLiwfApkQMP5Ks2g1FvToLFAJ2H7Y-Mlw6s_F7UFcJaYXQXL-7gAbm4zla2FN4lK5YlCPbEr0blCoaRVfbeaA_SWi6MTycOE2FTgtGnw3qWOTR2ENsb4qxgdR6GT_rInsOeV60')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-60"></div>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary mt-stack-lg mb-4" id="prepare-tools">Prepare tools</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-6">
+                    Before starting, ensure you have the Kimi CLI installed and your development environment configured for Node.js v18+. You'll also need a containerized Postgres instance.
+                </p>
+<!-- Kimi Prompt Component -->
+<div class="bg-surface-container-lowest border border-primary-container/30 rounded-xl p-6 my-stack-md relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary-container"></div>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<span class="font-label-caps text-label-caps text-primary-container">KIMI PROMPT</span>
+</div>
+<p class="font-code-block text-code-block text-on-primary-fixed-variant italic">
+                        "Kimi, initialize a new Project with clean architecture. Use TypeScript, Prisma for the ORM, and set up the base folder structure following the DDD pattern."
+                    </p>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary mt-stack-lg mb-4" id="setup-auth">Set up Google sign-in</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-6">
+                    Authentication is handled through Passport.js integration. We utilize OAuth2 for a seamless developer experience.
+                </p>
+<!-- Code Block -->
+<div class="bg-[#05060a] rounded-xl border border-surface-variant overflow-hidden mb-stack-lg">
+<div class="flex justify-between items-center px-4 py-2 bg-surface-container border-b border-surface-variant">
+<span class="font-label-caps text-xs text-on-surface-variant">AUTH.CONFIG.TS</span>
+<button class="text-on-surface-variant hover:text-primary flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+<span class="text-xs">Copy</span>
+</button>
+</div>
+<pre class="p-4 overflow-x-auto custom-scrollbar font-code-block text-code-block text-secondary leading-relaxed"><code>import { AuthOptions } from "kimi-auth";
+
+export const config: AuthOptions = {
+  providers: [
+    Google({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+    }),
+  ],
+  callbacks: {
+    async session({ session, user }) {
+      session.user.id = user.id;
+      return session;
+    }
+  }
+};</code></pre>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary mt-stack-lg mb-4" id="create-db">Create database</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-6">
+                    The schema definition defines our domain models. Below is the primary schema for the 'Orders' and 'Products' entities.
+                </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-stack-lg">
+<div class="glowing-border bg-surface-container-high p-6 rounded-xl">
+<span class="material-symbols-outlined text-primary mb-3">database</span>
+<h4 class="font-bold text-primary mb-2">PostgreSQL</h4>
+<p class="text-xs text-on-surface-variant">Primary relational storage for ACID compliant transactions.</p>
+</div>
+<div class="glowing-border bg-surface-container-high p-6 rounded-xl">
+<span class="material-symbols-outlined text-primary mb-3">bolt</span>
+<h4 class="font-bold text-primary mb-2">Redis</h4>
+<p class="text-xs text-on-surface-variant">Caching layer for high-frequency product availability checks.</p>
+</div>
+</div>
+</article>
+</section>
+<!-- Right: Jump to Sidebar -->
+<aside class="hidden xl:block w-72 sticky top-16 h-[calc(100vh-64px)] py-stack-lg pl-8 border-l border-surface-variant">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-6">ON THIS PAGE</h3>
+<ul class="space-y-4">
+<li>
+<a class="flex items-center gap-2 group" href="#prepare-tools">
+<div class="w-1.5 h-1.5 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Prepare tools</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-2 group" href="#setup-auth">
+<div class="w-1.5 h-1.5 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Set up Google sign-in</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-2 group" href="#create-db">
+<div class="w-1.5 h-1.5 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Create database</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-2 group" href="#">
+<div class="w-1.5 h-1.5 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Build projects and tasks</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-2 group" href="#">
+<div class="w-1.5 h-1.5 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Validation rules</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-2 group" href="#">
+<div class="w-1.5 h-1.5 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Deployment</span>
+</a>
+</li>
+</ul>
+<div class="mt-12 pt-8 border-t border-surface-variant">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-4">COLLABORATORS</p>
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-background bg-secondary-container flex items-center justify-center text-[10px] font-bold">JD</div>
+<div class="w-8 h-8 rounded-full border-2 border-background bg-surface-container-high flex items-center justify-center text-[10px] font-bold">AK</div>
+<div class="w-8 h-8 rounded-full border-2 border-background bg-primary-container text-on-primary-container flex items-center justify-center text-[10px] font-bold">+4</div>
+</div>
+<p class="text-[10px] text-on-surface-variant mt-2 italic">Last updated: 2 hours ago</p>
+</div>
+</aside>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-dim dark:bg-surface-dim w-full py-stack-lg border-t border-surface-variant mt-stack-lg">
+<div class="flex flex-col md:flex-row justify-between items-center px-gutter max-w-container-max mx-auto gap-stack-md">
+<div class="flex flex-col gap-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">© 2024 Kimi Code. Lunar Tech Labs.</span>
+</div>
+<div class="flex gap-8">
+<a class="text-on-surface-variant hover:text-primary underline font-body-sm text-body-sm transition-opacity duration-300" href="#">Documentation</a>
+<a class="text-on-surface-variant hover:text-primary underline font-body-sm text-body-sm transition-opacity duration-300" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary underline font-body-sm text-body-sm transition-opacity duration-300" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-primary underline font-body-sm text-body-sm transition-opacity duration-300" href="#">Status</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions for smooth scrolling to anchors
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Basic scroll highlighting for Jump To sidebar
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('h2[id]');
+            const scrollPos = window.scrollY + 150;
+            
+            sections.forEach(section => {
+                const id = section.getAttribute('id');
+                const link = document.querySelector(`a[href="#${id}"]`);
+                if (link) {
+                    const offset = section.offsetTop;
+                    const height = section.offsetHeight;
+                    if (scrollPos >= offset && scrollPos < offset + height + 500) {
+                        link.querySelector('div').classList.add('opacity-100');
+                        link.querySelector('span').classList.add('text-primary');
+                        link.querySelector('span').classList.remove('text-on-surface-variant');
+                    } else {
+                        link.querySelector('div').classList.remove('opacity-100');
+                        link.querySelector('span').classList.remove('text-primary');
+                        link.querySelector('span').classList.add('text-on-surface-variant');
+                    }
+                }
+            });
+        });
+    </script>
+</body></html>
