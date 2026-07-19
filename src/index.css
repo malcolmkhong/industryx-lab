@@ -94,6 +94,14 @@
   .pb-safe-2 {
     padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
   }
+  .pt-safe-4 {
+    /* When the device has no notch, env() resolves to 0 and max() falls back
+       to the safe base. With a notch, the safe-area wins. */
+    padding-top: max(env(safe-area-inset-top), 1rem);
+  }
+  .pt-safe-header {
+    padding-top: max(env(safe-area-inset-top), 4rem);
+  }
   .pb-safe-5 {
     padding-bottom: calc(5rem + env(safe-area-inset-bottom));
   }
@@ -122,10 +130,46 @@
   .focus-visible-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
-  
+
   /* Touch manipulation utility */
   .touch-manipulation {
     -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Tap target — minimum 44x44px hit area for interactive elements.
+     Skill: "Touch target minimum ≥44pt iOS / ≥48dp Android". */
+  .tap-target {
+    min-height: 44px;
+  }
+
+  /* Prose body — constrain long-form paragraphs to ~70ch for readability.
+     Skill: "Limit to 65-75 characters per line" + "max-w-prose". */
+  .prose-body {
+    max-width: 70ch;
+  }
+
+  /* Code surface — slightly darker opaque background than cards so code
+     text reads cleanly without competing with surrounding chrome. */
+  .code-surface {
+    background-color: hsl(232 30% 3.4%);
+  }
+  .code-text {
+    color: hsl(220 18% 92%);
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* Interactive card — hover affordance for non-button surfaces
+     (prerequisite, glossary, common-problem cards). Stays within brand
+     palette, never shifts layout bounds (skill: "Stable Interaction States"). */
+  .interactive-card {
+    transition-property: border-color, background-color, color;
+    transition-duration: 180ms;
+    transition-timing-function: ease-out;
+  }
+  .interactive-card:hover {
+    border-color: hsl(var(--primary) / 0.35);
+    background-color: hsl(var(--card) / 0.7);
   }
 }
 

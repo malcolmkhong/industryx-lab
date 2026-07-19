@@ -19,10 +19,10 @@ export function CodeCard({ label, value }: CodeCardProps) {
             label: label.toLowerCase(),
           })}
           variant="ghost"
-          className="h-auto px-0 py-0"
+          className="tap-target h-auto px-0 py-0"
         />
       </div>
-      <pre className="overflow-x-auto px-5 py-5 font-mono text-sm leading-7 text-foreground/90">
+      <pre className="code-surface overflow-x-auto px-5 py-5 font-mono text-sm leading-7 code-text">
         <code>{value}</code>
       </pre>
     </div>

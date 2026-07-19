@@ -37,11 +37,21 @@ export function BeginnerPage() {
         <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">{hero.title}</h1>
         <p className="mt-5 max-w-3xl text-lg leading-8 text-muted-foreground">{hero.description}</p>
         <div className="mt-7 flex flex-wrap gap-3">
-          <a href={`#${sections.beforeYouStart.id}`} data-analytics-event="cta_click" data-analytics-label="beginner-prerequisites" className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible-ring">
+          <a
+            href={`#${sections.beforeYouStart.id}`}
+            data-analytics-event="cta_click"
+            data-analytics-label="beginner-prerequisites"
+            className="tap-target inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible-ring"
+          >
             {hero.primaryAction}
             <Sparkles className="h-4 w-4" aria-hidden="true" />
           </a>
-          <a href={`#${beginnerStages[0].id}`} data-analytics-event="cta_click" data-analytics-label="beginner-stage-one" className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-card/60 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-primary/35 hover:bg-primary/10 focus-visible-ring">
+          <a
+            href={`#${beginnerStages[0].id}`}
+            data-analytics-event="cta_click"
+            data-analytics-label="beginner-stage-one"
+            className="tap-target inline-flex min-h-11 items-center gap-2 rounded-lg border border-white/10 bg-card/60 px-5 py-3 text-sm font-medium text-foreground transition-colors hover:border-primary/35 hover:bg-primary/10 focus-visible-ring"
+          >
             {hero.secondaryAction}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </a>
@@ -92,14 +102,14 @@ export function BeginnerPage() {
           <section id={sections.beforeYouStart.id} className="scroll-mt-24 border-t border-white/10 pt-10">
             <p className="font-mono text-xs font-semibold tracking-[0.16em] text-primary">{sections.beforeYouStart.eyebrow}</p>
             <h2 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">{sections.beforeYouStart.title}</h2>
-            <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">{sections.beforeYouStart.description}</p>
+            <p className="mt-3 max-w-3xl prose-body leading-7 text-muted-foreground">{sections.beforeYouStart.description}</p>
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               {beginnerPrerequisites.map((item) => (
-                <div key={item.title} className="rounded-xl border border-white/10 bg-card/55 p-5">
+                <div key={item.title} className="interactive-card rounded-xl border border-white/10 bg-card/55 p-5">
                   <TerminalSquare className="h-5 w-5 text-primary" aria-hidden="true" />
                   <h3 className="mt-4 font-medium text-foreground">{item.title}</h3>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.description}</p>
-                  <code className="mt-4 block overflow-x-auto rounded-md bg-black/25 px-3 py-2 font-mono text-xs text-foreground/85">{item.command}</code>
+                  <code className="mt-4 block overflow-x-auto rounded-md bg-black/30 px-3 py-2 font-mono text-xs text-foreground/90">{item.command}</code>
                   <a href={item.href} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-sm text-primary hover:text-foreground focus-visible-ring">
                     {sections.beforeYouStart.installationGuide} <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
                   </a>
@@ -119,7 +129,7 @@ export function BeginnerPage() {
           <section id={sections.safeBuildLoop.id} className="scroll-mt-24 border-t border-white/10 pt-10" aria-label={sections.safeBuildLoop.ariaLabel}>
             <p className="font-mono text-xs font-semibold tracking-[0.16em] text-primary">{sections.safeBuildLoop.eyebrow}</p>
             <h2 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">{sections.safeBuildLoop.title}</h2>
-            <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">{sections.safeBuildLoop.description}</p>
+            <p className="mt-3 max-w-3xl prose-body leading-7 text-muted-foreground">{sections.safeBuildLoop.description}</p>
             <div className="relative mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               <div className="absolute left-[12%] right-[12%] top-6 hidden h-px overflow-hidden bg-white/10 lg:block" aria-hidden="true">
                 <span className="flow-beam block h-full w-1/4 bg-gradient-to-r from-transparent via-primary to-transparent" />
@@ -144,10 +154,10 @@ export function BeginnerPage() {
               <p className="font-mono text-xs font-semibold tracking-[0.16em] text-primary">{sections.glossary.eyebrow}</p>
             </div>
             <h2 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">{sections.glossary.title}</h2>
-            <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">{sections.glossary.description}</p>
+            <p className="mt-3 max-w-3xl prose-body leading-7 text-muted-foreground">{sections.glossary.description}</p>
             <dl className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {beginnerGlossary.map((item) => (
-                <div key={item.term} className="rounded-xl border border-white/10 bg-card/55 p-5">
+                <div key={item.term} className="interactive-card rounded-xl border border-white/10 bg-card/55 p-5">
                   <dt className="font-medium text-foreground">{item.term}</dt>
                   <dd className="mt-2 text-sm leading-6 text-muted-foreground">{item.definition}</dd>
                 </div>
@@ -158,7 +168,7 @@ export function BeginnerPage() {
           <section className="rounded-2xl border border-primary/25 bg-primary/[0.065] p-6 sm:p-8">
             <CheckCircle2 className="h-7 w-7 text-primary" aria-hidden="true" />
             <h2 className="mt-4 text-2xl font-semibold text-foreground">{sections.completion.title}</h2>
-            <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">{sections.completion.description}</p>
+            <p className="mt-3 max-w-3xl prose-body leading-7 text-muted-foreground">{sections.completion.description}</p>
             <p
               className="mt-5 font-mono text-sm text-primary"
               data-guide-completion

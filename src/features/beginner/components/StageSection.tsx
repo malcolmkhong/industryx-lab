@@ -17,7 +17,7 @@ export function StageSection({ stage }: { stage: BeginnerStage }) {
       </div>
 
       <h2 className="text-2xl font-semibold tracking-tight text-foreground">{stage.title}</h2>
-      <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">{stage.goal}</p>
+      <p className="mt-3 max-w-3xl prose-body leading-7 text-muted-foreground">{stage.goal}</p>
 
       <div className="mt-6 rounded-xl border border-primary/20 bg-primary/[0.055] p-5">
         <h3 className="text-base font-semibold text-foreground">{stage.question}</h3>
@@ -48,10 +48,10 @@ export function StageSection({ stage }: { stage: BeginnerStage }) {
               stage: stage.title,
             })}
             variant="ghost"
-            className="h-auto px-0 py-0"
+            className="tap-target h-auto px-0 py-0"
           />
         </div>
-        <p className="border-l-2 border-primary px-5 py-5 font-mono text-sm leading-7 text-foreground/90">{stage.prompt}</p>
+        <p className="code-surface border-l-2 border-primary px-5 py-5 font-mono text-sm leading-7 code-text">{stage.prompt}</p>
       </div>
 
       {stage.callout && (
@@ -107,7 +107,7 @@ export function StageSection({ stage }: { stage: BeginnerStage }) {
         </summary>
         <div className="mt-4 grid gap-4 border-t border-white/10 pt-4 lg:grid-cols-2">
           {stage.commonProblems.map((item) => (
-            <div key={item.problem} className="rounded-xl border border-white/10 bg-card/55 p-4">
+            <div key={item.problem} className="interactive-card rounded-xl border border-white/10 bg-card/55 p-4">
               <p className="text-sm font-medium text-foreground">{item.problem}</p>
               <p className="mt-1 text-sm leading-6 text-muted-foreground">{item.fix}</p>
             </div>
@@ -124,7 +124,7 @@ export function StageSection({ stage }: { stage: BeginnerStage }) {
             </a>
           ))}
         </div>
-        <label className="guide-stage-toggle inline-flex cursor-pointer items-center gap-2 rounded-lg border border-white/10 bg-card/55 px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground focus-within:ring-2 focus-within:ring-ring" data-stage-complete="false">
+        <label className="guide-stage-toggle tap-target inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg border border-white/10 bg-card/55 px-3.5 py-2.5 text-sm text-muted-foreground transition-colors hover:border-primary/35 hover:text-foreground focus-within:ring-2 focus-within:ring-ring" data-stage-complete="false">
           <input
             type="checkbox"
             className="sr-only"
