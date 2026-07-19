@@ -1,4 +1,4 @@
-import { ChevronDown, List, X } from 'lucide-react'
+import { ChevronDown, List } from 'lucide-react'
 import type { TableOfContentsItem } from './TableOfContents'
 
 export function MobileContentsBar({ items }: { items: TableOfContentsItem[] }) {
@@ -20,61 +20,39 @@ export function MobileContentsBar({ items }: { items: TableOfContentsItem[] }) {
         >
           {items[0]?.label ?? 'On this page'}
         </span>
+        <span
+          data-mobile-contents-position
+          className="font-mono text-[10px] text-muted-foreground/70"
+        >
+          1 / {total}
+        </span>
         <ChevronDown
           className="mobile-contents-chevron h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200"
           aria-hidden="true"
         />
       </summary>
 
-      <div className="fixed inset-0 z-[60]">
-        <button
-          type="button"
-          aria-label="Close contents"
-          data-mobile-contents-close
-          className="absolute inset-0 cursor-default bg-black/65 backdrop-blur-sm"
-        />
-        <aside
-          role="dialog"
-          aria-modal="true"
-          aria-label="On this page"
-          className="mobile-contents-sheet absolute inset-y-0 right-0 h-dvh w-full max-w-sm overflow-y-auto border-l border-white/10 bg-background p-5 sm:max-w-md sm:p-6"
-        >
-          <div className="mb-6 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-xs font-semibold tracking-[0.18em] text-muted-foreground">
-                ON THIS PAGE
-              </span>
-              <span
-                data-mobile-contents-position
-                className="font-mono text-xs text-muted-foreground/70"
-              >
-                1 / {total}
-              </span>
-            </div>
-            <button
-              type="button"
-              aria-label="Close contents"
-              data-mobile-contents-close
-              data-mobile-contents-close-button
-              className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-muted-foreground hover:bg-white/5 hover:text-foreground focus-visible-ring touch-manipulation"
+      <div
+        role="menu"
+        aria-label="On this page"
+        className="dropdown-menu absolute right-0 z-50 mt-2 max-h-[min(60vh,24rem)] w-[min(calc(100vw-2.5rem),18rem)] overflow-y-auto overscroll-contain rounded-xl border border-white/10 bg-background p-2 shadow-2xl shadow-black/40 [scrollbar-gutter:stable]"
+      >
+        <p className="px-3 pb-2 pt-1 font-mono text-[10px] font-semibold tracking-[0.18em] text-muted-foreground">
+          ON THIS PAGE
+        </p>
+        <nav aria-label="On this page" className="flex flex-col">
+          {items.map((item, index) => (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              data-toc-link={item.id}
+              data-active={index === 0 ? 'true' : 'false'}
+              className="rounded-lg border-l-2 border-transparent px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-primary/10 data-[active=true]:border-primary data-[active=true]:bg-primary/10 data-[active=true]:font-medium"
             >
-              <X className="h-5 w-5" aria-hidden="true" />
-            </button>
-          </div>
-          <nav aria-label="On this page" className="flex flex-col">
-            {items.map((item, index) => (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                data-toc-link={item.id}
-                data-active={index === 0 ? 'true' : 'false'}
-                className="rounded-lg border-l-2 border-transparent px-3 py-3 text-sm text-foreground transition-colors hover:bg-primary/10 data-[active=true]:border-primary data-[active=true]:bg-primary/10 data-[active=true]:font-medium"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
-        </aside>
+              {item.label}
+            </a>
+          ))}
+        </nav>
       </div>
     </details>
   )
