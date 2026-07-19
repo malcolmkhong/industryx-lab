@@ -146,7 +146,11 @@ export function installProgressiveEnhancements() {
       label.textContent = (activeLink.textContent || '').trim()
     }
     if (position instanceof HTMLElement) {
-      position.textContent = `${activeIndex + 1} / ${links.length}`
+      const mobileContents = document.querySelector('[data-mobile-contents]')
+      const totalLinks = mobileContents
+        ? mobileContents.querySelectorAll('[data-toc-link]').length
+        : links.length
+      position.textContent = `${activeIndex + 1} / ${totalLinks}`
     }
   }
 
