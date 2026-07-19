@@ -6,7 +6,8 @@ export function MobileContentsBar({ items }: { items: TableOfContentsItem[] }) {
   return (
     <details
       data-mobile-contents
-      className="fixed inset-x-0 top-16 xl:hidden"
+      className="fixed inset-x-0 xl:hidden"
+      style={{ top: 'calc(4rem + env(safe-area-inset-top))' }}
     >
       <summary
         role="button"

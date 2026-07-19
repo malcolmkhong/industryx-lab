@@ -9,7 +9,7 @@ export function SiteHeader() {
   return (
     <>
       <header role="banner" className="site-header fixed inset-x-0 top-0 z-50">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-6 md:grid md:grid-cols-[1fr_auto_1fr]">
+        <div className="mx-auto flex min-h-16 max-w-6xl items-center justify-between px-5 pt-safe-4 sm:px-6 md:grid md:grid-cols-[1fr_auto_1fr]">
           <Link
             href={routePaths.home}
             className="flex items-center gap-2.5 justify-self-start text-foreground focus-visible-ring touch-manipulation"
