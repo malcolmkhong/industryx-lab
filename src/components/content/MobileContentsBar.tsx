@@ -2,7 +2,6 @@ import { ChevronDown, List } from 'lucide-react'
 import type { TableOfContentsItem } from './TableOfContents'
 
 export function MobileContentsBar({ items }: { items: TableOfContentsItem[] }) {
-  const total = items.length
   return (
     <details
       data-mobile-contents
@@ -19,12 +18,6 @@ export function MobileContentsBar({ items }: { items: TableOfContentsItem[] }) {
           className="min-w-0 flex-1 truncate font-mono text-xs font-semibold tracking-[0.14em] text-foreground"
         >
           {items[0]?.label ?? 'On this page'}
-        </span>
-        <span
-          data-mobile-contents-position
-          className="font-mono text-[10px] text-muted-foreground/70"
-        >
-          1 / {total}
         </span>
         <ChevronDown
           className="mobile-contents-chevron h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200"
