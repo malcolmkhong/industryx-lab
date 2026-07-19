@@ -25,6 +25,11 @@ export const metadata: Metadata = {
   authors: [{ name: siteConfig.author.name, url: siteConfig.author.url }],
   creator: siteConfig.author.name,
   publisher: siteConfig.organization.name,
+  icons: {
+    icon: [{ url: '/moon-mark.svg', type: 'image/svg+xml' }],
+    shortcut: '/moon-mark.svg',
+    apple: '/moon-mark.svg',
+  },
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION,
     other: process.env.BING_SITE_VERIFICATION
