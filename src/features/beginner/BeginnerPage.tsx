@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import beginnerJourney from '@/assets/beginner-build-journey.webp'
 import { GuideLayout } from '@/components/content/GuideLayout'
+import { ReadingProgress } from '@/components/content/ReadingProgress'
 import { EditorialByline } from '@/components/seo/EditorialByline'
 import { routePaths } from '@/config/routes'
 import { beginnerGlossary, beginnerPageContent, beginnerPrerequisites, beginnerStages, safeBuildLoop } from './content'
@@ -21,7 +22,8 @@ export function BeginnerPage() {
   const totalStages = beginnerStages.length
 
   return (
-    <main id="main-content" className="mx-auto max-w-6xl px-6 pb-20 pt-28" role="main">
+    <main id="main-content" className="mx-auto max-w-6xl px-5 pb-20 pt-28 sm:px-6" role="main">
+      <ReadingProgress />
       <div className="mb-8 flex items-center gap-2 font-mono text-xs text-muted-foreground">
         <Link href={routePaths.home} className="hover:text-foreground focus-visible-ring">{breadcrumb.home}</Link>
         <span aria-hidden="true">/</span>
@@ -118,8 +120,8 @@ export function BeginnerPage() {
             <p className="font-mono text-xs font-semibold tracking-[0.16em] text-primary">{sections.safeBuildLoop.eyebrow}</p>
             <h2 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">{sections.safeBuildLoop.title}</h2>
             <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">{sections.safeBuildLoop.description}</p>
-            <div className="relative mt-7 grid gap-3 sm:grid-cols-4">
-              <div className="absolute left-[12%] right-[12%] top-6 hidden h-px overflow-hidden bg-white/10 sm:block" aria-hidden="true">
+            <div className="relative mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="absolute left-[12%] right-[12%] top-6 hidden h-px overflow-hidden bg-white/10 lg:block" aria-hidden="true">
                 <span className="flow-beam block h-full w-1/4 bg-gradient-to-r from-transparent via-primary to-transparent" />
               </div>
               {safeBuildLoop.map((item, index) => (
@@ -143,7 +145,7 @@ export function BeginnerPage() {
             </div>
             <h2 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">{sections.glossary.title}</h2>
             <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">{sections.glossary.description}</p>
-            <dl className="mt-6 grid gap-4 sm:grid-cols-2">
+            <dl className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {beginnerGlossary.map((item) => (
                 <div key={item.term} className="rounded-xl border border-white/10 bg-card/55 p-5">
                   <dt className="font-medium text-foreground">{item.term}</dt>

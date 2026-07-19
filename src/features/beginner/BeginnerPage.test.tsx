@@ -66,6 +66,29 @@ describe('Beginner page', () => {
     expect(screen.getByText('1 of 8 stages complete')).toBeInTheDocument()
   })
 
+  it('renders a mobile contents bar and a reading progress bar so guide readers always know where they are', () => {
+    render(<BeginnerPage />)
+
+    expect(document.querySelector('[data-mobile-contents]')).toBeInTheDocument()
+    expect(document.querySelector('[data-reading-progress]')).toBeInTheDocument()
+  })
+
+  it('uses varied responsive grids for prerequisites, the safe build loop, and the glossary', () => {
+    render(<BeginnerPage />)
+
+    const prerequisitesGrid = screen.getByText('Git').closest('div.grid')
+    const safeBuildLoop = screen.getByRole('region', { name: 'Safe build loop' })
+    const safeBuildLoopGrid = safeBuildLoop.querySelector('.relative.mt-7.grid')
+    const safeBuildLoopConnector = safeBuildLoop.querySelector('.absolute.top-6.h-px')
+    const glossarySection = screen.getByRole('heading', { name: 'Beginner glossary' }).closest('section')
+    const glossaryGrid = glossarySection?.querySelector('dl')
+
+    expect(prerequisitesGrid).toHaveClass('md:grid-cols-3')
+    expect(safeBuildLoopGrid).toHaveClass('sm:grid-cols-2', 'lg:grid-cols-4')
+    expect(safeBuildLoopConnector).toHaveClass('hidden', 'lg:block')
+    expect(glossaryGrid).toHaveClass('sm:grid-cols-2', 'lg:grid-cols-3')
+  })
+
   it('gives every stage the detail needed for a runnable guide', () => {
     expect(beginnerStages).toHaveLength(8)
 

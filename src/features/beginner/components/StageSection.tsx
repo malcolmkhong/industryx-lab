@@ -80,7 +80,7 @@ export function StageSection({ stage }: { stage: BeginnerStage }) {
         </ol>
       </div>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+      <div className="mt-6 grid gap-4 sm:grid-cols-[1.4fr_1fr]">
         <div className="rounded-xl border border-white/10 bg-card/55 p-5">
           <p className="font-mono text-xs font-semibold tracking-[0.14em] text-muted-foreground">{beginnerPageContent.stageUi.expectedResult}</p>
           <p className="mt-3 text-sm leading-6 text-foreground/85">{stage.expected}</p>
@@ -105,9 +105,9 @@ export function StageSection({ stage }: { stage: BeginnerStage }) {
           <span className="ml-auto text-xs text-muted-foreground group-open:hidden">{beginnerPageContent.stageUi.show}</span>
           <span className="ml-auto hidden text-xs text-muted-foreground group-open:inline">{beginnerPageContent.stageUi.hide}</span>
         </summary>
-        <div className="mt-4 space-y-4 border-t border-white/10 pt-4">
+        <div className="mt-4 grid gap-4 border-t border-white/10 pt-4 lg:grid-cols-2">
           {stage.commonProblems.map((item) => (
-            <div key={item.problem}>
+            <div key={item.problem} className="rounded-xl border border-white/10 bg-card/55 p-4">
               <p className="text-sm font-medium text-foreground">{item.problem}</p>
               <p className="mt-1 text-sm leading-6 text-muted-foreground">{item.fix}</p>
             </div>
