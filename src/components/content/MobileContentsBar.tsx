@@ -19,6 +19,12 @@ export function MobileContentsBar({ items }: { items: TableOfContentsItem[] }) {
         >
           {items[0]?.label ?? 'On this page'}
         </span>
+        <span
+          data-mobile-contents-position
+          className="font-mono text-[10px] text-muted-foreground/70"
+        >
+          1 / {items.length}
+        </span>
         <ChevronDown
           className="mobile-contents-chevron h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200"
           aria-hidden="true"
