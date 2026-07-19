@@ -153,7 +153,7 @@ The GitHub quality workflow runs the same validation sequence on pull requests a
 
 Because this hub uses static export, do not add runtime API routes, Server Actions that require a server, request-time middleware, or built-in dynamic image optimization without changing the deployment architecture. Images are exported with `images.unoptimized: true`.
 
-This workspace is not currently a valid Git repository. Establish repository ownership and a remote before committing or publishing changes.
+The canonical source repository is [malcolmkhong/industryx-lab](https://github.com/malcolmkhong/industryx-lab), with production work maintained on `main`.
 
 ## Independence notice
 

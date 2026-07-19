@@ -81,7 +81,8 @@ Repository boundary:
 Static-export constraints:
   No runtime API routes, request-time middleware, or server-dependent actions.
   Next Image is exported with images.unoptimized enabled.
-  This workspace is not currently a valid Git repository.
+  GitHub repository: https://github.com/malcolmkhong/industryx-lab
+  Primary branch: main
 
 Line-length standard:
   Maintained source-code files should remain below 300 physical lines.
