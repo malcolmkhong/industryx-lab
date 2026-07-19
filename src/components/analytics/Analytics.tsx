@@ -1,15 +1,21 @@
 import { GoogleAnalytics } from '@next/third-parties/google'
+import { Analytics as VercelAnalytics } from '@vercel/analytics/next'
 import { isAnalyticsEnabled } from '@/lib/analytics/events'
 import { AnalyticsEventTracker } from './AnalyticsEventTracker'
 
 export function Analytics() {
   const measurementId = process.env.NEXT_PUBLIC_GA_ID
-  if (!isAnalyticsEnabled(measurementId)) return null
+  const isGa4Enabled = isAnalyticsEnabled(measurementId)
 
   return (
     <>
-      <GoogleAnalytics gaId={measurementId!.trim()} />
-      <AnalyticsEventTracker />
+      <VercelAnalytics />
+      {isGa4Enabled ? (
+        <>
+          <GoogleAnalytics gaId={measurementId!.trim()} />
+          <AnalyticsEventTracker />
+        </>
+      ) : null}
     </>
   )
 }

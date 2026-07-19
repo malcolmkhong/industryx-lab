@@ -2,6 +2,19 @@
 
 This site uses privacy-conscious, optional measurement. The production source of truth is `https://industryx-lab.vercel.app`.
 
+## Vercel Web Analytics
+
+The root analytics boundary renders `@vercel/analytics` on every page. No environment variable is required.
+
+After the project is deployed:
+
+1. Open the `industryx-lab` project in the Vercel dashboard.
+2. Open **Analytics** and select **Enable Web Analytics**.
+3. Redeploy if Vercel requests it, then visit the production site.
+4. Confirm page views appear in the Analytics dashboard after processing.
+
+Vercel Web Analytics provides the primary page-view overview. The optional GA4 integration below remains responsible for the project's four explicitly allowed custom events.
+
 ## GA4 configuration
 
 Set `NEXT_PUBLIC_GA_ID` in Vercel only when GA4 measurement is required. When it is blank or absent, the Google Analytics component and event tracker render nothing. Never place names, email addresses, account identifiers, prompts, form contents, query strings, fragments, or other sensitive values in an analytics event.
@@ -29,6 +42,7 @@ AI referral detection recognizes ChatGPT, Perplexity, Claude, Gemini, Copilot, a
 
 Review monthly:
 
+- Vercel Web Analytics page views, top pages, referrers, and visitor trends.
 - Search Console and Bing impressions, clicks, indexed pages, crawl problems, and query coverage.
 - GA4 counts for the four essential events, if GA4 is enabled.
 - AI referral distribution without attempting to identify individual visitors.

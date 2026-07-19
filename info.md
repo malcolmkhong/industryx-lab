@@ -20,7 +20,7 @@ Usage:
 
 Structure:
   src/app/                     Static Next.js routes, layout, metadata, and 404
-  src/components/analytics/    Optional GA4 boundary and event tracker
+  src/components/analytics/    Vercel Web Analytics, optional GA4, and event tracking
   src/components/content/      Shared guide layout and table of contents
   src/components/seo/          JSON-LD and visible editorial details
   src/components/site/         SiteHeader, Nav, PageShell, and Footer

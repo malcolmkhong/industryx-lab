@@ -30,7 +30,7 @@ The sitemap includes only completed pages. Unfinished routes preserve their URLs
 - Page metadata with canonical, Open Graph, Twitter, author, publisher, and robots rules.
 - JSON-LD graphs connecting IndustryX, Malcolm, the website, each page, and relevant page entities.
 - `robots.txt`, `sitemap.xml`, `llms.txt`, a real 404 page, Search Console/Bing verification support, schema checks, and Lighthouse CI.
-- Optional, constrained GA4 events. Analytics is absent when `NEXT_PUBLIC_GA_ID` is not configured.
+- Vercel Web Analytics for privacy-conscious page-view measurement, plus optional constrained GA4 events when `NEXT_PUBLIC_GA_ID` is configured.
 - WebP assets and visible author/review information.
 - Hydration-safe motion preferences shared by reveal and CLI animations.
 
@@ -121,6 +121,7 @@ Next route files stay small: they select content/configuration, export static me
 
 ## Search and measurement
 
+- Vercel Web Analytics is integrated through `@vercel/analytics`. Enable Web Analytics for the `industryx-lab` project in the Vercel dashboard after the first deployment; it requires no environment variable.
 - `NEXT_PUBLIC_GA_ID` enables GA4. Without it, no GA script or tracker is rendered.
 - Only CTA clicks, invitation clicks, outbound links, and normalized AI referral sources are permitted. Query strings, fragments, prompts, account details, and free-form user data are not collected.
 - `GOOGLE_SITE_VERIFICATION` and `BING_SITE_VERIFICATION` add optional ownership metadata.
