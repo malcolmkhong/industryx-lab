@@ -6,13 +6,12 @@ export function MobileContentsBar({ items }: { items: TableOfContentsItem[] }) {
   return (
     <details
       data-mobile-contents
-      className="fixed inset-x-0 xl:hidden"
-      style={{ top: 'calc(4rem + env(safe-area-inset-top))' }}
+      className="sticky top-28 z-40 mx-auto -mt-3 mb-3 w-fit max-w-full xl:hidden"
     >
       <summary
         role="button"
         aria-label="Contents"
-        className="mobile-contents-summary mx-auto flex cursor-pointer list-none items-center gap-3 border-b border-white/10 bg-background/85 px-5 py-2.5 backdrop-blur-md transition-colors hover:bg-background/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [&::-webkit-details-marker]:hidden sm:px-6"
+        className="mobile-contents-summary flex cursor-pointer list-none items-center gap-3 rounded-lg border border-white/10 bg-background/85 px-4 py-2.5 backdrop-blur-md transition-colors hover:bg-background/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [&::-webkit-details-marker]:hidden"
       >
         <List className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
         <span
