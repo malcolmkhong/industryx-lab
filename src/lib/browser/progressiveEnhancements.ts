@@ -122,17 +122,23 @@ export function installProgressiveEnhancements() {
   }
 
   const updateActiveHeading = () => {
-    const links = all<HTMLElement>('[data-toc-link]')
-    if (links.length === 0) return
-    let activeId = links[0].dataset.tocLink
-    let activeIndex = 0
-    links.forEach((link, index) => {
-      const heading = document.getElementById(link.dataset.tocLink || '')
-      if (heading && heading.getBoundingClientRect().top <= 112) {
-        activeId = heading.id
-        activeIndex = index
-      }
-    })
+      const links = all<HTMLElement>('[data-toc-link]')
+      if (links.length === 0) return
+      // Pick the section the reader is currently looking at. The active heading is
+      // the last one whose top is in the upper third of the viewport (i.e. just
+      // below the sticky site header). Falling back to the sticky-header offset
+      // when the viewport is shorter than 480px keeps the desktop sidebar from
+      // lagging behind on landscape phones.
+      const threshold = Math.max(112, Math.round(window.innerHeight * 0.33))
+      let activeId = links[0].dataset.tocLink
+      let activeIndex = 0
+      links.forEach((link, index) => {
+        const heading = document.getElementById(link.dataset.tocLink || '')
+        if (heading && heading.getBoundingClientRect().top <= threshold) {
+          activeId = heading.id
+          activeIndex = index
+        }
+      })
     links.forEach((link) => {
       const active = link.dataset.tocLink === activeId
       link.dataset.active = String(active)
