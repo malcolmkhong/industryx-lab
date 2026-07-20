@@ -1,5 +1,13 @@
 import { ChevronDown, List } from 'lucide-react'
+import type { CSSProperties } from 'react'
 import type { TableOfContentsItem } from './TableOfContents'
+
+const LINK_TOKENS = {
+  '--toc-from': 'hsl(var(--toc-accent-from) / 0.18)',
+  '--toc-to': 'hsl(var(--toc-accent-to) / 0.12)',
+  '--toc-border': 'hsl(var(--toc-accent-from) / 0.45)',
+  '--toc-shadow': '0 0 24px -6px hsl(var(--toc-glow) / 0.55)',
+} as CSSProperties
 
 export function MobileContentsBar({ items }: { items: TableOfContentsItem[] }) {
   return (
@@ -34,24 +42,31 @@ export function MobileContentsBar({ items }: { items: TableOfContentsItem[] }) {
       <div
         role="menu"
         aria-label="On this page"
-        className="dropdown-menu absolute right-0 z-50 mt-2 max-h-[min(60vh,24rem)] w-[min(calc(100vw-2.5rem),18rem)] overflow-y-auto overscroll-contain rounded-xl border border-white/10 bg-background p-2 shadow-2xl shadow-black/40 [scrollbar-gutter:stable]"
+        className="dropdown-menu relative right-0 z-50 mt-2 max-h-[min(60vh,24rem)] w-[min(calc(100vw-2.5rem),18rem)] overflow-y-auto overscroll-contain rounded-xl border border-white/10 bg-background/95 p-2 shadow-2xl shadow-black/40 [scrollbar-gutter:stable]"
       >
-        <p className="px-3 pb-2 pt-1 font-mono text-[10px] font-semibold tracking-[0.18em] text-muted-foreground">
+        <p className="mb-2 flex items-center gap-2 px-3 pt-1 font-mono text-[10px] font-semibold tracking-[0.18em] text-muted-foreground">
           ON THIS PAGE
         </p>
-        <nav aria-label="On this page" className="flex flex-col">
-          {items.map((item, index) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              data-toc-link={item.id}
-              data-active={index === 0 ? 'true' : 'false'}
-              className="rounded-lg border-l-2 border-transparent px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-primary/10 data-[active=true]:border-primary data-[active=true]:bg-primary/10 data-[active=true]:font-medium"
-            >
-              {item.label}
-            </a>
-          ))}
-        </nav>
+        <div className="relative pl-6">
+          <span
+            className="absolute bottom-1 left-[7px] top-1 w-px bg-white/10"
+            aria-hidden="true"
+          />
+          <nav aria-label="On this page" className="flex flex-col gap-0.5">
+            {items.map((item, index) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                data-toc-link={item.id}
+                data-active={index === 0 ? 'true' : 'false'}
+                style={LINK_TOKENS}
+                className="toc-link relative -ml-6 block rounded-lg border border-transparent bg-transparent px-3 py-1.5 text-sm leading-snug text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible-ring"
+              >
+                <span className="relative z-10 block truncate">{item.label}</span>
+              </a>
+            ))}
+          </nav>
+        </div>
       </div>
     </details>
   )

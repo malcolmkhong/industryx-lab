@@ -8,8 +8,8 @@ export function installProgressiveEnhancements() {
   if (window.__industryxEnhancementsInstalled) return
   window.__industryxEnhancementsInstalled = true
 
-  const all = <T extends Element = HTMLElement>(selector: string) =>
-    Array.from(document.querySelectorAll<T>(selector))
+  const all = <T extends Element = HTMLElement>(selector: string, root: ParentNode = document) =>
+      Array.from(root.querySelectorAll<T>(selector))
   const copyTimers = new WeakMap<HTMLButtonElement, number>()
 
   const closeDesktopMenus = (except?: Element) => {
@@ -146,12 +146,15 @@ export function installProgressiveEnhancements() {
       label.textContent = (activeLink.textContent || '').trim()
     }
     if (position instanceof HTMLElement) {
-      const mobileContents = document.querySelector('[data-mobile-contents]')
-      const totalLinks = mobileContents
-        ? mobileContents.querySelectorAll('[data-toc-link]').length
-        : links.length
-      position.textContent = `${activeIndex + 1} / ${totalLinks}`
-    }
+          const mobileContents = document.querySelector('[data-mobile-contents]')
+          if (mobileContents) {
+            const mobileLinks = all<HTMLElement>('[data-toc-link]', mobileContents)
+            const mobileIndex = mobileLinks.findIndex((link) => link.dataset.tocLink === activeId)
+            position.textContent = `${mobileIndex >= 0 ? mobileIndex + 1 : 1} / ${mobileLinks.length}`
+          } else {
+            position.textContent = `${activeIndex + 1} / ${links.length}`
+          }
+        }
   }
 
   let headingFrame = 0
