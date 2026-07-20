@@ -3,8 +3,6 @@ import { installProgressiveEnhancements } from './progressiveEnhancements'
 
 afterEach(() => {
   document.body.innerHTML = ''
-  delete (window as Window & { __industryxEnhancementsInstalled?: boolean })
-    .__industryxEnhancementsInstalled
 })
 
 describe('progressive enhancements', () => {
@@ -107,6 +105,135 @@ describe('progressive enhancements', () => {
     const link = details.querySelector('a') as HTMLAnchorElement
     link.click()
     expect(details.open).toBe(false)
+  })
+
+  it('reflects hover and focus state in aria-expanded', () => {
+    document.body.innerHTML = `
+      <div data-nav-prefix="/build-project" data-open="false">
+        <button data-nav-trigger aria-expanded="false">Build Project</button>
+        <a role="menuitem" href="/build-project/beginner">Beginner</a>
+        <a role="menuitem" href="/build-project/intermediate">Intermediate</a>
+      </div>
+    `
+
+    installProgressiveEnhancements()
+
+    const group = document.querySelector<HTMLElement>('[data-nav-prefix]')
+    const trigger = document.querySelector<HTMLButtonElement>('[data-nav-trigger]')
+    if (!group || !trigger) throw new Error('Group or trigger missing')
+
+    // Simulate the CSS-driven hover open by toggling data-open on pointerenter.
+    group.dispatchEvent(new Event('pointerenter', { bubbles: true }))
+    trigger.dispatchEvent(new FocusEvent('focusin', { bubbles: true }))
+    expect(group.dataset.open).toBe('true')
+    expect(trigger.getAttribute('aria-expanded')).toBe('true')
+
+    group.dispatchEvent(new Event('pointerleave', { bubbles: true }))
+    trigger.dispatchEvent(new FocusEvent('focusout', { bubbles: true }))
+    expect(group.dataset.open).toBe('false')
+    expect(trigger.getAttribute('aria-expanded')).toBe('false')
+  })
+
+  it('keeps aria-expanded true while focus stays inside the dropdown group', () => {
+    document.body.innerHTML = `
+      <div data-nav-prefix="/build-project" data-open="false">
+        <button data-nav-trigger aria-expanded="false">Build Project</button>
+        <a role="menuitem" href="/build-project/beginner">Beginner</a>
+      </div>
+    `
+
+    installProgressiveEnhancements()
+
+    const group = document.querySelector<HTMLElement>('[data-nav-prefix]')
+    const trigger = document.querySelector<HTMLButtonElement>('[data-nav-trigger]')
+    if (!group || !trigger) throw new Error('Group or trigger missing')
+
+    trigger.dispatchEvent(new FocusEvent('focusin', { bubbles: true }))
+    expect(trigger.getAttribute('aria-expanded')).toBe('true')
+
+    // Move focus between siblings inside the same group — must not close.
+    const nextItem = group.querySelector<HTMLElement>('[role="menuitem"]')
+    if (!nextItem) throw new Error('Menu item missing')
+    nextItem.dispatchEvent(new FocusEvent('focusin', { bubbles: true }))
+    expect(trigger.getAttribute('aria-expanded')).toBe('true')
+
+    // Leaving the group closes.
+    nextItem.dispatchEvent(new FocusEvent('focusout', { bubbles: true }))
+    // Allow the focusout setTimeout(0) check to run.
+    return new Promise<void>((resolve) => {
+      window.setTimeout(() => {
+        expect(trigger.getAttribute('aria-expanded')).toBe('false')
+        resolve()
+      }, 10)
+    })
+  })
+
+  it('moves keyboard focus between menu items with ArrowUp and ArrowDown', () => {
+    document.body.innerHTML = `
+      <div data-nav-prefix="/build-project">
+        <button data-nav-trigger aria-expanded="false">Build Project</button>
+        <a role="menuitem" href="/build-project/beginner">Beginner</a>
+        <a role="menuitem" href="/build-project/intermediate">Intermediate</a>
+        <a role="menuitem" href="/build-project/advanced">Advanced</a>
+      </div>
+    `
+
+    installProgressiveEnhancements()
+
+    const group = document.querySelector<HTMLElement>('[data-nav-prefix]')
+    const trigger = document.querySelector<HTMLButtonElement>('[data-nav-trigger]')
+    const items = group?.querySelectorAll<HTMLAnchorElement>('[role="menuitem"]')
+    if (!group || !trigger || !items || items.length !== 3) throw new Error('Markup missing')
+
+    trigger.focus()
+    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }))
+    expect(document.activeElement).toBe(items[0])
+
+    items[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }))
+    expect(document.activeElement).toBe(items[1])
+
+    items[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true, cancelable: true }))
+    expect(document.activeElement).toBe(items[0])
+
+    items[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true, cancelable: true }))
+    expect(document.activeElement).toBe(items[items.length - 1])
+
+    items[items.length - 1].dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true, cancelable: true }))
+    expect(document.activeElement).toBe(items[0])
+
+    items[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true, cancelable: true }))
+    expect(document.activeElement).toBe(items[items.length - 1])
+  })
+
+  it('returns focus to the trigger when Escape closes an open dropdown', () => {
+    document.body.innerHTML = `
+      <div data-nav-prefix="/build-project" data-open="true">
+        <button data-nav-trigger aria-expanded="true">Build Project</button>
+        <a role="menuitem" href="/build-project/beginner">Beginner</a>
+      </div>
+    `
+
+    installProgressiveEnhancements()
+
+    const group = document.querySelector<HTMLElement>('[data-nav-prefix]')
+    const trigger = document.querySelector<HTMLButtonElement>('[data-nav-trigger]')
+    const firstItem = group?.querySelector<HTMLAnchorElement>('[role="menuitem"]')
+    if (!group || !trigger || !firstItem) throw new Error('Markup missing')
+
+    firstItem.focus()
+    expect(document.activeElement).toBe(firstItem)
+
+    firstItem.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true }))
+    // The close is deferred to the next tick so the focusin on the trigger
+    // doesn't re-open the menu we just told to close.
+    return new Promise<void>((resolve) => {
+      window.setTimeout(() => {
+        expect(group.dataset.open).toBe('false')
+        expect(trigger.getAttribute('aria-expanded')).toBe('false')
+        expect(document.activeElement).toBe(trigger)
+        resolve()
+      }, 10)
+    })
   })
 
   it('fills the reading progress bar as the user scrolls through the main element', () => {

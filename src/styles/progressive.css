@@ -134,4 +134,8 @@ body.mobile-contents-open {
   .mobile-scroll-actions {
     transition: none;
   }
+  .nav-dropdown-menu {
+    transition: none;
+    transform: none;
+  }
 }

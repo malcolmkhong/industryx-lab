@@ -3,6 +3,9 @@ import { ChevronDown } from 'lucide-react'
 import { navigationGroups, routePaths } from '@/config/routes'
 
 export function DesktopNav() {
+  const groups = navigationGroups
+  const lastIndex = groups.length - 1
+
   return (
     <nav
       className="hidden items-center gap-1 justify-self-center text-sm text-muted-foreground md:flex"
@@ -17,46 +20,51 @@ export function DesktopNav() {
         HOME
       </Link>
 
-      {navigationGroups.map((group) => (
-        <div
-          key={group.id}
-          className="nav-dropdown-group relative"
-          data-nav-prefix={group.pathPrefix}
-        >
-          <button
-            id={`${group.id}-trigger`}
-            type="button"
-            aria-expanded="false"
-            aria-controls={`${group.id}-menu`}
-            aria-haspopup="menu"
-            data-nav-trigger
-            className="inline-flex items-center gap-1 rounded-lg border border-transparent px-3 py-2 transition-colors hover:border-primary/45 hover:bg-primary/10 hover:text-foreground focus-visible-ring touch-manipulation"
+      {groups.map((group, index) => {
+        // Anchor the rightmost popover to its right edge so the menu does not
+        // overflow the header container on narrow desktop viewports. Inner
+        // groups keep the default left-anchored positioning.
+        const menuPositionClass = index === lastIndex ? 'right-0' : 'left-0'
+        return (
+          <div
+            key={group.id}
+            className="nav-dropdown-group relative z-[60]"
+            data-nav-prefix={group.pathPrefix}
           >
-            {group.label}
-            <ChevronDown className="nav-dropdown-chevron h-3.5 w-3.5 transition-transform" aria-hidden="true" />
-          </button>
-
-          <div className="nav-dropdown-menu absolute left-0 top-full w-52 pt-2">
-            <div
-              id={`${group.id}-menu`}
-              role="menu"
-              aria-labelledby={`${group.id}-trigger`}
-              className="rounded-xl border border-white/10 bg-card/95 p-1.5 shadow-2xl shadow-black/35 backdrop-blur-xl"
+            <button
+              id={`${group.id}-trigger`}
+              type="button"
+              aria-controls={`${group.id}-menu`}
+              aria-haspopup="menu"
+              data-nav-trigger
+              className="inline-flex items-center gap-1 rounded-lg border border-transparent px-3 py-2 transition-colors hover:border-primary/45 hover:bg-primary/10 hover:text-foreground focus-visible-ring touch-manipulation"
             >
-              {group.items.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  role="menuitem"
-                  className="block rounded-lg px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground focus-visible-ring"
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {group.label}
+              <ChevronDown className="nav-dropdown-chevron h-3.5 w-3.5 transition-transform" aria-hidden="true" />
+            </button>
+
+            <div className={`nav-dropdown-menu absolute top-full z-[60] w-52 ${menuPositionClass}`}>
+              <div
+                id={`${group.id}-menu`}
+                role="menu"
+                aria-labelledby={`${group.id}-trigger`}
+                className="rounded-xl border border-white/10 bg-background p-1.5 shadow-2xl shadow-black/35 backdrop-blur-xl"
+              >
+                {group.items.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    role="menuitem"
+                    className="block rounded-lg px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground focus-visible-ring"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        )
+      })}
     </nav>
   )
 }
