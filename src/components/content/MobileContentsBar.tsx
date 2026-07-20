@@ -60,7 +60,7 @@ export function MobileContentsBar({ items }: { items: TableOfContentsItem[] }) {
                 data-toc-link={item.id}
                 data-active={index === 0 ? 'true' : 'false'}
                 style={LINK_TOKENS}
-                className="toc-link relative -ml-6 block rounded-lg border border-transparent bg-transparent px-3 py-1.5 text-sm leading-snug text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible-ring"
+                className="toc-link relative -ml-6 block rounded-lg border border-transparent bg-transparent px-3 py-2 text-sm leading-snug text-muted-foreground transition-colors duration-200 focus-visible-ring"
               >
                 <span className="relative z-10 block truncate">{item.label}</span>
               </a>

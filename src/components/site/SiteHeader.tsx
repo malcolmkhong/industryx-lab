@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { MoonMark } from '@/components/MoonMark'
 import { routePaths } from '@/config/routes'
 import { siteConfig } from '@/config/site'
-import { MobileNav } from './MobileNav'
+import { MobileMenuDropdown } from './MobileMenuDropdown'
 import { Nav } from './Nav'
 
 export function SiteHeader() {
@@ -29,7 +29,7 @@ export function SiteHeader() {
           <Nav />
         </div>
       </header>
-      <MobileNav />
+      <MobileMenuDropdown />
     </>
   )
 }

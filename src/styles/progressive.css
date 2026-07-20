@@ -120,6 +120,14 @@ body.mobile-contents-open {
   box-shadow: var(--toc-shadow);
 }
 
+.toc-link:not([data-active='true']):hover,
+.toc-link:not([data-active='true']):focus-visible {
+  border-color: hsl(var(--toc-accent-from) / 0.45);
+  color: hsl(var(--foreground));
+  background-image: linear-gradient(135deg, var(--toc-from), var(--toc-to));
+  box-shadow: var(--toc-shadow);
+}
+
 .toc-link[data-toc-link='before-you-start'][data-active='true'] { --toc-gradient: linear-gradient(135deg, hsl(232 90% 76% / 0.22), hsl(268 70% 65% / 0.16)); --toc-border: hsl(232 90% 76% / 0.5); }
 .toc-link[data-toc-link='safe-build-loop'][data-active='true']   { --toc-gradient: linear-gradient(135deg, hsl(220 90% 70% / 0.22), hsl(258 75% 62% / 0.16)); --toc-border: hsl(220 90% 70% / 0.5); }
 .toc-link[data-toc-link='clone-starter'][data-active='true']     { --toc-gradient: linear-gradient(135deg, hsl(245 85% 72% / 0.22), hsl(280 70% 60% / 0.16)); --toc-border: hsl(245 85% 72% / 0.5); }

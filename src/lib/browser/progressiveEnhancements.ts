@@ -208,10 +208,18 @@ export function installProgressiveEnhancements() {
   })
 
   document.addEventListener('pointerdown', (event) => {
-    if (!(event.target instanceof Element) || !event.target.closest('[data-nav-prefix]')) {
-      closeDesktopMenus()
-    }
-  })
+      if (!(event.target instanceof Element) || !event.target.closest('[data-nav-prefix]')) {
+        closeDesktopMenus()
+      }
+      if (event.target instanceof Element) {
+        const mobileNav = document.querySelector('[data-mobile-navigation]')
+        if (mobileNav instanceof HTMLDetailsElement && mobileNav.open) {
+          if (!event.target.closest('[data-mobile-navigation]')) {
+            closeMobileNavigation()
+          }
+        }
+      }
+    })
 
   document.addEventListener('focusout', (event) => {
     if (!(event.target instanceof Element)) return
