@@ -206,10 +206,97 @@
     }
 
     /* Safe build loop step — small click-feedback press on the card itself. */
-    .safe-loop-step:active {
-      transform: translateY(0) scale(0.99);
-    }
-  }
+        .safe-loop-step:active {
+          transform: translateY(0) scale(0.99);
+        }
+
+        /* Neon-button — an interactive button or anchor with a continuously
+                                       circulating conic-gradient border, a translucent glass
+                                       layer on top of the border, and a soft outer glow. The
+                                       border and the glass are both rendered as 2px rings just
+                                       outside the button using ::before and ::after pseudo
+                                       elements, so they align pixel-perfect. The conic-gradient
+                                       angle is bound to a typed CSS variable so the keyframe
+                                       can interpolate it smoothly. Used by the Activate
+                                       Invitation and Redeem Invitation CTAs. */
+                                    @property --neon-angle {
+                                      syntax: '<angle>';
+                                      inherits: false;
+                                      initial-value: 0deg;
+                                    }
+                                    .neon-button {
+                              position: relative;
+                              isolation: isolate;
+
+                              color: hsl(var(--primary-foreground));
+                              border-radius: 0.7rem;
+                              background: hsl(var(--primary));
+
+                              box-shadow:
+                                0 0 20px hsl(220 100% 60% / 0.25),
+                                0 0 40px hsl(280 90% 65% / 0.15);
+
+                              transition:
+                                transform 160ms ease-out,
+                                box-shadow 200ms ease-out;
+                            }
+                            .neon-button::before {
+                              content: '';
+                              position: absolute;
+                              inset: -1px;
+                              z-index: 0;
+                              border-radius: calc(0.7rem - -1px);
+                              padding: 3px;
+                              background: conic-gradient(
+                                  from var(--neon-angle),
+                                  hsl(220 100% 60%),
+                                  hsl(180 100% 55%),
+                                  hsl(280 90% 65%),
+                                  hsl(330 95% 65%),
+                                  hsl(220 100% 60%)
+                                );
+                              -webkit-mask:
+                                linear-gradient(#fff 0 0) content-box,
+                                linear-gradient(#fff 0 0);
+                              -webkit-mask-composite: xor;
+                                      mask:
+                                linear-gradient(#fff 0 0) content-box,
+                                linear-gradient(#fff 0 0);
+                                      mask-composite: exclude;
+                              animation: neon-border-spin 3s linear infinite;
+                            }
+                            .neon-button::after {
+                              content: '';
+                              position: absolute;
+                              inset: -1px;
+                              z-index: 2;
+                              border-radius: calc(0.7rem - -1px);
+                              padding: 3px;
+                              background: hsl(var(--background) / 0.25);
+                              -webkit-mask:
+                                linear-gradient(#fff 0 0) content-box,
+                                linear-gradient(#fff 0 0);
+                              -webkit-mask-composite: xor;
+                                      mask:
+                                linear-gradient(#fff 0 0) content-box,
+                                linear-gradient(#fff 0 0);
+                                      mask-composite: exclude;
+                              pointer-events: none;
+                            }
+                            .neon-button > * {
+                              position: relative;
+                              z-index: 3;
+                            }
+                                        .neon-button:hover {
+                                  box-shadow:
+                                    0 0 20px hsl(220 100% 60% / 0.9),
+                                    0 0 40px hsl(280 80% 65% / 0.35),
+                                    0 0 60px hsl(330 95% 65% / 0.1);
+                                }
+                                .neon-button:active {
+                                  transform: translateY(1px) scale(0.99);
+                                }
+                              }
 
 @keyframes drift {
   0%,
@@ -237,6 +324,16 @@
   }
   100% {
     transform: translateX(500%);
+  }
+}
+
+@keyframes neon-border-spin {
+  from {
+    --neon-angle: 0deg;
+  }
+
+  to {
+    --neon-angle: 360deg;
   }
 }
 
@@ -350,8 +447,11 @@
     transform: none;
   }
   .cli-sequence-line {
-    animation: none !important;
-    opacity: 1;
-    transform: none;
+      animation: none !important;
+      opacity: 1;
+      transform: none;
+    }
+    .neon-button {
+      animation: none !important;
+    }
   }
-}

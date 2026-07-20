@@ -42,8 +42,8 @@ export const externalLinks = {
 } as const
 
 export const invitationLinks = {
-  subscribe: 'https://kimi-bot.com/activities/viral-referral/share?scenario=subscribe&from=share_poster&invitation_code=NC7UZF',
-  redeem: 'https://kimi-bot.com/activities/viral-referral/share?scenario=invite&from=share_poster&invitation_code=NC7UZF',
+  subscribe: 'https://www.kimi.com/activities/viral-referral/share?scenario=subscribe&from=share_poster&invitation_code=NC7UZF',
+  redeem: 'https://www.kimi.com/activities/viral-referral/share?scenario=invite&from=share_poster&invitation_code=NC7UZF',
 } as const
 
 export const installCommands = [

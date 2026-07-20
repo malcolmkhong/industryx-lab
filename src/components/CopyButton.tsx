@@ -20,8 +20,12 @@ export function CopyButton({
   variant = 'solid',
   className = '',
 }: CopyButtonProps) {
-  const sizing =
-    size === 'lg'
+  const iconOnly = label === ''
+  const sizing = iconOnly
+    ? size === 'lg'
+      ? 'h-12 w-12 text-sm rounded-xl justify-center'
+      : 'h-8 w-8 text-xs rounded-lg justify-center'
+    : size === 'lg'
       ? 'h-12 px-6 text-sm gap-2.5 rounded-xl'
       : 'h-8 px-3 text-xs gap-1.5 rounded-lg'
   const iconClassName = size === 'lg' ? 'h-4 w-4' : 'h-3.5 w-3.5'
@@ -42,7 +46,7 @@ export function CopyButton({
     >
       <span className="copy-button-default inline-flex items-center gap-[inherit]">
         <Copy className={iconClassName} aria-hidden="true" />
-        {label}
+        {iconOnly ? null : label}
       </span>
       <span className="copy-button-success hidden items-center gap-[inherit]" aria-hidden="true">
         <Check className={iconClassName} aria-hidden="true" />

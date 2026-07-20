@@ -1,10 +1,10 @@
-import { ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
 import { CopyButton } from '@/components/CopyButton'
 import { Reveal } from '@/components/Reveal'
 import { SectionHeading } from '@/components/SectionHeading'
-import { installCommands, invitationLinks } from '@/config/site'
+import { installCommands } from '@/config/site'
 import moonCoder from '@/assets/moon-coder.webp'
+import { ActivateInvitation } from './ActivateInvitation'
 
 export function Install() {
   return (
@@ -28,19 +28,8 @@ export function Install() {
                     at sign-up. Nothing to copy, nothing to paste.
                   </p>
                   <div>
-                    <a
-                      href={invitationLinks.subscribe}
-                      data-analytics-event="invitation_click"
-                      data-analytics-label="home-invitation"
-                      data-analytics-section="install"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex h-11 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 active:scale-[0.97] focus-visible-ring touch-manipulation"
-                      title="Opens Kimi's official referral portal">
-                      Activate invitation
-                      <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-                    </a>
-                  </div>
+                                      <ActivateInvitation />
+                                    </div>
                 </div>
               </div>
             </Reveal>
@@ -65,7 +54,8 @@ export function Install() {
                         </div>
                         <CopyButton
                           text={cmd.command}
-                          label={`Copy ${cmd.label} command`}
+                          label=""
+                          accessibleLabel={`Copy ${cmd.label} command`}
                           analyticsLabel={`copy-install-${cmd.id}`}
                         />
                       </div>
@@ -84,7 +74,7 @@ export function Install() {
                     <code className="block min-w-0 flex-1 overflow-x-auto whitespace-nowrap font-mono text-xs text-foreground/85 sm:text-sm">
                       cd your-project <span className="text-muted-foreground">&&</span> kimi
                     </code>
-                    <CopyButton text={'cd your-project && kimi'} label="Copy launch command" />
+                    <CopyButton text={'cd your-project && kimi'} label="" accessibleLabel="Copy launch command" />
                   </div>
                   <p className="text-sm leading-relaxed text-muted-foreground">
                     On first launch, run{' '}

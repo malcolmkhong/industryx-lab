@@ -5,6 +5,9 @@ out/
 .next/
 coverage/
 
+# Agent skill packs (read-only reference docs, not source code)
+.agents/
+
 # Local environment and secrets
 .env
 .env.*

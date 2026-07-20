@@ -1,8 +1,9 @@
-import { ArrowRight, ArrowUpRight, Sparkles } from 'lucide-react'
+import { ArrowRight, Sparkles } from 'lucide-react'
 import { Reveal } from '@/components/Reveal'
 import { invitationLinks } from '@/config/site'
 import { cliAnimationContent } from '../content/cli'
 import { CliAnimation } from './CliAnimation'
+import { RedeemInvitation } from './RedeemInvitation'
 
 export function Hero() {
   return (
@@ -50,43 +51,32 @@ export function Hero() {
             <Reveal priority className="w-full max-w-lg">
               <div className="flex flex-col gap-4 rounded-2xl border border-primary/20 bg-primary/[0.06] p-5 backdrop-blur sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex flex-col gap-1.5">
-                  <span className="font-mono text-[11px] tracking-[0.25em] text-primary">
-                    MY INVITATION
-                  </span>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    Skip the waitlist — my invite link applies itself.
-                    <br className="hidden sm:block" /> No code to type, ever.
-                  </p>
-                </div>
-                <a
-                  href={invitationLinks.redeem}
-                  data-analytics-event="invitation_click"
-                  data-analytics-label="home-invitation"
-                  data-analytics-section="hero"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex h-11 shrink-0 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 active:scale-[0.97] focus-visible-ring touch-manipulation"
-                  title="Opens Kimi's official referral portal">
-                  Redeem invitation
-                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-                </a>
-              </div>
+                                  <span className="font-mono text-[11px] tracking-[0.25em] text-primary">
+                                    MY INVITATION
+                                  </span>
+                                  <p className="text-sm leading-relaxed text-muted-foreground">
+                                    Skip the waitlist — my invite link applies itself.
+                                    <br className="hidden sm:block" /> No code to type, ever.
+                                  </p>
+                                </div>
+                                <RedeemInvitation />
+                              </div>
             </Reveal>
 
             <Reveal priority>
               <div className="flex flex-wrap items-center gap-4">
                 <a
-                  href={invitationLinks.redeem}
-                  data-analytics-event="invitation_click"
-                  data-analytics-label="home-invitation"
-                  data-analytics-section="hero"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex h-12 items-center gap-2 rounded-xl bg-primary px-6 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 active:scale-[0.97] focus-visible-ring touch-manipulation"
-                  title="Opens Kimi's official referral portal">
-                  Claim your access
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </a>
+                                  href={invitationLinks.redeem}
+                                  data-analytics-event="invitation_click"
+                                  data-analytics-label="home-invitation"
+                                  data-analytics-section="hero"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex h-12 items-center gap-2 rounded-xl bg-primary px-6 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 active:scale-[0.97] focus-visible-ring touch-manipulation"
+                                  title="Opens Kimi's official referral portal">
+                                  Claim your access
+                                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                                </a>
                 <a
                   href="#why"
                   data-analytics-event="cta_click"
