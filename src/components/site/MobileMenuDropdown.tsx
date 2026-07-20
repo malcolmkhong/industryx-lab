@@ -54,7 +54,7 @@ export function MobileMenuDropdown() {
             />
 
             {navigationGroups.map((group) => (
-              <details key={group.id} className="group/mobile-group border-t border-white/5 py-0.5">
+              <details key={group.id} className="group/mobile-group py-0.5">
                 <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg border border-transparent bg-transparent px-3 py-2 text-left text-sm font-semibold text-foreground transition-colors duration-200 focus-visible-ring [&::-webkit-details-marker]:hidden">
                   <span>{group.label}</span>
                   <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open/mobile-group:rotate-180" aria-hidden="true" />
