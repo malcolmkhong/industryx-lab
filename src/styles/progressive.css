@@ -116,9 +116,21 @@ body.mobile-contents-open {
 .toc-link[data-active='true'] {
   border-color: var(--toc-border);
   color: hsl(var(--foreground));
-  background-image: linear-gradient(135deg, var(--toc-from), var(--toc-to));
+  background-image: var(--toc-gradient, linear-gradient(135deg, var(--toc-from), var(--toc-to)));
   box-shadow: var(--toc-shadow);
 }
+
+.toc-link[data-toc-link='before-you-start'][data-active='true'] { --toc-gradient: linear-gradient(135deg, hsl(232 90% 76% / 0.22), hsl(268 70% 65% / 0.16)); --toc-border: hsl(232 90% 76% / 0.5); }
+.toc-link[data-toc-link='safe-build-loop'][data-active='true']   { --toc-gradient: linear-gradient(135deg, hsl(220 90% 70% / 0.22), hsl(258 75% 62% / 0.16)); --toc-border: hsl(220 90% 70% / 0.5); }
+.toc-link[data-toc-link='clone-starter'][data-active='true']     { --toc-gradient: linear-gradient(135deg, hsl(245 85% 72% / 0.22), hsl(280 70% 60% / 0.16)); --toc-border: hsl(245 85% 72% / 0.5); }
+.toc-link[data-toc-link='workspace'][data-active='true']         { --toc-gradient: linear-gradient(135deg, hsl(258 80% 70% / 0.22), hsl(298 65% 60% / 0.16)); --toc-border: hsl(258 80% 70% / 0.5); }
+.toc-link[data-toc-link='supabase'][data-active='true']          { --toc-gradient: linear-gradient(135deg, hsl(212 85% 68% / 0.22), hsl(250 75% 60% / 0.16)); --toc-border: hsl(212 85% 68% / 0.5); }
+.toc-link[data-toc-link='google-auth'][data-active='true']        { --toc-gradient: linear-gradient(135deg, hsl(196 80% 65% / 0.22), hsl(238 75% 58% / 0.16)); --toc-border: hsl(196 80% 65% / 0.5); }
+.toc-link[data-toc-link='database'][data-active='true']          { --toc-gradient: linear-gradient(135deg, hsl(178 75% 62% / 0.22), hsl(218 70% 55% / 0.16)); --toc-border: hsl(178 75% 62% / 0.5); }
+.toc-link[data-toc-link='projects-tasks'][data-active='true']     { --toc-gradient: linear-gradient(135deg, hsl(158 70% 58% / 0.22), hsl(200 65% 52% / 0.16)); --toc-border: hsl(158 70% 58% / 0.5); }
+.toc-link[data-toc-link='dashboard'][data-active='true']         { --toc-gradient: linear-gradient(135deg, hsl(138 65% 55% / 0.22), hsl(180 60% 48% / 0.16)); --toc-border: hsl(138 65% 55% / 0.5); }
+.toc-link[data-toc-link='deploy'][data-active='true']            { --toc-gradient: linear-gradient(135deg, hsl(282 75% 65% / 0.22), hsl(322 60% 58% / 0.16)); --toc-border: hsl(282 75% 65% / 0.5); }
+.toc-link[data-toc-link='beginner-glossary'][data-active='true']  { --toc-gradient: linear-gradient(135deg, hsl(312 70% 65% / 0.22), hsl(348 60% 55% / 0.16)); --toc-border: hsl(312 70% 65% / 0.5); }
 
 .mobile-scroll-actions {
   pointer-events: none;

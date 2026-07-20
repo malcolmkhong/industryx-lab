@@ -42,7 +42,7 @@ export function MobileContentsBar({ items }: { items: TableOfContentsItem[] }) {
       <div
               role="menu"
               aria-label="On this page"
-              className="dropdown-menu absolute left-1/2 top-full z-50 mt-2 max-h-[min(60vh,24rem)] w-[min(calc(100vw-2.5rem),18rem)] -translate-x-1/2 overflow-y-auto overscroll-contain rounded-xl border border-white/10 bg-background/95 p-2 shadow-2xl shadow-black/40 [scrollbar-gutter:stable]"
+              className="dropdown-menu absolute left-1/2 top-full z-50 mt-2 max-h-[min(60vh,24rem)] w-[min(calc(100vw-2.5rem),18rem)] -translate-x-1/2 overflow-y-auto overscroll-contain rounded-xl border border-white/10 bg-background p-2 shadow-2xl shadow-black/40 [scrollbar-gutter:stable]"
             >
         <p className="mb-2 flex items-center gap-2 px-3 pt-1 font-mono text-[10px] font-semibold tracking-[0.18em] text-muted-foreground">
           ON THIS PAGE
