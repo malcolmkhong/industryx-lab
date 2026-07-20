@@ -48,7 +48,7 @@ describe('Beginner page', () => {
     expect(screen.getByRole('link', { name: 'http://localhost:3000/' })).toHaveAttribute('href', 'http://localhost:3000/')
     const jumpTo = screen.getByRole('navigation', { name: 'Jump to' })
     expect(jumpTo).toBeInTheDocument()
-    expect(jumpTo.closest('aside')).toHaveClass('sticky', 'top-24', 'self-start')
+    expect(jumpTo.closest('aside')).toHaveClass('sticky', 'top-28', 'self-start')
     expect(within(jumpTo).getByRole('link', { name: 'Clone the starter kit' })).toHaveAttribute('href', '#clone-starter')
     expect(within(jumpTo).getByRole('link', { name: 'Set up Supabase' })).toHaveAttribute('href', '#supabase')
     expect(screen.getByRole('heading', { name: 'Deploy your app' })).toBeInTheDocument()

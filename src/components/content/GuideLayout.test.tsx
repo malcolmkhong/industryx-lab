@@ -24,6 +24,6 @@ describe('GuideLayout', () => {
 
     expect(document.querySelector('[data-mobile-contents]')).toHaveClass('xl:hidden')
     const desktopNav = screen.getByRole('navigation', { name: 'Jump to' })
-    expect(desktopNav.closest('aside')).toHaveClass('sticky', 'top-24', 'hidden', 'xl:block')
+    expect(desktopNav.closest('aside')).toHaveClass('sticky', 'top-28', 'hidden', 'xl:block')
   })
 })

@@ -99,7 +99,7 @@ export function BeginnerPage() {
 
       <GuideLayout contents={contents}>
         <article className="space-y-12">
-          <section id={sections.beforeYouStart.id} className="scroll-mt-24 border-t border-white/10 pt-10">
+          <section id={sections.beforeYouStart.id} className="scroll-mt-28 border-t border-white/10 pt-10">
             <p className="font-mono text-xs font-semibold tracking-[0.16em] text-primary">{sections.beforeYouStart.eyebrow}</p>
             <h2 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">{sections.beforeYouStart.title}</h2>
             <p className="mt-3 max-w-3xl prose-body leading-7 text-muted-foreground">{sections.beforeYouStart.description}</p>
@@ -126,7 +126,7 @@ export function BeginnerPage() {
             </div>
           </section>
 
-          <section id={sections.safeBuildLoop.id} className="scroll-mt-24 border-t border-white/10 pt-10" aria-label={sections.safeBuildLoop.ariaLabel}>
+          <section id={sections.safeBuildLoop.id} className="scroll-mt-28 border-t border-white/10 pt-10" aria-label={sections.safeBuildLoop.ariaLabel}>
             <p className="font-mono text-xs font-semibold tracking-[0.16em] text-primary">{sections.safeBuildLoop.eyebrow}</p>
             <h2 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">{sections.safeBuildLoop.title}</h2>
             <p className="mt-3 max-w-3xl prose-body leading-7 text-muted-foreground">{sections.safeBuildLoop.description}</p>
@@ -148,7 +148,7 @@ export function BeginnerPage() {
             <StageSection key={stage.id} stage={stage} />
           ))}
 
-          <section id={sections.glossary.id} className="scroll-mt-24 border-t border-white/10 pt-10">
+          <section id={sections.glossary.id} className="scroll-mt-28 border-t border-white/10 pt-10">
             <div className="flex items-center gap-3">
               <BookOpen className="h-5 w-5 text-primary" aria-hidden="true" />
               <p className="font-mono text-xs font-semibold tracking-[0.16em] text-primary">{sections.glossary.eyebrow}</p>

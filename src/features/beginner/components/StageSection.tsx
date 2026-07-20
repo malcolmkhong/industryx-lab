@@ -6,7 +6,7 @@ import { formatContent } from '../utils/formatContent'
 
 export function StageSection({ stage }: { stage: BeginnerStage }) {
   return (
-    <section id={stage.id} className="scroll-mt-24 border-t border-white/10 pt-10">
+    <section id={stage.id} className="scroll-mt-28 border-t border-white/10 pt-10">
       <div className="mb-5 flex flex-wrap items-center gap-3">
         <span className="font-mono text-xs font-semibold tracking-[0.16em] text-primary">{beginnerPageContent.stageUi.stage} {stage.stage}</span>
         <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.025] px-2.5 py-1 font-mono text-[11px] text-muted-foreground">
