@@ -27,7 +27,7 @@ export function MobileMenuDropdown() {
           className="mobile-navigation-sheet fixed right-3 top-16 max-h-[min(70vh,32rem)] w-[min(calc(100vw-1.5rem),20rem)] overflow-y-auto overscroll-contain rounded-2xl border border-white/10 bg-background p-2 shadow-2xl shadow-black/40 [scrollbar-gutter:stable] sm:right-5"
           data-mobile-navigation-sheet
         >
-          <div className="mb-2 flex items-center justify-between px-3 pt-1">
+          <div className="mb-1 flex items-center justify-between px-3 pt-1">
             <span className="flex items-center gap-2 font-mono text-[10px] font-semibold tracking-[0.18em] text-muted-foreground">
               MENU
             </span>
@@ -43,27 +43,23 @@ export function MobileMenuDropdown() {
           </div>
 
           <nav
-            className="relative flex flex-1 flex-col pl-6"
+            className="flex flex-1 flex-col"
             aria-label="Mobile navigation links"
           >
-            <span
-              className="absolute bottom-1 left-[7px] top-1 w-px bg-white/10"
-              aria-hidden="true"
+            <MenuLink
+              href={routePaths.home}
+              label="HOME"
+              size="md"
+              className="mb-0.5 font-semibold !text-foreground"
             />
 
-            <MenuLink href={routePaths.home} label="HOME" size="md" className="-ml-6 mb-1" />
-
             {navigationGroups.map((group) => (
-              <details key={group.id} className="group/mobile-group -ml-6 border-t border-white/5 py-1">
-                <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg border border-transparent bg-transparent px-3 py-3 text-left text-sm font-medium text-muted-foreground transition-colors duration-200 focus-visible-ring [&::-webkit-details-marker]:hidden">
-                  <span className="relative z-10">{group.label}</span>
+              <details key={group.id} className="group/mobile-group border-t border-white/5 py-0.5">
+                <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg border border-transparent bg-transparent px-3 py-2 text-left text-sm font-semibold text-foreground transition-colors duration-200 focus-visible-ring [&::-webkit-details-marker]:hidden">
+                  <span>{group.label}</span>
                   <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open/mobile-group:rotate-180" aria-hidden="true" />
                 </summary>
-                <div className="relative space-y-0.5 pb-2 pl-3">
-                  <span
-                    className="absolute bottom-1 left-[7px] top-1 w-px bg-white/10"
-                    aria-hidden="true"
-                  />
+                <div className="space-y-0.5 pb-1 pl-3">
                   {group.items.map((item) => (
                     <MenuLink key={item.href} href={item.href} label={item.label} />
                   ))}
