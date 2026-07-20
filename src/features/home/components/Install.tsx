@@ -31,7 +31,8 @@ export function Install() {
                     <a
                       href={invitationLinks.subscribe}
                       data-analytics-event="invitation_click"
-                      data-analytics-label="install-invitation"
+                      data-analytics-label="home-invitation"
+                      data-analytics-section="install"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex h-11 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 active:scale-[0.97] focus-visible-ring touch-manipulation"
@@ -62,7 +63,11 @@ export function Install() {
                             {cmd.command}
                           </code>
                         </div>
-                        <CopyButton text={cmd.command} label={`Copy ${cmd.label} command`} />
+                        <CopyButton
+                          text={cmd.command}
+                          label={`Copy ${cmd.label} command`}
+                          analyticsLabel={`copy-install-${cmd.id}`}
+                        />
                       </div>
                     ))}
                   </div>

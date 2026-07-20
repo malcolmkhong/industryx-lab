@@ -24,6 +24,9 @@ export function Footer() {
               href={externalLinks.kimiCode}
               target="_blank"
               rel="noopener noreferrer"
+              data-analytics-event="outbound_link"
+              data-analytics-label="footer-kimi-code"
+              data-analytics-section="footer"
               className="transition-colors hover:text-foreground focus-visible-ring touch-manipulation"
             >
               Official site
@@ -32,6 +35,9 @@ export function Footer() {
               href={externalLinks.docs}
               target="_blank"
               rel="noopener noreferrer"
+              data-analytics-event="outbound_link"
+              data-analytics-label="footer-docs"
+              data-analytics-section="footer"
               className="transition-colors hover:text-foreground focus-visible-ring touch-manipulation"
             >
               Docs
@@ -40,6 +46,9 @@ export function Footer() {
               href={externalLinks.github}
               target="_blank"
               rel="noopener noreferrer"
+              data-analytics-event="outbound_link"
+              data-analytics-label="footer-github-kimi"
+              data-analytics-section="footer"
               className="flex items-center gap-1.5 transition-colors hover:text-foreground focus-visible-ring touch-manipulation"
             >
               <Github className="h-4 w-4" aria-hidden="true" />
@@ -55,6 +64,9 @@ export function Footer() {
               href={externalLinks.industryX}
               target="_blank"
               rel="noopener noreferrer"
+              data-analytics-event="outbound_link"
+              data-analytics-label="footer-credit-industryx"
+              data-analytics-section="footer"
               className="animate-industryx-glow rounded-sm font-semibold focus-visible-ring touch-manipulation"
             >
               {siteConfig.footerCredit.name}

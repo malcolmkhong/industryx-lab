@@ -11,7 +11,8 @@ export function MobileCta() {
       <a
         href={invitationLinks.subscribe}
         data-analytics-event="invitation_click"
-        data-analytics-label="mobile-sticky-invitation"
+        data-analytics-label="home-invitation"
+        data-analytics-section="mobile-cta"
         target="_blank"
         rel="noopener noreferrer"
         className="flex h-11 min-w-0 flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 active:scale-[0.97] focus-visible-ring"

@@ -16,11 +16,22 @@ import {
   handleMobileCloseClicks,
   handleMobileNavigationToggle,
 } from './mobileNavigation'
+import {
+  restoreGuideStageState,
+  updateGuideProgress,
+  updateReadingProgress,
+} from './guideProgress'
 
 declare global {
   interface Window {
     __industryxEnhancementsInstalled?: boolean
     __industryxEnhancementsCleanup?: () => void
+    __industryxPageViewSent?: string
+    trackPageView?: (pathname: string, pageTitle?: string) => void
+    trackStageComplete?: (stageId: string, pageSection?: string) => void
+    trackReadingMilestone?: (percent: 25 | 50 | 75 | 100, pageSection?: string) => void
+    track404View?: (pathname: string) => void
+    sendAnalyticsEvent?: (name: string, parameters?: Record<string, unknown>) => void
   }
 }
 
@@ -88,19 +99,6 @@ export function installProgressiveEnhancements() {
     })
   }
 
-  const updateReadingProgress = () => {
-    const bar = document.querySelector('[data-reading-progress]')
-    if (!(bar instanceof HTMLElement)) return
-    const main = bar.closest('main')
-    if (!main) return
-    const rect = main.getBoundingClientRect()
-    const total = rect.height - window.innerHeight
-    const scrolled = Math.max(0, -rect.top)
-    const percent = total > 0 ? Math.min(100, (scrolled / total) * 100) : 0
-    const fill = bar.querySelector<HTMLElement>('[data-reading-progress-fill]')
-    if (fill) fill.style.width = `${percent}%`
-  }
-
   const fallbackCopy = (text: string) => {
     const textarea = document.createElement('textarea')
     textarea.value = text
@@ -128,37 +126,6 @@ export function installProgressiveEnhancements() {
       button.dataset.copied = 'false'
       copyTimers.delete(button)
     }, 2200))
-  }
-
-  const updateGuideProgress = () => {
-    const progress = document.querySelector('[data-guide-progress]')
-    if (!(progress instanceof HTMLElement)) return
-    const checkboxes = all<HTMLInputElement>('[data-guide-stage]')
-    const completed = checkboxes.filter((item) => item.checked).length
-    const total = Number(progress.dataset.totalStages || checkboxes.length)
-    const percent = total > 0 ? Math.round((completed / total) * 100) : 0
-    const status = progress.querySelector('[data-guide-progress-status]')
-    const percentLabel = progress.querySelector('[data-guide-progress-percent]')
-    const progressbar = progress.querySelector('[data-guide-progressbar]')
-    const fill = progress.querySelector('[data-guide-progress-fill]')
-    const completion = document.querySelector('[data-guide-completion]')
-
-    if (status) status.textContent = (progress.dataset.statusTemplate || '')
-      .replace('{completed}', String(completed))
-      .replace('{total}', String(total))
-    if (percentLabel) percentLabel.textContent = percent + '%'
-    if (progressbar) progressbar.setAttribute('aria-valuenow', String(percent))
-    if (fill instanceof HTMLElement) fill.style.width = percent + '%'
-    if (completion instanceof HTMLElement) {
-      completion.textContent = completed === total
-        ? completion.dataset.allComplete || ''
-        : (completion.dataset.remainingTemplate || '').replace('{remaining}', String(total - completed))
-    }
-
-    checkboxes.forEach((checkbox) => {
-      const label = checkbox.closest('[data-stage-complete]')
-      if (label instanceof HTMLElement) label.dataset.stageComplete = String(checkbox.checked)
-    })
   }
 
   const updateActiveHeading = () => {
@@ -218,7 +185,18 @@ export function installProgressiveEnhancements() {
     if (!(mouseEvent.target instanceof Element)) return
     const copyButton = mouseEvent.target.closest('[data-copy-trigger]')
     if (copyButton instanceof HTMLButtonElement) {
-      void copyText(copyButton.dataset.copyText || '').then(() => showCopiedState(copyButton))
+      const analyticsLabel = copyButton.dataset.analyticsLabel
+      const analyticsSection = copyButton.dataset.analyticsSection
+      void copyText(copyButton.dataset.copyText || '').then(() => {
+        showCopiedState(copyButton)
+        if (analyticsLabel) {
+          window.sendAnalyticsEvent?.('cta_click', {
+            label: analyticsLabel,
+            page_section: analyticsSection || undefined,
+            destination: window.location.pathname,
+          })
+        }
+      })
       return
     }
     handleMobileCloseClicks(mouseEvent)
@@ -228,7 +206,7 @@ export function installProgressiveEnhancements() {
 
   listen(document, 'change', (event) => {
     if (event.target instanceof HTMLInputElement && event.target.matches('[data-guide-stage]')) {
-      updateGuideProgress()
+      updateGuideProgress(event.target)
     }
   })
 
@@ -278,7 +256,7 @@ export function installProgressiveEnhancements() {
   syncDropdownOpenState(navigationCtx)
   markActiveNavigation()
   updateMobileScrollActions()
-  updateGuideProgress()
+  restoreGuideStageState()
   updateActiveHeading()
   updateReadingProgress()
 }

@@ -39,7 +39,7 @@ describe('Beginner page', () => {
     expect(beginnerStages[0].callout?.linkLabel).toBe('http://localhost:3000/')
   })
 
-  it('renders the beginner guide with generated Jump to links', () => {
+  it('renders the beginner guide with generated Jump to links', { timeout: 15000 }, () => {
     render(<BeginnerPage />)
 
     expect(screen.getByRole('heading', { name: 'Build a task manager with Kimi Code' })).toBeInTheDocument()

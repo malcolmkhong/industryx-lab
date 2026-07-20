@@ -4,6 +4,8 @@ interface CopyButtonProps {
   text: string
   label?: string
   accessibleLabel?: string
+  /** Optional analytics label emitted as `cta_click` after a successful copy. */
+  analyticsLabel?: string
   size?: 'sm' | 'lg'
   variant?: 'solid' | 'ghost'
   className?: string
@@ -13,6 +15,7 @@ export function CopyButton({
   text,
   label = 'Copy',
   accessibleLabel,
+  analyticsLabel,
   size = 'sm',
   variant = 'solid',
   className = '',
@@ -33,6 +36,8 @@ export function CopyButton({
       aria-label={accessibleLabel ?? label}
       data-copy-trigger
       data-copy-text={text}
+      data-analytics-event={analyticsLabel ? 'cta_click' : undefined}
+      data-analytics-label={analyticsLabel}
       className={`copy-button inline-flex shrink-0 items-center font-medium transition-all duration-200 focus-visible-ring touch-manipulation ${tone} ${sizing} ${className}`}
     >
       <span className="copy-button-default inline-flex items-center gap-[inherit]">

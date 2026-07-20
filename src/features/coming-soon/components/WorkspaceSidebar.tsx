@@ -64,7 +64,7 @@ export function WorkspaceSidebar({ invitationHref }: WorkspaceSidebarProps) {
 
       <div className="mt-auto space-y-2 pt-4">
         {invitationHref ? (
-          <a href={invitationHref} data-analytics-event="invitation_click" data-analytics-label="workspace-invite" target="_blank" rel="noopener noreferrer" aria-label={desktop.inviteAction} className="flex min-h-11 items-center justify-center gap-3 rounded-lg border border-primary/20 bg-primary/[0.08] px-2 text-primary transition-colors hover:bg-primary/[0.14] focus-visible-ring lg:justify-start">
+          <a href={invitationHref} data-analytics-event="invitation_click" data-analytics-label="workspace-sidebar-invitation" data-analytics-section="workspace-sidebar" target="_blank" rel="noopener noreferrer" aria-label={desktop.inviteAction} className="flex min-h-11 items-center justify-center gap-3 rounded-lg border border-primary/20 bg-primary/[0.08] px-2 text-primary transition-colors hover:bg-primary/[0.14] focus-visible-ring lg:justify-start">
             <Gift className="h-4 w-4 shrink-0" aria-hidden="true" />
             <span className="hidden min-w-0 lg:block">
               <span className="block text-xs font-medium text-foreground">{desktop.inviteAction}</span>

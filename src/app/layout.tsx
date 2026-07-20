@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 import { Analytics } from '@/components/analytics/Analytics'
+import { CookieConsent } from '@/components/consent/CookieConsent'
 import { PageShell } from '@/components/site/PageShell'
 import { siteConfig } from '@/config/site'
 import '@/index.css'
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <body>
         <PageShell>{children}</PageShell>
         <Analytics />
+        <CookieConsent />
       </body>
     </html>
   )

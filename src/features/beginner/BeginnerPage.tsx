@@ -41,6 +41,7 @@ export function BeginnerPage() {
             href={`#${sections.beforeYouStart.id}`}
             data-analytics-event="cta_click"
             data-analytics-label="beginner-prerequisites"
+            data-analytics-section="beginner-hero"
             className="tap-target inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible-ring"
           >
             {hero.primaryAction}
@@ -50,6 +51,7 @@ export function BeginnerPage() {
             href={`#${beginnerStages[0].id}`}
             data-analytics-event="cta_click"
             data-analytics-label="beginner-stage-one"
+            data-analytics-section="beginner-hero"
             className="tap-target inline-flex min-h-11 items-center gap-2 rounded-lg border border-white/10 bg-card/60 px-5 py-3 text-sm font-medium text-foreground transition-colors hover:border-primary/35 hover:bg-primary/10 focus-visible-ring"
           >
             {hero.secondaryAction}

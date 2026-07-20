@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { NotFoundTracker } from '@/app/_components/NotFoundTracker'
 import { routePaths } from '@/config/routes'
 import { createPageMetadata } from '@/lib/seo/metadata'
 
@@ -13,6 +14,7 @@ export const metadata: Metadata = createPageMetadata({
 export default function NotFound() {
   return (
     <main id="main-content" className="mx-auto flex min-h-[70vh] max-w-3xl flex-col items-center justify-center px-5 pb-20 pt-28 text-center sm:px-6">
+      <NotFoundTracker />
       <p className="font-mono text-xs font-semibold tracking-[0.2em] text-primary">404 · PAGE NOT FOUND</p>
       <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl">This page does not exist.</h1>
       <p className="mt-5 max-w-xl leading-7 text-muted-foreground">The address may have changed, or the page may not have been published. Choose a working page below to continue learning.</p>

@@ -61,7 +61,8 @@ export function Hero() {
                 <a
                   href={invitationLinks.redeem}
                   data-analytics-event="invitation_click"
-                  data-analytics-label="hero-invitation-card"
+                  data-analytics-label="home-invitation"
+                  data-analytics-section="hero"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex h-11 shrink-0 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 active:scale-[0.97] focus-visible-ring touch-manipulation"
@@ -77,7 +78,8 @@ export function Hero() {
                 <a
                   href={invitationLinks.redeem}
                   data-analytics-event="invitation_click"
-                  data-analytics-label="hero-primary-invitation"
+                  data-analytics-label="home-invitation"
+                  data-analytics-section="hero"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex h-12 items-center gap-2 rounded-xl bg-primary px-6 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 active:scale-[0.97] focus-visible-ring touch-manipulation"
@@ -89,6 +91,7 @@ export function Hero() {
                   href="#why"
                   data-analytics-event="cta_click"
                   data-analytics-label="hero-why-kimi"
+                  data-analytics-section="hero"
                   className="inline-flex h-12 items-center rounded-xl border border-white/10 px-6 text-sm font-medium text-foreground/80 transition-colors hover:border-white/20 hover:text-foreground focus-visible-ring touch-manipulation">
                   Why Kimi Code?
                 </a>

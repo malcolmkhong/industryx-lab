@@ -42,7 +42,8 @@ export function ComingSoonPage({
             <a
               href={safeInvitationHref}
               data-analytics-event="invitation_click"
-              data-analytics-label="coming-soon-primary-invitation"
+              data-analytics-label="coming-soon-invitation"
+              data-analytics-section="coming-soon-hero"
               target="_blank"
               rel="noopener noreferrer"
               aria-label={comingSoonContent.invitationAction}
@@ -55,7 +56,8 @@ export function ComingSoonPage({
           <Link
             href={route.fallbackPath}
             data-analytics-event="cta_click"
-            data-analytics-label="coming-soon-fallback"
+            data-analytics-label="beginner-cta"
+            data-analytics-section="coming-soon-fallback"
             className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-white/10 bg-card/60 px-5 py-3 text-sm font-medium text-foreground transition-colors hover:border-primary/35 hover:bg-primary/10 focus-visible-ring touch-manipulation"
           >
             {comingSoonContent.exploreAction}

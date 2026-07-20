@@ -63,7 +63,8 @@ export function Invite() {
                 <a
                   href={invitationLinks.subscribe}
                   data-analytics-event="invitation_click"
-                  data-analytics-label="final-invitation"
+                  data-analytics-label="home-invitation"
+                  data-analytics-section="invite"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-xl bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 active:scale-[0.97] focus-visible-ring touch-manipulation"

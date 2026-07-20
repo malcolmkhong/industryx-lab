@@ -35,7 +35,7 @@ export function SimulatedAiDesktop({ pageName, expectedFeatures, invitationHref 
               <p className="text-[11px] text-muted-foreground">{desktop.workspaceLabel}</p>
             </div>
             {invitationHref ? (
-              <a href={invitationHref} data-analytics-event="invitation_click" data-analytics-label="workspace-upgrade" target="_blank" rel="noopener noreferrer" aria-label={desktop.upgradeAction} className="inline-flex min-h-9 items-center rounded-full border border-primary/20 bg-primary/10 px-3 text-xs font-medium text-primary transition-colors hover:bg-primary/15 focus-visible-ring">
+              <a href={invitationHref} data-analytics-event="invitation_click" data-analytics-label="workspace-sidebar-invitation" data-analytics-section="simulated-ai-desktop" target="_blank" rel="noopener noreferrer" aria-label={desktop.upgradeAction} className="inline-flex min-h-9 items-center rounded-full border border-primary/20 bg-primary/10 px-3 text-xs font-medium text-primary transition-colors hover:bg-primary/15 focus-visible-ring">
                 {desktop.upgradeAction}
               </a>
             ) : null}
