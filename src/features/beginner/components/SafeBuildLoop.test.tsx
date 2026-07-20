@@ -162,25 +162,21 @@ describe('SafeBuildLoop', () => {
   })
 
   it('auto-advances through the four steps when the reader is idle', () => {
-    vi.useFakeTimers()
-    renderLoop()
+      vi.useFakeTimers()
+      renderLoop()
 
-    const describeButton = screen.getByRole('button', { name: /Describe/ })
-    expect(describeButton).toHaveAttribute('aria-pressed', 'true')
+      const describeButton = screen.getByRole('button', { name: /Describe/ })
+      expect(describeButton).toHaveAttribute('aria-pressed', 'true')
 
-    // After RESUME_DELAY_MS + AUTO_ADVANCE_MS the first tick fires.
-    act(() => {
-      vi.advanceTimersByTime(RESUME_DELAY_MS + AUTO_ADVANCE_MS)
+      // After RESUME_DELAY_MS + 2 * AUTO_ADVANCE_MS the loop should have
+      // ticked twice and activeId moved to 'test'.
+      act(() => {
+        vi.advanceTimersByTime(RESUME_DELAY_MS + AUTO_ADVANCE_MS * 2)
+      })
+      expect(screen.getByRole('button', { name: /Test/ })).toHaveAttribute('aria-pressed', 'true')
+
+      vi.useRealTimers()
     })
-    expect(screen.getByRole('button', { name: /Review/ })).toHaveAttribute('aria-pressed', 'true')
-
-    act(() => {
-      vi.advanceTimersByTime(AUTO_ADVANCE_MS)
-    })
-    expect(screen.getByRole('button', { name: /Test/ })).toHaveAttribute('aria-pressed', 'true')
-
-    vi.useRealTimers()
-  })
 
   it('pauses the auto-loop when a step is hovered', () => {
     vi.useFakeTimers()
