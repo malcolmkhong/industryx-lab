@@ -51,8 +51,23 @@ const send = (name, parameters) => {
 
   const trackClickWithoutDebug = ''
 
+  const trackClickMissingLabelWithDebug = String.raw`
+    if (!link.dataset.analyticsLabel) {
+      console.warn(
+        '[analytics] link has no data-analytics-label, dropping event:',
+        link,
+      )
+      return
+    }`
+
+  const trackClickMissingLabelWithoutDebug = String.raw`
+    if (!link.dataset.analyticsLabel) return`
+
   const send = debug ? sendWithDebug : sendWithoutDebug
   const trackClickDebugBranch = debug ? trackClickWithDebug : trackClickWithoutDebug
+  const trackClickMissingLabelBranch = debug
+    ? trackClickMissingLabelWithDebug
+    : trackClickMissingLabelWithoutDebug
 
   return String.raw`
 (() => {
@@ -94,6 +109,7 @@ const send = (name, parameters) => {
     if (!(event.target instanceof Element)) return
     const link = event.target.closest('a[href]')
     if (!(link instanceof HTMLAnchorElement)) return
+    ${trackClickMissingLabelBranch}
     const explicitEvent = link.dataset.analyticsEvent
     ${trackClickDebugBranch}
     const parameters = {

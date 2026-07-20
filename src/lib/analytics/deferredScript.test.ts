@@ -57,6 +57,21 @@ describe('deferred analytics loader', () => {
     expect(script).not.toContain('console.warn')
   })
 
+  it('warns in dev when a tracked link has no data-analytics-label', () => {
+    const script = buildDeferredAnalyticsScript('G-TEST123', { debug: true })
+    // The dev-mode warning must reference the missing-label path, not the
+    // allowlist check, so the message tells the developer exactly what to fix.
+    expect(script).toMatch(/link has no data-analytics-label/i)
+    expect(script).toContain('console.warn')
+  })
+
+  it('drops unlabeled link clicks in production builds', () => {
+    const script = buildDeferredAnalyticsScript('G-TEST123', { debug: false })
+    // The unlabeled-link path must short-circuit before gtag fires.
+    // Production script must NOT contain the drop-and-warn branch.
+    expect(script).not.toMatch(/link has no data-analytics-label/i)
+  })
+
   it('initializes gtag consent state to denied until the user grants consent', () => {
     const script = buildDeferredAnalyticsScript('G-TEST123')
     expect(script).toContain('"consentState"')
