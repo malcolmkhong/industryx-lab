@@ -23,7 +23,7 @@ describe('MobileContentsBar', () => {
     expect(label).toHaveTextContent(items[0].label)
   })
 
-  it('renders every section as a jump link inside the overlay with the correct anchor', () => {
+  it('renders every section as a jump link inside the dropdown with the correct anchor', () => {
     const { container } = render(<MobileContentsBar items={items} />)
 
     for (const item of items) {
@@ -32,15 +32,23 @@ describe('MobileContentsBar', () => {
     }
   })
 
+  it('renders the dropdown menu directly in the flow (no full-screen sheet)', () => {
+    const { container } = render(<MobileContentsBar items={items} />)
+    const menu = container.querySelector('[role=menu]')
+    expect(menu).toBeInTheDocument()
+    expect(menu?.querySelector('nav')).toBeInTheDocument()
+  })
+
   it('marks the first section as the active section in the overlay initially', () => {
     const { container } = render(<MobileContentsBar items={items} />)
     const firstLink = container.querySelector(`[data-toc-link="${items[0].id}"]`)
     expect(firstLink).toHaveAttribute('data-active', 'true')
   })
 
-  it('includes a close affordance inside the overlay', () => {
+  it('uses the summary element as both trigger and dismiss affordance', () => {
     const { container } = render(<MobileContentsBar items={items} />)
-    const close = container.querySelector('[data-mobile-contents-close]')
-    expect(close).toBeInTheDocument()
+    const summary = container.querySelector('[data-mobile-contents] > summary')
+    expect(summary).toBeInTheDocument()
+    expect(summary).toHaveAttribute('aria-label', 'Contents')
   })
 })

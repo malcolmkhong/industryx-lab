@@ -16,7 +16,7 @@ describe('TableOfContents', () => {
 
     const nav = screen.getByRole('navigation', { name: 'Jump to' })
     const aside = nav.closest('aside')
-    expect(aside).toHaveClass('sticky', 'top-24', 'hidden', 'xl:block')
+    expect(aside).toHaveClass('sticky', 'top-28', 'hidden', 'xl:block')
   })
 
   it('lists every section as a jump link with the correct anchor and marks the first as active', () => {

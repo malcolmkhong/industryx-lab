@@ -1,14 +1,6 @@
-import Link from 'next/link'
 import { ChevronDown, Menu, X } from 'lucide-react'
-import type { CSSProperties } from 'react'
+import { MenuLink } from '@/components/ui/MenuLink'
 import { navigationGroups, routePaths } from '@/config/routes'
-
-const LINK_TOKENS = {
-  '--toc-from': 'hsl(var(--toc-accent-from) / 0.18)',
-  '--toc-to': 'hsl(var(--toc-accent-to) / 0.12)',
-  '--toc-border': 'hsl(var(--toc-accent-from) / 0.45)',
-  '--toc-shadow': '0 0 24px -6px hsl(var(--toc-glow) / 0.55)',
-} as CSSProperties
 
 export function MobileMenuDropdown() {
   return (
@@ -51,7 +43,7 @@ export function MobileMenuDropdown() {
           </div>
 
           <nav
-            className="relative flex flex-col pl-6"
+            className="relative flex flex-1 flex-col pl-6"
             aria-label="Mobile navigation links"
           >
             <span
@@ -59,41 +51,25 @@ export function MobileMenuDropdown() {
               aria-hidden="true"
             />
 
-            <Link
-                          href={routePaths.home}
-                          style={LINK_TOKENS}
-                          className="toc-link relative -ml-6 mb-1 block rounded-lg border border-transparent bg-transparent px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors duration-200 focus-visible-ring"
-                        >
-                          <span className="relative z-10 block">HOME</span>
-                        </Link>
+            <MenuLink href={routePaths.home} label="HOME" size="md" className="-ml-6 mb-1" />
 
-                        {navigationGroups.map((group) => (
-                          <details key={group.id} className="group/mobile-group -ml-6 border-t border-white/5 py-1">
-                            <summary
-                              style={LINK_TOKENS}
-                              className="flex cursor-pointer list-none items-center justify-between rounded-lg border border-transparent bg-transparent px-3 py-3 text-left text-sm font-medium text-muted-foreground transition-colors duration-200 focus-visible-ring [&::-webkit-details-marker]:hidden"
-                            >
-                              <span className="relative z-10">{group.label}</span>
-                              <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open/mobile-group:rotate-180" aria-hidden="true" />
-                            </summary>
-                            <div className="relative space-y-0.5 pb-2 pl-3">
-                              <span
-                                className="absolute bottom-1 left-[7px] top-1 w-px bg-white/10"
-                                aria-hidden="true"
-                              />
-                              {group.items.map((item) => (
-                                <Link
-                                  key={item.href}
-                                  href={item.href}
-                                  style={LINK_TOKENS}
-                                  className="toc-link relative block rounded-lg border border-transparent bg-transparent px-3 py-1.5 text-sm leading-snug text-muted-foreground transition-colors duration-200 focus-visible-ring"
-                                >
-                                  <span className="relative z-10 block truncate">{item.label}</span>
-                                </Link>
-                              ))}
-                            </div>
-                          </details>
-                        ))}
+            {navigationGroups.map((group) => (
+              <details key={group.id} className="group/mobile-group -ml-6 border-t border-white/5 py-1">
+                <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg border border-transparent bg-transparent px-3 py-3 text-left text-sm font-medium text-muted-foreground transition-colors duration-200 focus-visible-ring [&::-webkit-details-marker]:hidden">
+                  <span className="relative z-10">{group.label}</span>
+                  <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open/mobile-group:rotate-180" aria-hidden="true" />
+                </summary>
+                <div className="relative space-y-0.5 pb-2 pl-3">
+                  <span
+                    className="absolute bottom-1 left-[7px] top-1 w-px bg-white/10"
+                    aria-hidden="true"
+                  />
+                  {group.items.map((item) => (
+                    <MenuLink key={item.href} href={item.href} label={item.label} />
+                  ))}
+                </div>
+              </details>
+            ))}
           </nav>
         </div>
       </div>
