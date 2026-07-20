@@ -14,6 +14,16 @@ export type BeginnerProblem = {
   fix: string
 }
 
+export type BeginnerSafeBuildStep = {
+  id: string
+  label: string
+  detail: string
+  instruction: string
+  exampleHeading: string
+  example: string
+  reasoning: string
+}
+
 export type BeginnerStage = {
   id: string
   stage: string
@@ -93,6 +103,9 @@ export type BeginnerPageContent = {
       eyebrow: string
       title: string
       description: string
+      steps: BeginnerSafeBuildStep[]
+      detailHeading: string
+      detailHeadingTemplate: string
     }
     glossary: {
       id: string

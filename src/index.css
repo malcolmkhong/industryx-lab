@@ -168,18 +168,48 @@
   }
 
   /* Interactive card — hover affordance for non-button surfaces
-     (prerequisite, glossary, common-problem cards). Stays within brand
-     palette, never shifts layout bounds (skill: "Stable Interaction States"). */
-  .interactive-card {
-    transition-property: border-color, background-color, color;
-    transition-duration: 180ms;
-    transition-timing-function: ease-out;
+       (prerequisite, glossary, common-problem cards). Stays within brand
+       palette, never shifts layout bounds (skill: "Stable Interaction States"). */
+    .interactive-card {
+      transition-property: border-color, background-color, color;
+      transition-duration: 180ms;
+      transition-timing-function: ease-out;
+    }
+    .interactive-card:hover {
+      border-color: hsl(var(--primary) / 0.35);
+      background-color: hsl(var(--card) / 0.7);
+    }
+
+    /* Safe build loop pointer — a triangle that sits on the top border of the
+       "How to run" panel and aligns with the active step card. The active step
+       index is supplied via the inline --safe-loop-pointer-index custom
+       property; the position is computed per-breakpoint so the triangle stays
+       centered above whichever column holds the active step. */
+    .safe-loop-pointer {
+      /* Horizontal offset as a percentage of the pointer track width.
+         Defaults assume the desktop 4-column layout (lg). */
+      --safe-loop-cols: 4;
+      left: calc((var(--safe-loop-pointer-index, 0) + 0.5) * (100% / var(--safe-loop-cols)));
+      transition: left 500ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    @media (max-width: 1023px) {
+      /* Tailwind `lg` breakpoint ends at 1023.98px. Use 2 columns at this range. */
+      .safe-loop-pointer {
+        --safe-loop-cols: 2;
+      }
+    }
+    @media (max-width: 639px) {
+      /* Tailwind `sm` breakpoint starts at 640. Single column on mobile. */
+      .safe-loop-pointer {
+        --safe-loop-cols: 1;
+      }
+    }
+
+    /* Safe build loop step — small click-feedback press on the card itself. */
+    .safe-loop-step:active {
+      transform: translateY(0) scale(0.99);
+    }
   }
-  .interactive-card:hover {
-    border-color: hsl(var(--primary) / 0.35);
-    background-color: hsl(var(--card) / 0.7);
-  }
-}
 
 @keyframes drift {
   0%,

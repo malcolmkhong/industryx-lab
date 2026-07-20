@@ -5,6 +5,7 @@ export type {
   BeginnerPageContent,
   BeginnerProblem,
   BeginnerReference,
+  BeginnerSafeBuildStep,
   BeginnerStage,
   BeginnerStep,
 } from './types'

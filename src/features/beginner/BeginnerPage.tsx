@@ -6,7 +6,8 @@ import { GuideLayout } from '@/components/content/GuideLayout'
 import { ReadingProgress } from '@/components/content/ReadingProgress'
 import { EditorialByline } from '@/components/seo/EditorialByline'
 import { routePaths } from '@/config/routes'
-import { beginnerGlossary, beginnerPageContent, beginnerPrerequisites, beginnerStages, safeBuildLoop } from './content'
+import { beginnerGlossary, beginnerPageContent, beginnerPrerequisites, beginnerStages } from './content'
+import { SafeBuildLoop } from './components/SafeBuildLoop'
 import { StageSection } from './components/StageSection'
 import { formatContent } from './utils/formatContent'
 
@@ -129,21 +130,13 @@ export function BeginnerPage() {
           </section>
 
           <section id={sections.safeBuildLoop.id} className="scroll-mt-28 border-t border-white/10 pt-10" aria-label={sections.safeBuildLoop.ariaLabel}>
-            <p className="font-mono text-xs font-semibold tracking-[0.16em] text-primary">{sections.safeBuildLoop.eyebrow}</p>
-            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">{sections.safeBuildLoop.title}</h2>
-            <p className="mt-3 max-w-3xl prose-body leading-7 text-muted-foreground">{sections.safeBuildLoop.description}</p>
-            <div className="relative mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              <div className="absolute left-[12%] right-[12%] top-6 hidden h-px overflow-hidden bg-white/10 lg:block" aria-hidden="true">
-                <span className="flow-beam block h-full w-1/4 bg-gradient-to-r from-transparent via-primary to-transparent" />
-              </div>
-              {safeBuildLoop.map((item, index) => (
-                <div key={item.label} className="relative rounded-xl border border-white/10 bg-card/70 p-4 text-center">
-                  <span className="mx-auto grid h-8 w-8 place-items-center rounded-full border border-primary/30 bg-primary/10 font-mono text-xs font-semibold text-primary">{index + 1}</span>
-                  <h3 className="mt-3 font-medium text-foreground">{item.label}</h3>
-                  <p className="mt-1 text-xs leading-5 text-muted-foreground">{item.detail}</p>
-                </div>
-              ))}
-            </div>
+            <SafeBuildLoop
+              eyebrow={sections.safeBuildLoop.eyebrow}
+              heading={sections.safeBuildLoop.title}
+              description={sections.safeBuildLoop.description}
+              steps={sections.safeBuildLoop.steps}
+              detailHeadingTemplate={sections.safeBuildLoop.detailHeadingTemplate}
+            />
           </section>
 
           {beginnerStages.map((stage) => (

@@ -77,16 +77,19 @@ describe('Beginner page', () => {
     render(<BeginnerPage />)
 
     const prerequisitesGrid = screen.getByText('Git').closest('div.grid')
-    const safeBuildLoop = screen.getByRole('region', { name: 'Safe build loop' })
-    const safeBuildLoopGrid = safeBuildLoop.querySelector('.relative.mt-7.grid')
-    const safeBuildLoopConnector = safeBuildLoop.querySelector('.absolute.top-6.h-px')
+    const safeBuildLoopList = screen.getByRole('list', { name: 'Safe build loop' })
+    expect(safeBuildLoopList).toHaveClass('sm:grid-cols-2', 'lg:grid-cols-4')
     const glossarySection = screen.getByRole('heading', { name: 'Beginner glossary' }).closest('section')
     const glossaryGrid = glossarySection?.querySelector('dl')
 
     expect(prerequisitesGrid).toHaveClass('md:grid-cols-3')
-    expect(safeBuildLoopGrid).toHaveClass('sm:grid-cols-2', 'lg:grid-cols-4')
-    expect(safeBuildLoopConnector).toHaveClass('hidden', 'lg:block')
     expect(glossaryGrid).toHaveClass('sm:grid-cols-2', 'lg:grid-cols-3')
+    // Every step button in the safe build loop must meet the tap-target
+    // minimum so the row stays touchable on mobile.
+    const stepButtons = within(safeBuildLoopList).getAllByRole('button')
+    for (const button of stepButtons) {
+      expect(button.className.split(/\s+/)).toContain('min-h-11')
+    }
   })
 
   it('gives every stage the detail needed for a runnable guide', () => {

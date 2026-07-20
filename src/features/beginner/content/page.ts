@@ -1,5 +1,6 @@
 import type { BeginnerPageContent } from './types'
 import { routePaths } from '@/config/routes'
+import { safeBuildLoop } from './support'
 
 export const beginnerPageContent: BeginnerPageContent = {
   metadata: {
@@ -57,7 +58,11 @@ export const beginnerPageContent: BeginnerPageContent = {
       ariaLabel: 'Safe build loop',
       eyebrow: 'HOW TO WORK WITH KIMI CODE',
       title: 'Use a safe build loop',
-      description: 'Small reviewed changes are easier to understand, test, and repair. Repeat this loop in every stage.',
+      description:
+        'Every stage follows the same four-step loop. Click a step to read what to do, what to write, and why it works. Repeat the loop until the result matches your expectation.',
+      steps: safeBuildLoop,
+      detailHeading: 'How to run this step',
+      detailHeadingTemplate: 'How to run {step}',
     },
     glossary: {
       id: 'beginner-glossary',
