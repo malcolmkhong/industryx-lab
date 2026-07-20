@@ -1,7 +1,12 @@
 'use client'
 
 import type { BeginnerSafeBuildStep } from '../content'
-import { useBuildLoop } from '@/hooks/useBuildLoop'
+import {
+  DEFAULT_AUTO_ADVANCE_MS,
+  DEFAULT_RESUME_DELAY_MS,
+  DEFAULT_VISIBILITY_THRESHOLD,
+  useBuildLoop,
+} from '@/hooks/useBuildLoop'
 
 interface SafeBuildLoopProps {
   heading: string
@@ -9,13 +14,12 @@ interface SafeBuildLoopProps {
   description?: string
   detailHeadingTemplate: string
   steps: BeginnerSafeBuildStep[]
+  autoAdvanceMs?: number
+  resumeDelayMs?: number
+  visibilityThreshold?: number
 }
 
 const DETAIL_PANEL_ID = 'safe-build-loop-detail'
-
-const AUTO_ADVANCE_MS = 1300
-const RESUME_DELAY_MS = 900
-const VISIBILITY_THRESHOLD = 0
 
 export function SafeBuildLoop({
   heading,
@@ -23,14 +27,17 @@ export function SafeBuildLoop({
   description,
   detailHeadingTemplate,
   steps,
+  autoAdvanceMs = DEFAULT_AUTO_ADVANCE_MS,
+  resumeDelayMs = DEFAULT_RESUME_DELAY_MS,
+  visibilityThreshold = DEFAULT_VISIBILITY_THRESHOLD,
 }: SafeBuildLoopProps) {
   const { activeId, setActiveId, activeItem: active, rootRef, rootFocusProps, hoverProps, pointerStyle } =
     useBuildLoop<BeginnerSafeBuildStep>({
       items: steps,
       getId: (step) => step.id,
-      autoAdvanceMs: AUTO_ADVANCE_MS,
-      resumeDelayMs: RESUME_DELAY_MS,
-      visibilityThreshold: VISIBILITY_THRESHOLD,
+      autoAdvanceMs,
+      resumeDelayMs,
+      visibilityThreshold,
     })
 
   return (

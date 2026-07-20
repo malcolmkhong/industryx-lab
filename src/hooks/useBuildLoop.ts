@@ -2,12 +2,16 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+export const DEFAULT_AUTO_ADVANCE_MS = 4500
+export const DEFAULT_RESUME_DELAY_MS = 1200
+export const DEFAULT_VISIBILITY_THRESHOLD = 0.1
+
 export interface UseBuildLoopOptions<T> {
   items: readonly T[]
   getId: (item: T) => string
-  autoAdvanceMs: number
-  resumeDelayMs: number
-  visibilityThreshold: number
+  autoAdvanceMs?: number
+  resumeDelayMs?: number
+  visibilityThreshold?: number
 }
 
 export interface BuildLoopHoverProps {
@@ -53,9 +57,9 @@ export interface UseBuildLoopResult<T> {
 export function useBuildLoop<T>({
   items,
   getId,
-  autoAdvanceMs,
-  resumeDelayMs,
-  visibilityThreshold,
+  autoAdvanceMs = DEFAULT_AUTO_ADVANCE_MS,
+  resumeDelayMs = DEFAULT_RESUME_DELAY_MS,
+  visibilityThreshold = DEFAULT_VISIBILITY_THRESHOLD,
 }: UseBuildLoopOptions<T>): UseBuildLoopResult<T> {
   const [activeId, setActiveIdState] = useState<string>(() =>
     items.length > 0 ? getId(items[0] as T) : '',

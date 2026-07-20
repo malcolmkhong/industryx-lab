@@ -1,6 +1,13 @@
 import { cleanup, render, screen, act } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { useBuildLoop } from './useBuildLoop'
+import {
+  DEFAULT_AUTO_ADVANCE_MS,
+  DEFAULT_RESUME_DELAY_MS,
+  useBuildLoop,
+} from './useBuildLoop'
+
+const TEST_AUTO_ADVANCE_MS = 1300
+const TEST_RESUME_DELAY_MS = 900
 
 afterEach(cleanup)
 
@@ -8,16 +15,13 @@ type Item = { id: string }
 
 const ITEMS: Item[] = [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }]
 
-const AUTO_ADVANCE_MS = 1300
-const RESUME_DELAY_MS = 900
-
 interface HarnessProps {
   autoAdvanceMs?: number
   resumeDelayMs?: number
   items?: Item[]
 }
 
-function Harness({ autoAdvanceMs = AUTO_ADVANCE_MS, resumeDelayMs = RESUME_DELAY_MS, items = ITEMS }: HarnessProps) {
+function Harness({ autoAdvanceMs = TEST_AUTO_ADVANCE_MS, resumeDelayMs = TEST_RESUME_DELAY_MS, items = ITEMS }: HarnessProps) {
   const { activeId, rootRef, isPaused } = useBuildLoop<Item>({
     items,
     getId: (i) => i.id,
@@ -115,9 +119,9 @@ describe('useBuildLoop', () => {
       expect(readActiveId()).toBe('a')
 
       act(() => {
-        vi.advanceTimersByTime(RESUME_DELAY_MS + AUTO_ADVANCE_MS * 2)
-      })
-      expect(readActiveId()).toBe('c')
+              vi.advanceTimersByTime(TEST_RESUME_DELAY_MS + TEST_AUTO_ADVANCE_MS * 2)
+            })
+            expect(readActiveId()).toBe('c')
 
       vi.useRealTimers()
     })
@@ -128,9 +132,9 @@ describe('useBuildLoop', () => {
     expect(readActiveId()).toBe('a')
 
     act(() => {
-      vi.advanceTimersByTime(RESUME_DELAY_MS + AUTO_ADVANCE_MS * 4)
-    })
-    expect(readActiveId()).toBe('a')
+            vi.advanceTimersByTime(TEST_RESUME_DELAY_MS + TEST_AUTO_ADVANCE_MS * 4)
+          })
+          expect(readActiveId()).toBe('a')
 
     vi.useRealTimers()
   })
@@ -144,23 +148,51 @@ describe('useBuildLoop', () => {
   })
 
   it('does not run when prefers-reduced-motion is enabled', () => {
-    vi.stubGlobal(
-      'matchMedia',
-      vi.fn().mockImplementation((query: string) => ({
-        matches: query.includes('reduce'),
-        media: query,
-        onchange: null,
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-        addListener: vi.fn(),
-        removeListener: vi.fn(),
-        dispatchEvent: vi.fn(),
-      })),
-    )
-    vi.useFakeTimers()
-    renderHarness()
-    expect(readActiveId()).toBe('a')
-    expect(readPaused()).toBe(true)
-    vi.useRealTimers()
-  })
+      vi.stubGlobal(
+        'matchMedia',
+        vi.fn().mockImplementation((query: string) => ({
+          matches: query.includes('reduce'),
+          media: query,
+          onchange: null,
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+          addListener: vi.fn(),
+          removeListener: vi.fn(),
+          dispatchEvent: vi.fn(),
+        })),
+      )
+      vi.useFakeTimers()
+      renderHarness()
+      expect(readActiveId()).toBe('a')
+      expect(readPaused()).toBe(true)
+      vi.useRealTimers()
+    })
+
+    function DefaultsHarness() {
+        const { activeId, rootRef } = useBuildLoop<Item>({
+          items: ITEMS,
+          getId: (i) => i.id,
+          // autoAdvanceMs / resumeDelayMs / visibilityThreshold intentionally omitted
+        })
+        return (
+          <div
+            ref={rootRef}
+            data-testid="harness-root"
+            data-active-id={activeId}
+          />
+        )
+      }
+
+      it('falls back to the exported defaults when timing options are omitted', () => {
+        vi.useFakeTimers()
+        render(<DefaultsHarness />)
+        expect(screen.getByTestId('harness-root').getAttribute('data-active-id')).toBe('a')
+
+        act(() => {
+          vi.advanceTimersByTime(DEFAULT_RESUME_DELAY_MS + DEFAULT_AUTO_ADVANCE_MS)
+        })
+        expect(screen.getByTestId('harness-root').getAttribute('data-active-id')).toBe('b')
+
+        vi.useRealTimers()
+      })
 })

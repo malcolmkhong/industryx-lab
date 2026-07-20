@@ -14,14 +14,17 @@ describe('SafeBuildLoop', () => {
   const detailHeadingTemplate = 'How to run {step}'
 
   const renderLoop = () =>
-    render(
-      <SafeBuildLoop
-        heading={heading}
-        description={description}
-        detailHeadingTemplate={detailHeadingTemplate}
-        steps={safeBuildLoop}
-      />,
-    )
+      render(
+        <SafeBuildLoop
+          heading={heading}
+          description={description}
+          detailHeadingTemplate={detailHeadingTemplate}
+          steps={safeBuildLoop}
+          autoAdvanceMs={AUTO_ADVANCE_MS}
+          resumeDelayMs={RESUME_DELAY_MS}
+          visibilityThreshold={0}
+        />,
+      )
 
   beforeEach(() => {
     // Default: motion allowed, tab visible.
