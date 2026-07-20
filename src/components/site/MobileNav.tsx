@@ -2,6 +2,13 @@ import Link from 'next/link'
 import { ChevronDown, Menu, X } from 'lucide-react'
 import { navigationGroups, routePaths } from '@/config/routes'
 
+const LINK_TOKENS = {
+  '--toc-from': 'hsl(var(--toc-accent-from) / 0.18)',
+  '--toc-to': 'hsl(var(--toc-accent-to) / 0.12)',
+  '--toc-border': 'hsl(var(--toc-accent-from) / 0.45)',
+  '--toc-shadow': '0 0 24px -6px hsl(var(--toc-glow) / 0.55)',
+} as React.CSSProperties
+
 export function MobileNav() {
   return (
     <details className="mobile-navigation group/mobile md:hidden" data-mobile-navigation>
@@ -24,11 +31,13 @@ export function MobileNav() {
           role="dialog"
           aria-modal="true"
           aria-label="Mobile navigation"
-          className="absolute inset-y-0 right-0 h-dvh w-full max-w-sm overflow-y-auto border-l border-white/10 bg-background p-5 sm:max-w-md sm:p-6"
+          className="mobile-navigation-sheet absolute inset-y-0 right-0 h-dvh w-full max-w-sm overflow-y-auto border-l border-white/10 bg-background p-5 sm:max-w-md sm:p-6"
         >
           <div className="flex h-full flex-col">
-            <div className="mb-8 flex items-center justify-between">
-              <span className="font-mono text-sm font-semibold tracking-widest">MENU</span>
+            <div className="mb-6 flex items-center justify-between">
+              <span className="flex items-center gap-2 font-mono text-sm font-semibold tracking-[0.18em] text-muted-foreground">
+                MENU
+              </span>
               <button
                 type="button"
                 className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-muted-foreground hover:bg-white/5 hover:text-foreground focus-visible-ring touch-manipulation"
@@ -40,28 +49,45 @@ export function MobileNav() {
               </button>
             </div>
 
-            <nav className="flex flex-1 flex-col" aria-label="Mobile navigation links">
+            <nav
+              className="relative flex flex-1 flex-col pl-6"
+              aria-label="Mobile navigation links"
+            >
+              <span
+                className="absolute bottom-1 left-[7px] top-1 w-px bg-white/10"
+                aria-hidden="true"
+              />
+
               <Link
                 href={routePaths.home}
-                className="rounded-lg px-3 py-3 text-sm font-medium text-foreground transition-colors hover:bg-primary/10 focus-visible-ring"
+                style={LINK_TOKENS}
+                className="toc-link relative -ml-6 mb-1 block rounded-lg border border-transparent bg-transparent px-3 py-2.5 text-sm font-medium text-foreground transition-colors duration-200 hover:border-primary/45 hover:bg-gradient-to-br hover:from-primary/15 hover:to-violet-500/10 hover:text-foreground hover:shadow-[0_0_24px_-6px_hsl(var(--primary)/0.55)] focus-visible-ring"
               >
-                HOME
+                <span className="relative z-10 block">HOME</span>
               </Link>
 
-              {navigationGroups.map((group, index) => (
-                <details key={group.id} className="group border-t border-white/5 py-1" open={index === 0}>
-                  <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg px-3 py-3 text-left text-sm font-medium text-foreground transition-colors hover:bg-primary/10 focus-visible-ring [&::-webkit-details-marker]:hidden">
-                    {group.label}
-                    <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" aria-hidden="true" />
+              {navigationGroups.map((group) => (
+                <details key={group.id} className="group/mobile-group -ml-6 border-t border-white/5 py-1">
+                  <summary
+                    style={LINK_TOKENS}
+                    className="flex cursor-pointer list-none items-center justify-between rounded-lg border border-transparent bg-transparent px-3 py-3 text-left text-sm font-medium text-foreground transition-colors duration-200 hover:border-primary/45 hover:bg-gradient-to-br hover:from-primary/15 hover:to-violet-500/10 hover:text-foreground hover:shadow-[0_0_24px_-6px_hsl(var(--primary)/0.55)] focus-visible-ring [&::-webkit-details-marker]:hidden"
+                  >
+                    <span className="relative z-10">{group.label}</span>
+                    <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open/mobile-group:rotate-180" aria-hidden="true" />
                   </summary>
-                  <div className="space-y-1 pb-2 pl-3">
+                  <div className="relative space-y-0.5 pb-2 pl-3">
+                    <span
+                      className="absolute bottom-1 left-[7px] top-1 w-px bg-white/10"
+                      aria-hidden="true"
+                    />
                     {group.items.map((item) => (
                       <Link
                         key={item.href}
                         href={item.href}
-                        className="block rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground focus-visible-ring"
+                        style={LINK_TOKENS}
+                        className="toc-link relative block rounded-lg border border-transparent bg-transparent px-3 py-1.5 text-sm leading-snug text-muted-foreground transition-colors duration-200 hover:border-primary/45 hover:bg-gradient-to-br hover:from-primary/15 hover:to-violet-500/10 hover:text-foreground hover:shadow-[0_0_24px_-6px_hsl(var(--primary)/0.55)] focus-visible-ring"
                       >
-                        {item.label}
+                        <span className="relative z-10 block truncate">{item.label}</span>
                       </Link>
                     ))}
                   </div>
