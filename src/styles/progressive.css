@@ -114,8 +114,10 @@ body.mobile-contents-open {
 }
 
 .toc-link[data-active='true'] {
-  border-color: hsl(var(--primary));
+  border-color: var(--toc-border);
   color: hsl(var(--foreground));
+  background-image: linear-gradient(135deg, var(--toc-from), var(--toc-to));
+  box-shadow: var(--toc-shadow);
 }
 
 .mobile-scroll-actions {

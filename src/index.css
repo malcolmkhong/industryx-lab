@@ -32,7 +32,12 @@
     --sidebar-accent-foreground: 0 0% 98%;
     --sidebar-border: 232 14% 15%;
     --sidebar-ring: 232 90% 76%;
-  }
+
+        /* Jump-to (TableOfContents) accent gradient + glow */
+        --toc-accent-from: 232 90% 76%;   /* brand periwinkle */
+        --toc-accent-to: 268 70% 65%;     /* soft violet, complementary tail */
+        --toc-glow: 232 90% 76%;          /* matches --primary */
+      }
   
   /* Color scheme for dark mode */
   :root {
