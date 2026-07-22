@@ -1,0 +1,35 @@
+# Dependencies and builds
+node_modules/
+dist/
+out/
+.next/
+coverage/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Tool caches and logs
+*.log
+.eslintcache
+.vite/
+.lighthouseci/
+*.tsbuildinfo
+
+# Agent directories
+.agnes/
+.codex/
+.stability/
+.stitch/
+.zed/
+
+# Editor and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Output directories
+.playwright-out/
+.vercel/

@@ -1,0 +1,37 @@
+{
+  "context_servers": {
+    "stability-sd35-large-turbo": {
+      "command": "node",
+      "args": ["A:/kimi/app/scripts/stability-sd35-mcp/server.js"],
+      "env": {
+        "STABILITY_AI_API_KEY": "sk-8Np51XswSERettS5b0lkxlXM1qfEOTRPTZ954llDMZVMZsox",
+        "IMAGE_STORAGE_DIRECTORY": "A:/kimi/app/.stability/3d/input"
+      }
+    },
+    "stability-fast-3d": {
+      "command": "node",
+      "args": ["A:/kimi/app/scripts/stability-3d-mcp/server.js"],
+      "env": {
+        "STABILITY_AI_API_KEY": "sk-8Np51XswSERettS5b0lkxlXM1qfEOTRPTZ954llDMZVMZsox",
+        "IMAGE_STORAGE_DIRECTORY": "A:/kimi/app/.stability/3d"
+      }
+    },
+    "stability-point-aware-3d": {
+      "command": "node",
+      "args": ["A:/kimi/app/scripts/stability-point-aware-3d-mcp/server.js"],
+      "env": {
+        "STABILITY_AI_API_KEY": "sk-8Np51XswSERettS5b0lkxlXM1qfEOTRPTZ954llDMZVMZsox",
+        "IMAGE_STORAGE_DIRECTORY": "A:/kimi/app/.stability/3d/point-aware"
+      }
+    },
+    "blender": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "C:\\blender_mcp\\mcp",
+        "run",
+        "blender-mcp"
+      ]
+    }
+  }
+}
