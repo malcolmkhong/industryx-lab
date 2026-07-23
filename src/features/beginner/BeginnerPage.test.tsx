@@ -21,8 +21,8 @@ describe('Beginner page', () => {
   it('keeps the long guide outside the React client bundle', () => {
     for (const file of [
       'src/features/beginner/BeginnerPage.tsx',
-      'src/features/beginner/components/StageSection.tsx',
-      'src/features/beginner/components/CodeCard.tsx',
+      'src/features/beginner/components/stages/StageSection.tsx',
+      'src/features/beginner/components/stages/CodeCard.tsx',
       'src/components/content/TableOfContents.tsx',
     ]) {
       const source = readFileSync(join(process.cwd(), file), 'utf8')

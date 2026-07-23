@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen, within, act } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { SafeBuildLoop } from './SafeBuildLoop'
-import { safeBuildLoop } from '../content'
+import { safeBuildLoop } from '../../content'
 
 afterEach(cleanup)
 
