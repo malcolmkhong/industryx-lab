@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ["class"],
-  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
       colors: {
@@ -58,6 +58,51 @@ export default {
       },
       boxShadow: {
         xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+        elevated: "0 18px 44px -28px hsl(var(--primary) / 0.7)",
+        floating: "0 32px 90px -24px rgba(0, 0, 0, 0.85)",
+        ambient: "0 2px 12px rgba(0, 0, 0, 0.04)",
+        deep: "0 40px 100px -30px rgba(0, 0, 0, 0.9)",
+      },
+      zIndex: {
+        base: "var(--z-base)",
+        content: "var(--z-content)",
+        header: "var(--z-header)",
+        progress: "var(--z-progress)",
+        nav: "var(--z-nav)",
+        floating: "var(--z-floating)",
+        banner: "var(--z-banner)",
+        modal: "var(--z-modal)",
+        skiplink: "var(--z-skiplink)",
+      },
+      letterSpacing: {
+        "eyebrow-tight": "var(--tracking-eyebrow-tight)",
+        "eyebrow-default": "var(--tracking-eyebrow-default)",
+        eyebrow: "var(--tracking-eyebrow)",
+        "eyebrow-loose": "var(--tracking-eyebrow-loose)",
+        display: "var(--tracking-display)",
+      },
+      fontSize: {
+        nano: ["0.625rem", { lineHeight: "1rem" }],
+        micro: ["0.6875rem", { lineHeight: "1rem" }],
+        compact: ["0.78125rem", { lineHeight: "1.125rem" }],
+        "mockup-2xs": ["10px", { lineHeight: "1.4" }],
+        "mockup-xs": ["10.5px", { lineHeight: "1.4" }],
+        "mockup-sm": ["11px", { lineHeight: "1.5" }],
+        "mockup-md": ["11.5px", { lineHeight: "1.5" }],
+        "mockup-lg": ["12px", { lineHeight: "1.5" }],
+        "mockup-xl": ["12.5px", { lineHeight: "1.55" }],
+        "display-lg": [
+          "2.75rem",
+          { lineHeight: "1.1", letterSpacing: "var(--tracking-display)" },
+        ],
+      },
+      transitionDuration: {
+        fast: "var(--motion-fast)",
+        base: "var(--motion-base)",
+        slow: "var(--motion-slow)",
+        slower: "var(--motion-slower)",
+        press: "var(--motion-press)",
+        pop: "var(--motion-pop)",
       },
       keyframes: {
         "accordion-down": {
@@ -81,4 +126,4 @@ export default {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};

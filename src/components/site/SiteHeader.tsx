@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { MoonMark } from '@/components/MoonMark'
+import { MoonMark } from '@/components/site/MoonMark'
 import { routePaths } from '@/config/routes'
 import { siteConfig } from '@/config/site'
 import { MobileMenuDropdown } from './MobileMenuDropdown'

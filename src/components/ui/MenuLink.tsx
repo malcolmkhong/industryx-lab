@@ -25,7 +25,7 @@ export function MenuLink({ href, label, size = 'sm', className = '', ...rest }: 
       href={href}
       style={TOC_LINK_TOKENS}
       className={[
-        'toc-link relative block rounded-lg border border-transparent bg-transparent text-muted-foreground transition-colors duration-200 focus-visible-ring',
+        'toc-link relative block rounded-lg border border-transparent bg-transparent text-muted-foreground transition-colors duration-base focus-visible-ring',
         TOC_LINK_SIZE_CLASSES[size],
         className,
       ]

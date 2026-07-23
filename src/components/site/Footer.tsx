@@ -1,5 +1,5 @@
 import { Github } from 'lucide-react'
-import { MoonMark } from '@/components/MoonMark'
+import { MoonMark } from '@/components/site/MoonMark'
 import { externalLinks, siteConfig } from '@/config/site'
 
 export function Footer() {

@@ -5,8 +5,8 @@ import { CookieConsent } from '@/components/consent/CookieConsent'
 import { PageShell } from '@/components/site/PageShell'
 import { siteConfig } from '@/config/site'
 import '@/index.css'
-import '@/styles/progressive.css'
-import '@/styles/home-motion.css'
+import '@/styles/components/progressive.css'
+import '@/styles/motion/home-motion.css'
 
 export const viewport: Viewport = {
   colorScheme: 'dark',
