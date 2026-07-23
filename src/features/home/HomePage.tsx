@@ -1,12 +1,12 @@
 import { EditorialByline } from '@/components/seo/EditorialByline'
-import { Hero } from './components/Hero'
-import { Stats } from './components/Stats'
-import { Desktop } from './components/Desktop'
-import { Features } from './components/Features'
-import { Install } from './components/Install'
-import { Banner } from './components/Banner'
-import { Invite } from './components/Invite'
-import { MobileCta } from './components/MobileCta'
+import { Hero } from './components/sections/Hero'
+import { Stats } from './components/sections/Stats'
+import { Desktop } from './components/sections/Desktop'
+import { Features } from './components/sections/Features'
+import { Install } from './components/sections/Install'
+import { Banner } from './components/sections/Banner'
+import { Invite } from './components/cta/Invite'
+import { MobileCta } from './components/sections/MobileCta'
 
 export function HomePage() {
   return (

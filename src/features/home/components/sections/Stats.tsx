@@ -1,4 +1,4 @@
-import { Reveal } from '@/components/Reveal'
+import { Reveal } from '@/components/content/Reveal'
 
 const STATS = [
   {
@@ -35,13 +35,13 @@ export function Stats() {
             className="flex flex-col items-center gap-2 px-5 py-7 text-center sm:px-6 sm:py-10">
             <dl data-testid="verified-statistic" className="flex flex-col items-center gap-2">
               <dt className="sr-only">{stat.label}</dt>
-              <dd className="font-mono text-3xl font-semibold tracking-tight text-foreground sm:text-4xl" aria-label={stat.value}>
+              <dd className="font-mono text-3xl font-semibold tracking-display text-foreground sm:text-4xl" aria-label={stat.value}>
                 {stat.value}
               </dd>
               <dd className="text-xs leading-relaxed text-muted-foreground sm:text-sm">
                 {stat.label}
               </dd>
-              <dd className="text-[11px] leading-relaxed text-muted-foreground/70">
+              <dd className="text-mockup-sm leading-relaxed text-muted-foreground/70">
                 <a
                   href={stat.source}
                   target="_blank"

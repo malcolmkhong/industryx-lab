@@ -4,7 +4,7 @@ import { comingSoonRoutes } from '@/config/routes'
 import { siteConfig } from '@/config/site'
 import { beginnerPageContent, beginnerStages } from '@/features/beginner/content'
 import { createBeginnerStructuredData } from '@/features/beginner/seo'
-import { Stats } from '@/features/home/components/Stats'
+import { Stats } from '@/features/home/components/sections/Stats'
 import { createHomeStructuredData } from '@/features/home/seo'
 import { createComingSoonPageMetadata } from '@/lib/seo/comingSoon'
 

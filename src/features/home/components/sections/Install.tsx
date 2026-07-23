@@ -1,10 +1,10 @@
 import Image from 'next/image'
-import { CopyButton } from '@/components/CopyButton'
-import { Reveal } from '@/components/Reveal'
-import { SectionHeading } from '@/components/SectionHeading'
+import { CopyButton } from '@/components/ui/CopyButton'
+import { Reveal } from '@/components/content/Reveal'
+import { SectionHeading } from '@/components/content/SectionHeading'
 import { installCommands } from '@/config/site'
 import moonCoder from '@/assets/moon-coder.webp'
-import { ActivateInvitation } from './ActivateInvitation'
+import { ActivateInvitation } from '../cta/ActivateInvitation'
 
 export function Install() {
   return (
@@ -43,9 +43,9 @@ export function Install() {
                     {installCommands.map((cmd) => (
                       <div
                         key={cmd.id}
-                        className="flex items-center gap-3 rounded-xl border border-white/8 bg-background/70 px-4 py-3">
+                        className="flex items-center gap-3 rounded-xl border border-white/10 bg-background/70 px-4 py-3">
                         <div className="flex min-w-0 flex-1 flex-col gap-1">
-                          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">
+                          <span className="font-mono text-mockup-2xs uppercase tracking-eyebrow text-muted-foreground/70">
                             {cmd.label}
                           </span>
                           <code className="block max-w-full overflow-x-auto whitespace-nowrap font-mono text-xs text-foreground/85 sm:text-sm">
@@ -98,7 +98,7 @@ export function Install() {
                 <Image
                   src={moonCoder}
                   alt="An astronaut coding on a crescent moon"
-                  className="relative w-full rounded-3xl border border-white/10 object-cover shadow-[0_24px_80px_-24px_rgba(0,0,0,0.8)]"
+                  className="relative w-full rounded-3xl border border-white/10 object-cover shadow-floating"
                   width={1024}
                   height={1024}
                   loading="lazy"

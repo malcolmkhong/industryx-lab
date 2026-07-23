@@ -30,7 +30,7 @@ describe('Hero', () => {
     expect(within(terminal).getByText(/20 tests passed/)).toBeInTheDocument()
 
     const source = readFileSync(
-      join(process.cwd(), 'src/features/home/components/CliAnimation.tsx'),
+      join(process.cwd(), 'src/features/home/components/animations/CliAnimation.tsx'),
       'utf8',
     )
     expect(source).toMatch(/^['"]use client['"]/)

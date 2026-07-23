@@ -1,8 +1,8 @@
-import { CheckCircle2 } from 'lucide-react'
-import { Reveal } from '@/components/Reveal'
-import { SectionHeading } from '@/components/SectionHeading'
-import { desktopSectionContent } from '../content/desktop'
-import { KimiDesktop } from './KimiDesktop'
+import { CheckCircle2 } from "lucide-react";
+import { Reveal } from "@/components/content/Reveal";
+import { SectionHeading } from "@/components/content/SectionHeading";
+import { desktopSectionContent } from "../../content/desktop";
+import { KimiDesktop } from "../animations/KimiDesktop";
 
 export function Desktop() {
   return (
@@ -25,7 +25,9 @@ export function Desktop() {
                     aria-hidden="true"
                   />
                   <div>
-                    <h3 className="text-sm font-semibold text-foreground">{point.title}</h3>
+                    <h3 className="text-sm font-semibold text-foreground">
+                      {point.title}
+                    </h3>
                     <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                       {point.description}
                     </p>
@@ -44,5 +46,5 @@ export function Desktop() {
         </Reveal>
       </div>
     </section>
-  )
+  );
 }

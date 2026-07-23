@@ -26,7 +26,7 @@ describe('MobileCta', () => {
 
   it('reserves the safe area without falling back to a legacy bottom-3 utility', () => {
     const source = readFileSync(
-      join(process.cwd(), 'src/features/home/components/MobileCta.tsx'),
+      join(process.cwd(), 'src/features/home/components/sections/MobileCta.tsx'),
       'utf8',
     )
 
