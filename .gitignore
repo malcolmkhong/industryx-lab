@@ -20,6 +20,14 @@ coverage/
 .lighthouseci/
 *.tsbuildinfo
 
+# Local debug scratch (Puppeteer screenshots, Stitch references, stability scripts)
+.playwright-out/
+.stability/
+.stitch/
+scripts/stability-3d-mcp/
+scripts/stability-point-aware-3d-mcp/
+scripts/stability-sd35-mcp/
+
 # Editors and operating systems
 .idea/
 .vscode/
