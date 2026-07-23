@@ -28,6 +28,9 @@ scripts/stability-3d-mcp/
 scripts/stability-point-aware-3d-mcp/
 scripts/stability-sd35-mcp/
 
+# Windows reserved device name (0-byte artifact created by shell redirection)
+/nul
+
 # Editors and operating systems
 .idea/
 .vscode/
