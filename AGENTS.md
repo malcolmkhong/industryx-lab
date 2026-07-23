@@ -114,21 +114,22 @@ Rules:
 
 ### 1.4 Where to add code (decision table)
 
-| Adding…                      | Put it in                                                                                                      | Follow the pattern of                                        |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| A new finished route         | `src/app/<route>/page.tsx` (metadata in the same file)                                                         | `src/app/build-project/beginner/page.tsx`                    |
-| A finished route placeholder | `src/app/<route>/page.tsx` returning `ComingSoonRouteView`                                                     | `src/app/build-project/intermediate/page.tsx`                |
-| A page section on home       | `src/features/home/components/sections/<Name>.tsx`                                                             | `src/features/home/components/sections/Features.tsx`         |
-| A home animation             | `src/features/home/components/animations/<Name>.tsx`                                                           | `src/features/home/components/animations/CliAnimation.tsx`   |
-| A home CTA                   | `src/features/home/components/cta/<Name>.tsx`                                                                  | `src/features/home/components/cta/Invite.tsx`                |
-| A beginner section           | `src/features/beginner/components/sections/<Name>.tsx`                                                         | `src/features/beginner/components/sections/BeginnerHero.tsx` |
-| A beginner interactive stage | `src/features/beginner/components/stages/<Name>.tsx`                                                           | `src/features/beginner/components/stages/SafeBuildLoop.tsx`  |
-| A shared hook                | `src/hooks/<name>.ts` with `.test.tsx` beside it                                                               | `src/hooks/useBuildLoop.ts`                                  |
-| A reusable primitive         | `src/components/ui/<Name>.tsx`                                                                                 | `src/components/ui/empty-state.tsx`                          |
-| A new analytics event        | Add to `essentialEventNames` in `src/lib/analytics/events.ts` AND emit `data-analytics-event` from a component | `src/lib/analytics/events.ts`                                |
-| Browser-only behavior        | `src/lib/browser/<concern>.ts`, wired from `progressiveEnhancements.ts`                                        | `src/lib/browser/dropdownNavigation.ts`                      |
-| Structured data for a page   | `src/lib/seo/schema.ts` plus a feature builder `src/features/<feature>/seo.ts`                                 | `src/features/beginner/seo.ts`                               |
-| Site-wide style or token     | `src/index.css` (CSS variables) and `tailwind.config.js` (utilities)                                           | Existing tokens in `index.css`                               |
+| Adding…                      | Put it in                                                                                                                   | Follow the pattern of                                        |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| A new finished route         | `src/app/<route>/page.tsx` (metadata in the same file)                                                                      | `src/app/build-project/beginner/page.tsx`                    |
+| A finished route placeholder | `src/app/<route>/page.tsx` returning `ComingSoonRouteView`                                                                  | `src/app/build-project/intermediate/page.tsx`                |
+| A page section on home       | `src/features/home/components/sections/<Name>.tsx`                                                                          | `src/features/home/components/sections/Features.tsx`         |
+| A home animation             | `src/features/home/components/animations/<Name>.tsx`                                                                        | `src/features/home/components/animations/CliAnimation.tsx`   |
+| A home CTA                   | `src/features/home/components/cta/<Name>.tsx`                                                                               | `src/features/home/components/cta/Invite.tsx`                |
+| A beginner section           | `src/features/beginner/components/sections/<Name>.tsx`                                                                      | `src/features/beginner/components/sections/BeginnerHero.tsx` |
+| A beginner interactive stage | `src/features/beginner/components/stages/<Name>.tsx`                                                                        | `src/features/beginner/components/stages/SafeBuildLoop.tsx`  |
+| A shared hook                | `src/hooks/<name>.ts` with `.test.tsx` beside it                                                                            | `src/hooks/useBuildLoop.ts`                                  |
+| A reusable primitive         | `src/components/ui/<Name>.tsx`                                                                                              | `src/components/ui/empty-state.tsx`                          |
+| A new analytics event        | Add to `essentialEventNames` in `src/lib/analytics/events.ts` AND emit `data-analytics-event` from a component              | `src/lib/analytics/events.ts`                                |
+| Browser-only behavior        | `src/lib/browser/<concern>.ts`, wired from `progressiveEnhancements.ts`                                                     | `src/lib/browser/dropdownNavigation.ts`                      |
+| Structured data for a page   | `src/lib/seo/schema.ts` plus a feature builder `src/features/<feature>/seo.ts`                                              | `src/features/beginner/seo.ts`                               |
+| Site-wide style or token     | `src/index.css` (CSS variables) and `tailwind.config.js` (utilities)                                                        | Existing tokens in `index.css`                               |
+| Any change to GA4 wiring     | Read `docs/ga4-compliance.md` first; update `CookieConsent` and `deferredScript.ts` to keep the consent contract consistent | `docs/ga4-compliance.md`                                     |
 
 ---
 
@@ -387,15 +388,23 @@ Do not duplicate paths, URLs, commands, labels, section IDs, metadata, or reusab
 - Read consent state via `useSyncExternalStore` (server snapshot always hidden; client snapshot shown only after hydration when the user has not decided and DNT is off).
 - Never use `typeof window` branches inside React render or `useState` initializers to decide visibility.
 
+**Mandatory:** before touching `CookieConsent.tsx`, `consent.ts`, or `deferredScript.ts`, read [`docs/ga4-compliance.md`](./docs/ga4-compliance.md). The document is the contract for consent state shape, region defaults, expiry (395 days), the revoke flow, and the storage payload `{ state, expiresAt }`. Do not break the contract.
+
 For storage key, event names, and gtag wiring, see `info.md` and `src/components/consent/CookieConsent.tsx`.
 
 ## Analytics
 
 - The allowlist in `src/lib/analytics/events.ts` (`essentialEventNames`) is the only source of truth for event names.
 - New event names must be added to the allowlist **and** emitted as `data-analytics-event` from a component. The `rendered-events.test.ts` guard fails the build if any emitted value is not in the allowlist.
-- Destinations are sanitized through `sanitizeDestination` (origin + pathname only).
+- Destinations are sanitized through `sanitizeDestination` (origin + pathname only, query and fragment stripped). Never log prompts, form values, email addresses, or free-form text.
 - Reading milestones fire at 25 / 50 / 75 / 100 percent, deduped per page view.
 - Stage tracking is owned by the Beginner feature and feeds `stage_complete` events.
+- Every new page MUST emit at least one `data-analytics-event` on its primary call-to-action, or explicitly mark itself "untracked" in the page metadata comment.
+- For SPA route changes (Next.js client-side navigation), the `PageViewTracker` mounted in `src/app/layout.tsx` automatically emits `page_view` for the new path. Do not add manual `trackPageView` calls inside page components unless bypassing the layout.
+
+**Mandatory:** every GA4 wiring change must keep [`docs/ga4-compliance.md`](./docs/ga4-compliance.md) in sync. The document lists the required privacy parameters (`url_passthrough`, `ads_data_redaction`, `wait_for_update`), the EEA+UK+CH region override list, and the consent-expiry rule. Any drift between the implementation and the document fails code review.
+
+For the current allowlist and AI referral domains, see `info.md`.
 
 ## Empty state
 
