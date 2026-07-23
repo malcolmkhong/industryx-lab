@@ -29,12 +29,14 @@ export const metadata: Metadata = {
   publisher: siteConfig.organization.name,
   icons: {
     icon: [
-      { url: "/moon-mark.svg", type: "image/svg+xml" },
+      { url: "/moon-mark.png", type: "image/png", sizes: "any" },
+      { url: "/favicon-96x96.png", type: "image/png", sizes: "96x96" },
       { url: "/favicon.ico", sizes: "any" },
     ],
-    shortcut: ["/moon-mark.svg", "/favicon.ico"],
-    apple: "/moon-mark.svg",
+    shortcut: "/moon-mark.png",
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
+  manifest: "/site.webmanifest",
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION,
     other: process.env.BING_SITE_VERIFICATION
