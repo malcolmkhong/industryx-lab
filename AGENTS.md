@@ -37,6 +37,20 @@ Use this sequence for every change:
 
 If a step reveals a missing primitive (token, component, hook, utility), add it at the canonical layer before duplicating it locally.
 
+### Small-update shortcut
+
+A change qualifies as a **small update** when it meets all of the following:
+
+- Touches one file (or adds a one-line entry to an existing list).
+- Does not change a public contract: same exports, same props, same routes, same event names, same token names.
+- Does not require test changes (existing tests still pass unchanged).
+- Does not require documentation changes outside the source-of-truth file itself.
+- Affects no user-visible behavior — copy edits, comment updates, robots.txt allowlist entries, and config additions all qualify. Behavior changes do not.
+
+For small updates, run `npm run lint` as the minimal gate (≈5s, catches import, syntax, type, and lint regressions). Then commit and push. Skip the per-step inspection and review of the Code Relationship Analysis Protocol because the change is already constrained to one file with no new dependencies.
+
+If a small update turns out to require test changes, a second file, or a public-contract change, stop and use the full workflow with `npm run check`.
+
 ---
 
 ## §1. File Organization Framework
