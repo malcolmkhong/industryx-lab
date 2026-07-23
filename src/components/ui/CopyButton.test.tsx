@@ -8,7 +8,7 @@ afterEach(cleanup)
 
 describe('CopyButton', () => {
   it('renders copy data without adding a React client boundary', () => {
-    const source = readFileSync(join(process.cwd(), 'src/components/CopyButton.tsx'), 'utf8')
+    const source = readFileSync(join(process.cwd(), 'src/components/ui/CopyButton.tsx'), 'utf8')
 
     render(<CopyButton text="npm run dev" label="Copy command" />)
 
