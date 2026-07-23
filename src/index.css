@@ -1,4 +1,4 @@
-@import './styles/toc.css';
+@import './styles/components/toc.css';
 
 @tailwind base;
 @tailwind components;
@@ -35,12 +35,66 @@
     --sidebar-border: 232 14% 15%;
     --sidebar-ring: 232 90% 76%;
 
-        /* Jump-to (TableOfContents) accent gradient + glow */
-        --toc-accent-from: 232 90% 76%;   /* brand periwinkle */
-        --toc-accent-to: 268 70% 65%;     /* soft violet, complementary tail */
-        --toc-glow: 232 90% 76%;          /* matches --primary */
-      }
-  
+    /* Jump-to (TableOfContents) accent gradient + glow */
+    --toc-accent-from: 232 90% 76%;
+    /* brand periwinkle */
+    --toc-accent-to: 268 70% 65%;
+    /* soft violet, complementary tail */
+    --toc-glow: 232 90% 76%;
+    /* matches --primary */
+
+    /* Outline + surface overlay tokens */
+    --outline-alpha: 0.1;
+    --outline-alpha-strong: 0.15;
+    --surface-overlay: 0.6;
+    --surface-overlay-soft: 0.4;
+    --surface-overlay-strong: 0.7;
+    --workspace-surface: 0.05;
+    --workspace-surface-strong: 0.085;
+
+    /* Tracking tokens */
+    --tracking-eyebrow-tight: 0.12em;
+    --tracking-eyebrow-default: 0.14em;
+    --tracking-eyebrow: 0.16em;
+    --tracking-eyebrow-loose: 0.18em;
+    --tracking-display: -0.025em;
+
+    /* Neon palette tokens */
+    --neon-blue: 220 100% 60%;
+    --neon-violet: 280 90% 65%;
+    --neon-violet-soft: 280 80% 65%;
+    --neon-pink: 330 95% 65%;
+
+    /* Z-index scale tokens */
+    --z-base: 0;
+    --z-content: 10;
+    --z-header: 50;
+    --z-progress: 55;
+    --z-nav: 60;
+    --z-floating: 70;
+    --z-banner: 80;
+    --z-modal: 90;
+    --z-skiplink: 100;
+
+    /* Motion tokens */
+    --motion-fast: 150ms;
+    --motion-base: 200ms;
+    --motion-slow: 300ms;
+    --motion-slower: 500ms;
+    --motion-press: 160ms;
+    --motion-pop: 200ms;
+    --motion-pulse: 2.4s;
+    --motion-glow: 2.8s;
+    --motion-border: 3s;
+    --motion-flow: 4s;
+    --motion-drift: 8s;
+    --motion-ambient: 9s;
+    --motion-cycle: 12s;
+    --motion-enter: 420ms;
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-emphasized: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
   /* Color scheme for dark mode */
   :root {
     color-scheme: dark;
@@ -51,14 +105,28 @@
   * {
     @apply border-border;
   }
+
   html {
     scroll-behavior: smooth;
     scrollbar-gutter: stable;
   }
+
+  html,
+  body {
+    min-width: 320px;
+    min-height: 500px;
+  }
+
+  body {
+    min-height: max(100dvh, 500px);
+    overflow-x: clip;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
     }
+
     *,
     *::before,
     *::after {
@@ -68,6 +136,7 @@
       scroll-behavior: auto !important;
     }
   }
+
   body {
     @apply bg-background text-foreground;
     font-family:
@@ -82,16 +151,20 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
+
   ::selection {
     background: hsl(var(--primary) / 0.3);
     color: hsl(var(--foreground));
   }
+
   ::-webkit-scrollbar {
     width: 10px;
   }
+
   ::-webkit-scrollbar-track {
     background: hsl(var(--background));
   }
+
   ::-webkit-scrollbar-thumb {
     background: hsl(var(--border));
     border-radius: 8px;
@@ -102,20 +175,25 @@
   .pb-safe-2 {
     padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
   }
+
   .pt-safe-4 {
     /* When the device has no notch, env() resolves to 0 and max() falls back
        to the safe base. With a notch, the safe-area wins. */
     padding-top: max(env(safe-area-inset-top), 1rem);
   }
+
   .pt-safe-header {
     padding-top: max(env(safe-area-inset-top), 4rem);
   }
+
   .pb-safe-5 {
     padding-bottom: calc(5rem + env(safe-area-inset-bottom));
   }
+
   .pb-safe-6 {
     padding-bottom: calc(6rem + env(safe-area-inset-bottom));
   }
+
   .bottom-safe-3 {
     bottom: calc(0.75rem + env(safe-area-inset-bottom));
   }
@@ -126,14 +204,16 @@
       linear-gradient(to bottom, rgb(255 255 255 / 0.035) 1px, transparent 1px);
     background-size: 54px 54px;
   }
+
   .mask-fade-edges {
     -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 30%, transparent 75%);
     mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 30%, transparent 75%);
   }
+
   .text-glow {
     text-shadow: 0 0 40px hsl(var(--primary) / 0.45);
   }
-  
+
   /* Focus visible utility */
   .focus-visible-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
@@ -161,6 +241,7 @@
   .code-surface {
     background-color: hsl(232 30% 3.4%);
   }
+
   .code-text {
     color: hsl(220 18% 92%);
     overflow-wrap: anywhere;
@@ -170,149 +251,155 @@
   /* Interactive card — hover affordance for non-button surfaces
        (prerequisite, glossary, common-problem cards). Stays within brand
        palette, never shifts layout bounds (skill: "Stable Interaction States"). */
-    .interactive-card {
-      transition-property: border-color, background-color, color;
-      transition-duration: 180ms;
-      transition-timing-function: ease-out;
-    }
-    .interactive-card:hover {
-      border-color: hsl(var(--primary) / 0.35);
-      background-color: hsl(var(--card) / 0.7);
-    }
+  .interactive-card {
+    transition-property: border-color, background-color, color;
+    transition-duration: 180ms;
+    transition-timing-function: ease-out;
+  }
 
-    /* Safe build loop pointer — a triangle that sits on the top border of the
+  .interactive-card:hover {
+    border-color: hsl(var(--primary) / 0.35);
+    background-color: hsl(var(--card) / 0.7);
+  }
+
+  /* Safe build loop pointer — a triangle that sits on the top border of the
        "How to run" panel and aligns with the active step card. The active step
        index is supplied via the inline --safe-loop-pointer-index custom
        property; the position is computed per-breakpoint so the triangle stays
        centered above whichever column holds the active step. */
-    .safe-loop-pointer {
-      /* Horizontal offset as a percentage of the pointer track width.
+  .safe-loop-pointer {
+    /* Horizontal offset as a percentage of the pointer track width.
          Defaults assume the desktop 4-column layout (lg). */
-      --safe-loop-cols: 4;
-      left: calc((var(--safe-loop-pointer-index, 0) + 0.5) * (100% / var(--safe-loop-cols)));
-      transition: left 500ms cubic-bezier(0.4, 0, 0.2, 1);
+    --safe-loop-cols: 4;
+    left: calc((var(--safe-loop-pointer-index, 0) + 0.5) * (100% / var(--safe-loop-cols)));
+    transition: left 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @media (max-width: 1023px) {
+
+    /* Tailwind `lg` breakpoint ends at 1023.98px. Use 2 columns at this range. */
+    .safe-loop-pointer {
+      --safe-loop-cols: 2;
     }
-    @media (max-width: 1023px) {
-      /* Tailwind `lg` breakpoint ends at 1023.98px. Use 2 columns at this range. */
-      .safe-loop-pointer {
-        --safe-loop-cols: 2;
-      }
+  }
+
+  @media (max-width: 639px) {
+
+    /* Tailwind `sm` breakpoint starts at 640. Single column on mobile. */
+    .safe-loop-pointer {
+      --safe-loop-cols: 1;
     }
-    @media (max-width: 639px) {
-      /* Tailwind `sm` breakpoint starts at 640. Single column on mobile. */
-      .safe-loop-pointer {
-        --safe-loop-cols: 1;
-      }
-    }
+  }
 
-    /* Safe build loop step — small click-feedback press on the card itself. */
-        .safe-loop-step:active {
-          transform: translateY(0) scale(0.99);
-        }
+  /* Safe build loop step — small click-feedback press on the card itself. */
+  .safe-loop-step:active {
+    transform: translateY(0) scale(0.99);
+  }
 
-        /* Neon-button — an interactive button or anchor with a continuously
-                                       circulating conic-gradient border, a translucent glass
-                                       layer on top of the border, and a soft outer glow. The
-                                       border and the glass are both rendered as 2px rings just
-                                       outside the button using ::before and ::after pseudo
-                                       elements, so they align pixel-perfect. The conic-gradient
-                                       angle is bound to a typed CSS variable so the keyframe
-                                       can interpolate it smoothly. Used by the Activate
-                                       Invitation and Redeem Invitation CTAs. */
-                                    @property --neon-angle {
-                                      syntax: '<angle>';
-                                      inherits: false;
-                                      initial-value: 0deg;
-                                    }
-                                    .neon-button {
-                              position: relative;
-                              isolation: isolate;
+  /* Neon-button — an interactive button or anchor with a continuously
+                                       sweeping shine border, a translucent glass layer on
+                                       top of the border, and a soft outer glow. The border and
+                                       the glass are both rendered as 2px rings just outside the
+                                       button using ::before and ::after pseudo elements, so
+                                       they align pixel-perfect. Used by the Activate Invitation
+                                       and Redeem Invitation CTAs. */
+  .neon-button {
+    position: relative;
+    isolation: isolate;
 
-                              color: hsl(var(--primary-foreground));
-                              border-radius: 0.7rem;
-                              background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-radius: 0.7rem;
+    background: hsl(var(--primary));
 
-                              box-shadow:
-                                0 0 20px hsl(220 100% 60% / 0.25),
-                                0 0 40px hsl(280 90% 65% / 0.15);
+    box-shadow:
+      0 0 20px hsl(var(--neon-blue) / 0.25),
+      0 0 40px hsl(var(--neon-violet) / 0.15);
 
-                              transition:
-                                transform 160ms ease-out,
-                                box-shadow 200ms ease-out;
-                            }
-                            .neon-button::before {
-                              content: '';
-                              position: absolute;
-                              inset: -1px;
-                              z-index: 0;
-                              border-radius: calc(0.7rem - -1px);
-                              padding: 3px;
-                              background: conic-gradient(
-                                  from var(--neon-angle),
-                                  hsl(220 100% 60%),
-                                  hsl(180 100% 55%),
-                                  hsl(280 90% 65%),
-                                  hsl(330 95% 65%),
-                                  hsl(220 100% 60%)
-                                );
-                              -webkit-mask:
-                                linear-gradient(#fff 0 0) content-box,
-                                linear-gradient(#fff 0 0);
-                              -webkit-mask-composite: xor;
-                                      mask:
-                                linear-gradient(#fff 0 0) content-box,
-                                linear-gradient(#fff 0 0);
-                                      mask-composite: exclude;
-                              animation: neon-border-spin 3s linear infinite;
-                            }
-                            .neon-button::after {
-                              content: '';
-                              position: absolute;
-                              inset: -1px;
-                              z-index: 2;
-                              border-radius: calc(0.7rem - -1px);
-                              padding: 3px;
-                              background: hsl(var(--background) / 0.25);
-                              -webkit-mask:
-                                linear-gradient(#fff 0 0) content-box,
-                                linear-gradient(#fff 0 0);
-                              -webkit-mask-composite: xor;
-                                      mask:
-                                linear-gradient(#fff 0 0) content-box,
-                                linear-gradient(#fff 0 0);
-                                      mask-composite: exclude;
-                              pointer-events: none;
-                            }
-                            .neon-button > * {
-                              position: relative;
-                              z-index: 3;
-                            }
-                                        .neon-button:hover {
-                                  box-shadow:
-                                    0 0 20px hsl(220 100% 60% / 0.9),
-                                    0 0 40px hsl(280 80% 65% / 0.35),
-                                    0 0 60px hsl(330 95% 65% / 0.1);
-                                }
-                                .neon-button:active {
-                                  transform: translateY(1px) scale(0.99);
-                                }
-                              }
+    transition:
+      transform var(--motion-press) ease-out,
+      box-shadow var(--motion-pop) ease-out;
+  }
+
+  .neon-button::before {
+    content: '';
+    position: absolute;
+    inset: -0.5px;
+    z-index: 0;
+    border-radius: calc(0.7rem - -0.5px);
+    padding: 0.8px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        hsl(var(--neon-blue)) 20%,
+        hsl(180 100% 55%) 35%,
+        hsl(var(--neon-violet)) 50%,
+        hsl(var(--neon-pink)) 65%,
+        transparent 100%);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    animation: neon-shine-sweep 3s linear infinite;
+  }
+
+  .neon-button::after {
+    content: '';
+    position: absolute;
+    inset: -0.5px;
+    z-index: 2;
+    border-radius: calc(0.7rem - -0.5px);
+    padding: 0.8px;
+    background: hsl(var(--background) / 0.25);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .neon-button > * {
+    position: relative;
+    z-index: 3;
+  }
+
+  .neon-button:hover {
+    box-shadow:
+      0 0 20px hsl(var(--neon-blue) / 0.9),
+      0 0 40px hsl(var(--neon-violet-soft) / 0.35),
+      0 0 60px hsl(var(--neon-pink) / 0.1);
+  }
+
+  .neon-button:active {
+    transform: translateY(1px) scale(0.99);
+  }
+}
 
 @keyframes drift {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-12px);
   }
 }
 
 @keyframes pulse-soft {
+
   0%,
   100% {
     opacity: 0.5;
   }
+
   50% {
     opacity: 1;
   }
@@ -322,27 +409,30 @@
   0% {
     transform: translateX(-100%);
   }
+
   100% {
     transform: translateX(500%);
   }
 }
 
-@keyframes neon-border-spin {
-  from {
-    --neon-angle: 0deg;
+@keyframes neon-shine-sweep {
+  0% {
+    background-position: 100% 50%;
   }
 
-  to {
-    --neon-angle: 360deg;
+  100% {
+    background-position: -100% 50%;
   }
 }
 
 @keyframes industryx-glow {
+
   0%,
   100% {
     color: hsl(var(--primary) / 0.72);
     text-shadow: 0 0 5px hsl(var(--primary) / 0.12);
   }
+
   50% {
     color: hsl(var(--primary));
     text-shadow: 0 0 17px hsl(var(--primary) / 0.62);
@@ -352,22 +442,25 @@
 .animate-industryx-glow {
   color: hsl(var(--primary));
   transition:
-    color 180ms ease,
-    text-shadow 180ms ease;
+    color var(--motion-base) ease,
+    text-shadow var(--motion-base) ease;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .animate-drift {
-    animation: drift 8s ease-in-out infinite;
+    animation: drift var(--motion-drift) ease-in-out infinite;
   }
+
   .animate-pulse-soft {
-    animation: pulse-soft 2.4s ease-in-out infinite;
+    animation: pulse-soft var(--motion-pulse) ease-in-out infinite;
   }
+
   .flow-beam {
-    animation: flow-beam 4s linear infinite;
+    animation: flow-beam var(--motion-flow) linear infinite;
   }
+
   .animate-industryx-glow {
-    animation: industryx-glow 2.8s ease-in-out infinite;
+    animation: industryx-glow var(--motion-glow) ease-in-out infinite;
   }
 }
 
@@ -388,6 +481,7 @@
     opacity: 0;
     transform: translateY(1.5rem);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -395,16 +489,19 @@
 }
 
 @keyframes cli-sequence-cycle {
+
   0%,
   4% {
     opacity: 0;
     transform: translateY(0.25rem);
   }
+
   8%,
   88% {
     opacity: 1;
     transform: translateY(0);
   }
+
   96%,
   100% {
     opacity: 0;
@@ -413,7 +510,7 @@
 }
 
 .cli-sequence-line {
-  animation: cli-sequence-cycle 12s ease-out infinite both;
+  animation: cli-sequence-cycle var(--motion-cycle) ease-out infinite both;
   animation-delay: var(--cli-line-delay, 0ms);
 }
 
@@ -431,27 +528,33 @@
 
 /* Reduced motion: disable animations */
 @media (prefers-reduced-motion: reduce) {
+
   .animate-drift,
   .animate-pulse-soft {
     animation: none !important;
   }
+
   .flow-beam {
     animation: none !important;
   }
+
   .animate-industryx-glow {
     animation: none !important;
   }
+
   .reveal-on-scroll {
     animation: none !important;
     opacity: 1;
     transform: none;
   }
+
   .cli-sequence-line {
-      animation: none !important;
-      opacity: 1;
-      transform: none;
-    }
-    .neon-button {
-      animation: none !important;
-    }
+    animation: none !important;
+    opacity: 1;
+    transform: none;
   }
+
+  .neon-button {
+    animation: none !important;
+  }
+}
