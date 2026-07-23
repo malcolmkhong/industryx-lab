@@ -1,0 +1,404 @@
+{
+  "project": "kimi-beginner-guide-hub",
+  "plan_date": "2026-07-22",
+  "source_audits": [
+    "docs/audit/phase-1-audit.md",
+    "docs/audit/phase-2-audit.md",
+    "docs/audit/phase-3-audit.md"
+  ],
+  "status_legend": {
+    "not_started": "❌",
+    "in_progress": "⚙️",
+    "completed": "✅",
+    "blocked": "‼️"
+  },
+  "global_rules": {
+    "preserve_content": "Preserve all existing content, text, labels, structure, and user-facing behavior.",
+    "preserve_animation": "Do not break or alter the current animation logic, timing, sequence, triggers, transitions, or interaction behavior. Only centralize repeated values.",
+    "token_direction": "Tokens flow down: src/index.css + tailwind.config.js are the source of truth. Features read tokens, never define new :root CSS vars.",
+    "feature_isolation": "Delete src/features/<feature>/ = page no longer exists, but shared modules + other features still work. No cross-feature imports.",
+    "shared_modules_no_features": "src/components/*, src/lib, src/hooks, src/config cannot import from src/features/*.",
+    "app_route_thin": "src/app/<route>/page.tsx does 3 things only: import feature Page, pass props, add metadata. No JSX beyond <FeaturePage />.",
+    "feature_css_rule": "Feature CSS lives inside features/<feature>/ only when it is a truly standalone demo (e.g., coming-soon). Anything reusable belongs in src/styles/. Anything tokenized belongs in src/index.css.",
+    "styles_folder_organization": "Do not keep all style files directly inside one flat src/styles/ folder. Organize src/styles/ into clear subfolders by purpose.",
+    "inspect_first": "Before each refactor, inspect the full dependency chain (preceding and subsequent relationships, imports, shared utilities, styles, components, render flow) and identify which files depend on the target code and which files may be affected.",
+    "scope_constraint": "Do not rewrite, shorten, remove, or change any content unless explicitly requested.",
+    "naming_convention": "Use consistent folder and file names (kebab-case for filenames, PascalCase for component exports)."
+  },
+  "styles_folder_target_structure": {
+    "src/styles/": {
+      "motion/": ["home-motion.css", "coming-soon-motion.css"],
+      "components/": ["toc.css", "progressive.css"],
+      "tokens/": ["(future token-only sheets)"],
+      "index.css": "global entrypoint already exists at src/index.css, imports selected sheets"
+    }
+  },
+  "phases": [
+    {
+      "id": "P0",
+      "title": "Baseline + Dependency Map",
+      "status": "✅",
+      "phase": [
+        "✅"
+      ],
+      "key_points": [
+        "Run `npm run check` to establish green baseline (types, lint, tests, build, schema).",
+        "Inventory current files: 9 route entries in src/app/, 4 features (home, beginner, coming-soon, plus explore-agent/build-project routes that render Coming Soon).",
+        "Map current style files: src/index.css, src/styles/{toc,home-motion,progressive}.css, src/features/coming-soon/coming-soon.css.",
+        "Confirm dependency direction: src/app → src/features → src/components/{site,content,seo,analytics,ui} → src/lib + src/hooks + src/config.",
+        "Confirm tailwind.config.js location and current token mappings (slate base, new-york style, lucide icon library, cssVariables: true).",
+        "Confirm shadcn components.json aliases: components, utils, ui, lib, hooks.",
+        "List all callers of src/styles/toc.css (currently imported once via src/index.css).",
+        "List all consumers of `.toc-link` class (src/components/ui/TocLink.tsx, src/components/ui/MenuLink.tsx, src/components/content/TableOfContents.tsx).",
+        "Confirm no feature imports another feature (must verify with grep)."
+      ],
+      "remark": "everything good — preflight before any refactor"
+    },
+    {
+      "id": "P1",
+      "title": "Reorganize src/styles/ into Subfolders (no logic change)",
+      "status": "✅",
+      "blocked_by": ["P0"],
+      "phase": [
+        "✅"
+      ],
+      "key_points": [
+        "Move src/styles/toc.css → src/styles/components/toc.css (toc is a component visual, not a global motion token).",
+        "Move src/styles/home-motion.css → src/styles/motion/home-motion.css.",
+        "Move src/styles/progressive.css → src/styles/components/progressive.css (progressive enhancement for site shell + contents bar).",
+        "Move src/features/coming-soon/coming-soon.css → src/features/coming-soon/coming-soon.css (KEEP location — feature-specific standalone demo per AGENTS.md and global_rules).",
+        "Update src/index.css @import path: change `@import './styles/toc.css'` → `@import './styles/components/toc.css'`.",
+        "Verify no other file imports from src/styles/ (grep for `from '@/styles/` or relative imports).",
+        "Run `npm run check`. Expect zero diff in behavior.",
+        "Confirm zero rendering diff via static output inspection (CSS file content must be byte-identical, only paths change)."
+      ],
+      "remark": "everything good — pure file relocation, validates the folder strategy before introducing tokens"
+    },
+    {
+      "id": "P2",
+      "title": "Add Outline + Surface Overlay Tokens (Phase 1 audit, low risk)",
+      "status": "✅",
+      "blocked_by": ["P1"],
+      "phase": [
+        "✅"
+      ],
+      "key_points": [
+        "Inspect dependency chain: every consumer of `border-white/{5,8,10,15,20,25}` and `bg-card/{40,45,55,60,70}` (see phase-1-audit.md §2 B + C for full file list, 14+ files).",
+        "Add to src/index.css :root: `--outline-alpha: 0.1` (default subtle border), `--outline-alpha-strong: 0.15` (slightly heavier).",
+        "Add to src/index.css :root: `--surface-overlay: 0.6` (default elevated card), `--surface-overlay-soft: 0.4`, `--surface-overlay-strong: 0.7`.",
+        "Extend tailwind.config.js theme: add `border-outline` (hsl(var(--outline-alpha))), `bg-surface-overlay`, `bg-surface-overlay-soft`, `bg-surface-overlay-strong`.",
+        "Migrate callsites (preserve every other class on each element): Hero.tsx L52, L85, Features.tsx L43, L45, Install.tsx L46, L73, EditorialByline.tsx L5, CookieConsent.tsx L65, L75, L82, BeginnerPage.tsx L56, ComingSoonPage.tsx L61, MobileContentsBar.tsx L14, DesktopNav.tsx L18, L40, L51, MobileMenuDropdown.tsx L11, L27, L36, MobileCta.tsx L7, L24, Invite.tsx L28, L80, ReadingProgress.tsx L6.",
+        "Keep `border-white/5`, `border-white/10`, etc. available as-is for now (no forced removal) to allow staged migration.",
+        "Run `npm run check` after each batch. Visual diff via static CSS dump if needed.",
+        "Verify no animation, transition, or motion logic changes — only color tokens swap."
+      ],
+      "remark": "detail reference phase 1 — §5 Missing Tokens (outline-alpha, surface-overlay)"
+    },
+    {
+      "id": "P3",
+      "title": "Add Neon Color Tokens + Refactor .neon-button",
+      "status": "✅",
+      "blocked_by": ["P2"],
+      "phase": [
+        "✅"
+      ],
+      "key_points": [
+        "Inspect consumers of `.neon-button` class: src/features/home/components/RedeemInvitation.tsx L20, src/features/home/components/ActivateInvitation.tsx L19. Both pass `className` and are imported by Hero/Invite sections.",
+        "Add to src/index.css :root: `--neon-blue: 220 100% 60%`, `--neon-violet: 280 90% 65%`, `--neon-pink: 330 95% 65%`.",
+        "Refactor src/index.css `.neon-button::before` background-gradient and box-shadow to read `hsl(var(--neon-blue))`, `hsl(var(--neon-violet))`, `hsl(var(--neon-pink))`. Preserve exact stop positions and opacities.",
+        "Preserve `animation: neon-shine-sweep 3s linear infinite` — do not change timing.",
+        "Remove dead code: orphan `@property --neon-angle` (index.css L246-250) and unused `@keyframes neon-border-spin` (L363-371). Verify with grep that no caller references these names before removal.",
+        "Verify RedeemInvitation/ActivateInvitation render output identical (only token lookup changes).",
+        "Run `npm run check`."
+      ],
+      "remark": "detail reference phase 1 — §2 A (neon-button palette), §6 Phase 1 items 2-3"
+    },
+    {
+      "id": "P4",
+      "title": "Add Motion Duration + Easing Tokens (Phase 1 + Phase 2 audit)",
+      "status": "✅",
+      "blocked_by": ["P2"],
+      "phase": [
+        "✅"
+      ],
+      "key_points": [
+        "Inspect all hardcoded CSS durations: index.css L194 (180ms), L213 (500ms), L265-266 (160ms, 200ms), L290 (3s), L396 (8s), L400 (2.4s), L404 (4s), L408 (2.8s), L458 (12s), home-motion.css (12s, 700ms, 900ms, 6500ms), progressive.css L28-30 (140ms), L61, L69, L122-124 (180ms), coming-soon.css L36 (420ms), L40 (2.4s), L44 (9s).",
+        "Inspect all Tailwind duration-{150,200,300,500} sites: ReadingProgress.tsx, MenuLink.tsx, TocLink.tsx, CopyButton.tsx, MobileContentsBar.tsx, MobileMenuDropdown.tsx, Features.tsx, SafeBuildLoop.tsx, KimiDesktop.tsx, CliAnimation.tsx, StreamingAssistantResponse.tsx, Invite.tsx, BeginnerPage.tsx.",
+        "Add to src/index.css :root: `--motion-fast: 150ms`, `--motion-base: 200ms`, `--motion-slow: 300ms`, `--motion-slower: 500ms`, `--motion-cycle: 12s`, `--motion-pulse: 2.4s`, `--motion-drift: 8s`, `--motion-glow: 2.8s`, `--motion-ambient: 9s`, `--motion-flow: 4s`, `--motion-enter: 420ms`, `--motion-border: 3s`, `--motion-press: 160ms`, `--motion-pop: 200ms`, `--ease-standard: cubic-bezier(0.4, 0, 0.2, 1)`, `--ease-emphasized: cubic-bezier(0.22, 1, 0.36, 1)`.",
+        "Refactor each CSS keyframe/animation declaration to read var(--motion-*). Preserve every keyframe step exactly (0%/4%/10%/88%/96%/100% etc.).",
+        "Extend tailwind.config.js: add custom durations `duration-fast: 150ms`, `duration-base: 200ms`, `duration-slow: 300ms`, `duration-slower: 500ms` mapped to Tailwind `duration` plugin.",
+        "Do NOT migrate Tailwind duration-{150,200,300,500} in this phase — that's a follow-up. Only centralize CSS-side values first to validate the tokens.",
+        "Run `npm run check`. Verify no animation timing drift by static diff (no keyframe step changes)."
+      ],
+      "remark": "detail reference phase 1 — §2 I + J, phase 2 §5 motion-cycle. Phase 1 audit §6 item 4 + Phase 3 §6 item 1 may overlap."
+    },
+    {
+      "id": "P5",
+      "title": "Migrate Tailwind duration-* to Motion Tokens (follow-up to P4)",
+      "status": "✅",
+      "blocked_by": ["P4"],
+      "phase": [
+        "✅"
+      ],
+      "key_points": [
+        "Re-inspect sites identified in P4 key_points[2].",
+        "Migrate `duration-150` → `duration-fast`, `duration-200` → `duration-base`, `duration-300` → `duration-slow`, `duration-500` → `duration-slower`.",
+        "Preserve all other classes on each element. No content/structure changes.",
+        "Run `npm run check`."
+      ],
+      "remark": "detail reference phase 1 — §6 item 4"
+    },
+    {
+      "id": "P6",
+      "title": "Add Tracking Tokens for Eyebrows + Display Headings",
+      "status": "✅",
+      "blocked_by": ["P1"],
+      "phase": [
+        "✅"
+      ],
+      "key_points": [
+        "Inspect all sites using arbitrary `tracking-[0.14em..0.25em]` (eyebrows) and `tracking-[-0.025em..-0.035em]` (display headings) — see phase-2-audit.md §2 C.",
+        "Add to src/index.css :root: `--tracking-eyebrow: 0.18em` (median of 0.14/0.16/0.18/0.20/0.25), `--tracking-display: -0.03em` (median of -0.025/-0.035).",
+        "Extend tailwind.config.js theme: add `tracking-eyebrow` and `tracking-display` aliases.",
+        "Migrate callsites: SectionHeading.tsx L14, MobileContentsBar.tsx L19, L40, TableOfContents.tsx L18, not-found.tsx L18, ComingSoonPage.tsx L30, SimulatedAiDesktop.tsx L47, L48, BeginnerPage.tsx L37, L88, L106, L149.",
+        "Preserve `font-mono` and `text-xs` on every migrated eyebrow — only the tracking value changes.",
+        "Verify all tracking values standardize to 0.18em / -0.03em. Document if any site was intentionally different (none in current audit).",
+        "Run `npm run check`."
+      ],
+      "remark": "detail reference phase 2 — §5 tracking-eyebrow, tracking-display"
+    },
+    {
+      "id": "P7",
+      "title": "Add Micro/Nano Font Size Tokens",
+      "status": "✅",
+      "blocked_by": ["P1"],
+      "phase": [
+        "✅"
+      ],
+      "key_points": [
+        "Inspect arbitrary text-[10px..12.5px] sites — see phase-2-audit.md §2 A.",
+        "Add to tailwind.config.js theme.extend.fontSize: `nano: ['0.625rem', {lineHeight: '1rem'}]`, `micro: ['0.6875rem', {lineHeight: '1rem'}]`, `compact: ['0.78125rem', {lineHeight: '1.125rem'}]`, `display-lg: ['2.75rem', {lineHeight: '1.1', letterSpacing: '-0.03em'}]`.",
+        "Migrate callsites: CliAnimation.tsx L98, StreamingAssistantResponse.tsx L40, WorkspaceSidebar.tsx L55, WorkspaceComposer.tsx L10, Stats.tsx L44, KimiDesktop.tsx L99, L141, TableOfContents.tsx L18, MobileContentsBar.tsx L40, SectionHeading.tsx L15.",
+        "Preserve all line-height/letter-spacing unless the new token already supplies it (display-lg does).",
+        "Run `npm run check`."
+      ],
+      "remark": "detail reference phase 2 — §5 font-size-micro/nano/compact/display-lg"
+    },
+    {
+      "id": "P8",
+      "title": "Add Z-Index Scale Tokens",
+      "status": "✅",
+      "blocked_by": ["P1"],
+      "phase": [
+        "✅"
+      ],
+      "key_points": [
+        "Inspect all z-index usages — see phase-2-audit.md §4 (16 sites, 8 distinct values: -10, 10, 40, 50, 55, 60, 70, 80, 100).",
+        "DECISION: Add --z-modal: 90 token to resolve Dialog z-50 vs CookieConsent z-[80] conflict. Modal covers consent banner.",
+        "Add to src/index.css :root: --z-base: 0, --z-content: 10, --z-header: 50, --z-progress: 55, --z-nav: 60, --z-floating: 70, --z-banner: 80, --z-modal: 90, --z-skiplink: 100.",
+        "Extend tailwind.config.js theme.extend.zIndex with same values.",
+        "Migrate z-[55] → z-progress, z-[60] → z-nav (DesktopNav L31, L46; MobileMenuDropdown L16), z-[70] → z-floating, z-[80] → z-banner, z-[100] → z-skiplink.",
+        "DECISION: MobileContentsBar dropdown z-50 collision with header z-50 — leave MobileContentsBar dropdown at standard z-50 (intentional, sticky positioning handles layering). Do NOT migrate to z-nav.",
+        "DECISION: Dialog z-50 → z-modal (90). Resolves banner-vs-modal conflict.",
+        "DECISION: MobileCta z-40 has no token — leave on standard z-40 (no --z-action-bar needed).",
+        "Verify stacking order with intentional design review: progress (55) > header (50), modal (90) > banner (80) > nav (60).",
+        "Run `npm run check`."
+      ],
+      "remark": "detail reference phase 2 — §5. Decision: add --z-modal: 90 to resolve Dialog vs CookieConsent stacking conflict."
+    },
+    {
+      "id": "P9",
+      "title": "Replace `transition-all` with Narrow Transitions",
+      "status": "✅",
+      "blocked_by": ["P4"],
+      "phase": [
+        "✅"
+      ],
+      "key_points": [
+        "Inspect 13 sites using `transition-all` — see phase-3-audit.md §2.",
+        "Replace per site with narrowest match: button.tsx L8 (colors), CopyButton.tsx L45 (colors), Hero.tsx L75 (colors), MobileCta.tsx L18 (colors + transform), L24 (colors + transform), Invite.tsx L70 (colors + transform), Features.tsx L43 (transform + colors), CliAnimation.tsx L64, L77 (opacity + transform), KimiDesktop.tsx L95, L106, L128 (transform + opacity), StreamingAssistantResponse.tsx L28, L33, L59 (opacity + transform).",
+        "Do NOT change timing (duration-*). Do NOT change `ease-*`.",
+        "Preserve all hover/active/focus-visible classes on each element.",
+        "Run `npm run check`. Confirm zero visual diff via CSS dump."
+      ],
+      "remark": "detail reference phase 3 — §15 Phase 3.1"
+    },
+    {
+      "id": "P10",
+      "title": "Unify Focus Ring Pattern (Surface-Level Controls)",
+      "status": "✅",
+      "blocked_by": ["P1"],
+      "phase": [
+        "❌"
+      ],
+      "key_points": [
+        "Inspect 5 sites using inline `focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2` — see phase-3-audit.md §3.",
+        "Confirm `.focus-visible-ring` utility in src/index.css L156-157 already provides equivalent behavior.",
+        "Migrate MobileContentsBar.tsx L14 (summary element), dialog.tsx L70 (close button), Features.tsx L45 (icon container), Features.tsx L72 (link).",
+        "Do NOT touch shadcn primitives (button.tsx, input.tsx, textarea.tsx, toggle.tsx) — they use intentional `ring-[3px] ring-ring/50` for form controls.",
+        "Run `npm run check`. Spot-check keyboard navigation (manual or test)."
+      ],
+      "remark": "detail reference phase 3 — §15 Phase 3.2"
+    },
+    {
+      "id": "P11",
+      "title": "Standardize Disabled State Opacity",
+      "status": "✅",
+      "blocked_by": ["P1"],
+      "phase": [
+        "✅"
+      ],
+      "key_points": [
+        "Inspect WorkspaceSidebar.tsx (disabled:opacity-75) and WorkspaceComposer.tsx (disabled:opacity-65) — see phase-3-audit.md §5.",
+        "Add to src/index.css @layer utilities: `.btn-disabled { @apply disabled:opacity-50 disabled:cursor-not-allowed; }` (or inline migrate).",
+        "Migrate `disabled:opacity-{65,75}` → `disabled:opacity-50`, `disabled:cursor-default` → `disabled:cursor-not-allowed` where interactive.",
+        "Preserve all other classes.",
+        "Run `npm run check`."
+      ],
+      "remark": "detail reference phase 3 — §15 Phase 3.3"
+    },
+    {
+      "id": "P12",
+      "title": "Add Max-Width Tokens",
+      "status": "✅",
+      "blocked_by": ["P1"],
+      "phase": [
+        "❌"
+      ],
+      "key_points": [
+        "Inspect all max-w-* sites — see phase-3-audit.md §9.",
+        "Add to tailwind.config.js theme.extend.maxWidth: `prose: 48rem`, `prose-wide: 56rem`, `container: 72rem` (preserves default sm/md/lg/xl/2xl/3xl etc.).",
+        "Migrate `max-w-3xl` (9+ sites in BeginnerPage) → `max-w-prose`, `max-w-6xl` (9+ sites) → `max-w-container`, `max-w-sm` (Invite card) → keep as default `max-w-sm` or alias.",
+        "Do NOT touch arbitrary `max-w-[68ch..88%]` (semantic chat-bubble / reading-width values are intentional).",
+        "Run `npm run check`."
+      ],
+      "remark": "detail reference phase 3 — §15 Phase 3.4"
+    },
+    {
+      "id": "P13",
+      "title": "Standardize Icon Sizes (lucide)",
+      "status": "✅",
+      "blocked_by": ["P1"],
+      "phase": [
+        "✅"
+      ],
+      "key_points": [
+        "Inspect lucide icon sizes — see phase-3-audit.md §10.",
+        "Document standard: size-3 (12px, micro), size-4 (16px, default), size-5 (20px, feature). Chevrons may use size-3.5.",
+        "Migrate `h-3.5 w-3.5` (non-chevron sites: Features.tsx L75 ExternalLink, Hero.tsx L30 Sparkles, KimiDesktop L132, L136, L178) → `h-3 w-3` or `h-4 w-4` depending on context.",
+        "Preserve icon component (Plus, Check, Sparkles, etc.).",
+        "Run `npm run check`."
+      ],
+      "remark": "detail reference phase 3 — §15 Phase 3.5"
+    },
+    {
+      "id": "P14",
+      "title": "Migrate Shadow + Theme-Breaching Hex Values (Phase 1 §6 Phase 4)",
+      "status": "✅",
+      "blocked_by": ["P2"],
+      "phase": [
+        "✅"
+      ],
+      "key_points": [
+        "Inspect custom shadow sites: Invite.tsx L28, CliAnimation.tsx L27, Install.tsx L101, KimiDesktop.tsx L38, L158, SafeBuildLoop.tsx L86, L98, L155, L157 — see phase-1-audit.md §2 F.",
+        "Add to src/index.css :root: `--shadow-elevated: 0 18px 44px -28px hsl(var(--primary) / 0.7)`, `--shadow-floating: 0 32px 90px -24px rgba(0,0,0,0.85)`, `--shadow-ambient: 0 24px 80px -24px rgba(0,0,0,0.8)`, `--shadow-deep: 0 40px 100px -30px rgba(0,0,0,0.9)`.",
+        "Extend tailwind.config.js theme.extend.boxShadow with same aliases.",
+        "Migrate `shadow-[...]` arbitrary expressions → `shadow-elevated` / `shadow-floating` / etc.",
+        "Inspect hex values: CliAnimation.tsx L27 (#111111), L41, L44 (#168cff), L77 (#f4f2ea), KimiDesktop.tsx (zinc-* + bg-white, intentional light-mode mockup), SimulatedAiDesktop.tsx L17 (#0d0e10).",
+        "DECISION POINT: KimiDesktop.tsx + CliAnimation.tsx use intentional light-mode values inside a dark-mode theme to render a 'fake desktop screenshot'. Add `--desktop-mock-*` tokens OR document as intentional brand-violation mockup. Recommend mockup tokens.",
+        "Add `--terminal-bg: #111111`, `--terminal-accent: #168cff`, `--terminal-text: #f4f2ea`, `--terminal-muted: #9b9a92`, `--desktop-mock-surface: #ffffff`, `--desktop-mock-border: #e4e4e7`, `--desktop-mock-text: #27272a`, `--desktop-mock-muted: #71717a`.",
+        "Migrate CliAnimation.tsx + KimiDesktop.tsx + SimulatedAiDesktop.tsx to use mockup tokens.",
+        "Run `npm run check`."
+      ],
+      "remark": "detail reference phase 1 — §6 items 11-14 (theme-breaching hex)"
+    },
+    {
+      "id": "P15",
+      "title": "Add Button Variants + Migrate Hand-Coded Buttons",
+      "status": "✅",
+      "blocked_by": ["P3"],
+      "phase": [
+        "✅"
+      ],
+      "key_points": [
+        "Inspect dependency chain: src/components/ui/button.tsx already exists with cva variants (default, destructive, outline, secondary, ghost, link). NOT used in feature code (5 hand-coded duplicates + 2 neon + 4 outline).",
+        "Add to src/components/ui/button.tsx cva variants: `neon: 'neon-button tap-target ...'` (preserve all class strings from RedeemInvitation L20 + ActivateInvitation L19).",
+        "Add `outline` variant if not already matching hand-coded outline buttons (Hero L85, Invite L80, CookieConsent L82, BeginnerPage L56, ComingSoonPage L61, MobileCta L24).",
+        "Add `lg` size if not present: h-12 px-6 (Hero L75, L85), h-11 px-5 (RedeemInvitation, ActivateInvitation, MobileCta L18, CookieConsent L75, L82, ComingSoonPage L50, L61, BeginnerPage L46, L56).",
+        "Migrate consumers: RedeemInvitation, ActivateInvitation → `<Button variant=\"neon\" size=\"lg\" asChild>` wrapping `<a>`. Hero L75, Invite L70, MobileCta L18, CookieConsent L75 → `<Button variant=\"default\" size=\"lg\" asChild>` wrapping `<a>`. Hero L85, Invite L80, MobileCta L24, CookieConsent L82 → `<Button variant=\"outline\" size=\"lg\" asChild>`. ComingSoonPage L50, L61 + BeginnerPage L46, L56 → `<Button variant=\"default|outline\">` wrapping `<Link>` or `<a>`.",
+        "Preserve all data-analytics-* attributes on every migrated anchor.",
+        "Preserve all icon children (ArrowUpRight, ArrowRight, Github, etc.).",
+        "Run `npm run check`. Run tests (each Button consumer may have its own test)."
+      ],
+      "remark": "detail reference phase 1 — §6 items 5-9 (button system)"
+    },
+    {
+      "id": "P16",
+      "title": "Clean Up Dead Code + Add Component CSS Organization",
+      "status": "✅",
+      "blocked_by": ["P3"],
+      "phase": [
+        "✅"
+      ],
+      "key_points": [
+        "Remove dead CSS: orphan `neon-border-spin` keyframe (already covered in P3).",
+        "Verify no orphan CSS classes remain (grep for class names used in templates vs CSS).",
+        "Verify src/components/ui/ has clean separation: button, dialog, input, label, separator, textarea, toggle, MenuLink, TocLink, linkStyles. No feature content inside ui/.",
+        "Verify src/components/content/ has reusable long-form layouts only: GuideLayout, MobileContentsBar, ReadingProgress, TableOfContents. No feature content.",
+        "Verify src/components/site/ has site shell only: DesktopNav, Footer, MobileMenuDropdown, Nav, PageShell, ProgressiveEnhancements, SiteHeader.",
+        "Verify src/components/seo/ has JSON-LD only: EditorialByline, JsonLd.",
+        "Confirm no cross-feature imports (`grep -r \"from '@/features/\" src/features/` should return zero results within same-tree).",
+        "Confirm no shared module imports features (`grep -r \"from '@/features/\" src/components src/lib src/hooks src/config` should return zero results).",
+        "Run `npm run check`. Run `npm run lighthouse` for layout-related changes (Phase 3.4 max-width may affect rendering)."
+      ],
+      "remark": "everything good — final consolidation pass"
+    },
+    {
+      "id": "P17",
+      "title": "Loading + Empty State Patterns",
+      "status": "✅",
+      "blocked_by": ["P15"],
+      "phase": [
+        "✅"
+      ],
+      "key_points": [
+        "DECISION POINT: no <Skeleton> primitive exists. shadcn supports it but not installed.",
+        "Option A: install shadcn Skeleton component via CLI.",
+        "Option B: build a small `<Skeleton>` in src/components/ui/ matching project token system.",
+        "Option C: defer — no current UI depends on skeleton. KimiDesktop.tsx L173 has one ad-hoc `<LoaderCircle className=\"animate-spin\" />`.",
+        "Migrate KimiDesktop.tsx L173 to use any new loading primitive (if Option A or B).",
+        "Document empty-state pattern for Beginners/Coming Soon flows (if any new surfaces require it).",
+        "Run `npm run check`."
+      ],
+      "remark": "detail reference phase 3 — §15 Phase 3.7 (optional, low priority)"
+    }
+  ],
+  "phase_order": ["P0", "P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12", "P13", "P14", "P15", "P16", "P17"],
+  "blocking_chain": {
+    "P0": [],
+    "P1": ["P0"],
+    "P2": ["P1"],
+    "P3": ["P2"],
+    "P4": ["P2"],
+    "P5": ["P4"],
+    "P6": ["P1"],
+    "P7": ["P1"],
+    "P8": ["P1"],
+    "P9": ["P4"],
+    "P10": ["P1"],
+    "P11": ["P1"],
+    "P12": ["P1"],
+    "P13": ["P1"],
+    "P14": ["P2"],
+    "P15": ["P3"],
+    "P16": ["P3"],
+    "P17": ["P15"]
+  },
+  "critical_path": ["P0", "P1", "P2", "P3", "P4", "P5", "P9", "P15", "P16"],
+  "post_plan_actions": [
+    "Update docs/audit/execution_plan.json phase status as work progresses (❌ → ⚙️ → ✅).",
+    "After each phase: run `npm run check` and document in phase remark.",
+    "After P15: run `npm run lighthouse` to verify no perf regression.",
+    "After P16: review docs/content-freshness-log.md for any documentation drift."
+  ]
+}
