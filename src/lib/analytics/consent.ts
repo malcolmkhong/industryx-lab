@@ -4,6 +4,10 @@
  * Default state denies analytics_storage and ad_storage. Until a user grants
  * consent (or DNT is set, in which case analytics stays denied), the GA4
  * loader must not run `gtag('config', ...)` and must not call `gtag('event', ...)`.
+ *
+ * Stored decisions expire after 395 days (the maximum duration allowed by the
+ * ICO under the Data (Use and Access) Act 2025 for analytics cookies). After
+ * expiry the banner shows again on the next visit.
  */
 
 export type ConsentValue = 'granted' | 'denied'
@@ -15,7 +19,13 @@ export interface ConsentState {
   ad_personalization: ConsentValue
 }
 
+interface StoredConsent {
+  state: ConsentState
+  expiresAt: number
+}
+
 const STORAGE_KEY = 'industryx:consent'
+const CONSENT_TTL_MS = 395 * 24 * 60 * 60 * 1000
 
 export function consentStorageKey(): string {
   return STORAGE_KEY
@@ -30,18 +40,29 @@ export function initialConsentState(): ConsentState {
   }
 }
 
+export function isConsentExpired(stored: StoredConsent | null): boolean {
+  if (!stored) return true
+  return Date.now() >= stored.expiresAt
+}
+
 export function getStoredConsent(): ConsentState {
   if (typeof window === 'undefined') return initialConsentState()
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY)
     if (!raw) return initialConsentState()
-    const parsed = JSON.parse(raw)
+    const parsed = JSON.parse(raw) as Partial<StoredConsent>
     if (!parsed || typeof parsed !== 'object') return initialConsentState()
+    if (isConsentExpired(parsed as StoredConsent)) {
+      window.localStorage.removeItem(STORAGE_KEY)
+      return initialConsentState()
+    }
+    const state = parsed.state
+    if (!state || typeof state !== 'object') return initialConsentState()
     return {
-      analytics_storage: parsed.analytics_storage === 'granted' ? 'granted' : 'denied',
-      ad_storage: parsed.ad_storage === 'granted' ? 'granted' : 'denied',
-      ad_user_data: parsed.ad_user_data === 'granted' ? 'granted' : 'denied',
-      ad_personalization: parsed.ad_personalization === 'granted' ? 'granted' : 'denied',
+      analytics_storage: state.analytics_storage === 'granted' ? 'granted' : 'denied',
+      ad_storage: state.ad_storage === 'granted' ? 'granted' : 'denied',
+      ad_user_data: state.ad_user_data === 'granted' ? 'granted' : 'denied',
+      ad_personalization: state.ad_personalization === 'granted' ? 'granted' : 'denied',
     }
   } catch {
     return initialConsentState()
@@ -50,9 +71,13 @@ export function getStoredConsent(): ConsentState {
 
 export function storeConsent(partial: Partial<ConsentState>): ConsentState {
   const next: ConsentState = { ...getStoredConsent(), ...partial }
+  const payload: StoredConsent = {
+    state: next,
+    expiresAt: Date.now() + CONSENT_TTL_MS,
+  }
   if (typeof window !== 'undefined') {
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
     } catch {
       // Storage unavailable. Continue with in-memory state only.
     }

@@ -1,27 +1,27 @@
-import { aiReferralDomains, essentialEventNames } from './events'
-import { initialConsentState, type ConsentState } from './consent'
+import { aiReferralDomains, essentialEventNames } from "./events";
+import { initialConsentState, type ConsentState } from "./consent";
 
 export interface BuildDeferredAnalyticsScriptOptions {
   /** When true, inlines `console.warn` calls that surface dropped events. Off
    * in production to avoid any console noise reaching real visitors. */
-  debug?: boolean
+  debug?: boolean;
   /** Consent Mode v2 state. Default denies every key. */
-  consentState?: ConsentState
+  consentState?: ConsentState;
 }
 
 export function buildDeferredAnalyticsScript(
   measurementId: string,
   options: BuildDeferredAnalyticsScriptOptions = {},
 ) {
-  const debug = Boolean(options.debug)
-  const consent = options.consentState ?? initialConsentState()
+  const debug = Boolean(options.debug);
+  const consent = options.consentState ?? initialConsentState();
   const config = JSON.stringify({
     measurementId,
     allowedEvents: essentialEventNames,
     referralDomains: aiReferralDomains,
     debug,
     consentState: consent,
-  })
+  });
 
   const sendWithDebug = String.raw`
 const send = (name, parameters) => {
@@ -31,14 +31,14 @@ const send = (name, parameters) => {
     }
     if (!analyticsAllowed) return
     window.gtag?.('event', name, parameters)
-  }`
+  }`;
 
   const sendWithoutDebug = String.raw`
 const send = (name, parameters) => {
     if (!config.allowedEvents.includes(name)) return
     if (!analyticsAllowed) return
     window.gtag?.('event', name, parameters)
-  }`
+  }`;
 
   const trackClickWithDebug = String.raw`
     if (explicitEvent && !config.allowedEvents.includes(explicitEvent)) {
@@ -47,9 +47,9 @@ const send = (name, parameters) => {
         explicitEvent,
         link,
       )
-    }`
+    }`;
 
-  const trackClickWithoutDebug = ''
+  const trackClickWithoutDebug = "";
 
   const trackClickMissingLabelWithDebug = String.raw`
     if (!link.dataset.analyticsLabel) {
@@ -58,16 +58,18 @@ const send = (name, parameters) => {
         link,
       )
       return
-    }`
+    }`;
 
   const trackClickMissingLabelWithoutDebug = String.raw`
-    if (!link.dataset.analyticsLabel) return`
+    if (!link.dataset.analyticsLabel) return`;
 
-  const send = debug ? sendWithDebug : sendWithoutDebug
-  const trackClickDebugBranch = debug ? trackClickWithDebug : trackClickWithoutDebug
+  const send = debug ? sendWithDebug : sendWithoutDebug;
+  const trackClickDebugBranch = debug
+    ? trackClickWithDebug
+    : trackClickWithoutDebug;
   const trackClickMissingLabelBranch = debug
     ? trackClickMissingLabelWithDebug
-    : trackClickMissingLabelWithoutDebug
+    : trackClickMissingLabelWithoutDebug;
 
   return String.raw`
 (() => {
@@ -184,9 +186,55 @@ const send = (name, parameters) => {
     window.gtag ||= (...args) => window.dataLayer.push(args)
     // Always initialize consent mode. Without this call GA4 cannot tell
     // that the user has not yet consented and may emit cookieless pings.
-    window.gtag('consent', 'default', config.consentState)
+    //
+    // Two-step consent default (Google Consent Mode v2 pattern):
+    //   1) Global defaults are 'granted' so non-regulated visitors get
+    //      analytics immediately. The banner still appears for everyone
+    //      and a Decline click overrides this via a gtag consent update.
+    //   2) Region-specific override applies 'denied' to EEA + UK + Switzerland
+    //      only, satisfying GDPR + UK PECR requirements.
+    //
+    // Privacy parameters required for EEA + UK + Switzerland compliance:
+    // - region: applies the override only to GDPR-regulated territories; visitors
+    //   outside this list get the unblocked defaults and are tracked normally.
+    // - wait_for_update: bounds how long the loader waits for an explicit choice
+    //   before falling through to defaults. Keeps cookieless pings from buffering
+    //   indefinitely while the banner is on screen.
+    // - url_passthrough: forwards click identifiers through the URL so cookieless
+    //   pings can be stitched back to a consent-granted session later. Required
+    //   for Conversion Modeling to work.
+    // - ads_data_redaction: strips ad click identifiers from outgoing hits while
+    //   ad_user_data is denied. Reduces GDPR exposure for denied traffic.
+    const EEA_UK_CH_REGIONS = [
+      'AT', 'BE', 'BG', 'CH', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI',
+      'FR', 'GR', 'HR', 'HU', 'IE', 'IS', 'IT', 'LI', 'LT', 'LU', 'LV',
+      'MT', 'NL', 'NO', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK', 'GB',
+    ]
+    window.gtag('consent', 'default', {
+      analytics_storage: 'granted',
+      ad_storage: 'granted',
+      ad_user_data: 'granted',
+      ad_personalization: 'granted',
+      url_passthrough: true,
+      ads_data_redaction: true,
+      wait_for_update: 500,
+    })
+    window.gtag('consent', 'default', {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      region: EEA_UK_CH_REGIONS,
+    })
+    // Stored Decline decisions always win. Apply on top of the region defaults.
+    // After the update, recompute the effective allowed state — for new
+    // visitors in non-EEA regions, the global default grants analytics even
+    // though analyticsAllowed was captured as false at script start.
+    window.gtag('consent', 'update', config.consentState)
+    const effectiveAllowed =
+      analyticsAllowed || config.consentState.analytics_storage === 'granted'
     window.gtag('js', new Date())
-    if (analyticsAllowed) {
+    if (effectiveAllowed) {
       window.gtag('config', config.measurementId, { send_page_view: false })
       window.trackPageView(window.location.pathname, document.title)
     }
@@ -201,5 +249,5 @@ const send = (name, parameters) => {
   document.addEventListener('pointerdown', activate, { once: true, passive: true })
   document.addEventListener('keydown', activate, { once: true })
 })()
-`
+`;
 }

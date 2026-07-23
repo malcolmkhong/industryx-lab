@@ -27,6 +27,11 @@ export const siteConfig = {
   },
   disclaimer: 'An independent page made by a happy Kimi Code user. Not affiliated with, sponsored, or endorsed by Moonshot AI. Product names and marks belong to their respective owners.',
   copyright: '© 2026 · Built with conviction (and a little help from Kimi Code itself).',
+  privacy: {
+    policyPath: '/privacy',
+    retentionDays: 60,
+    vendors: ['Google Analytics 4', 'Vercel Web Analytics'],
+  },
   footerCredit: {
     prefix: 'Brought to you by',
     name: 'IndustryX',

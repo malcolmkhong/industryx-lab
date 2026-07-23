@@ -1,7 +1,9 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { siteConfig } from "@/config/site";
 import {
   getStoredConsent,
   hasDoNotTrack,
@@ -17,8 +19,9 @@ const STORAGE_KEY = "industryx:consent";
  * - When DNT is set, the banner is suppressed and analytics stays denied.
  * - On Accept: grants analytics_storage and ad_storage.
  * - On Decline: explicitly stores denied (so the banner does not reappear).
- * - Storage updates are written to localStorage and pushed to gtag's consent
- *   command so any future GA loads pick up the current state.
+ * - Stored decisions expire after 395 days; after expiry the banner shows again.
+ * - Re-opening the banner (via the "Manage cookies" footer link) re-runs the
+ *   same flow so users can revoke a previous decision.
  *
  * Visibility is read via `useSyncExternalStore` so the server snapshot is
  * always `false` (no banner) and the client snapshot only becomes `true` after
@@ -41,6 +44,7 @@ export function CookieConsent() {
       ad_personalization: "granted",
     });
     pushConsentUpdate(next);
+    clearGaCookies();
     emitConsentChange();
   };
 
@@ -52,6 +56,27 @@ export function CookieConsent() {
       ad_personalization: "denied",
     });
     pushConsentUpdate(next);
+    clearGaCookies();
+    emitConsentChange();
+  };
+
+  const handleRevoke = () => {
+    // Wipe the stored decision entirely so the banner shows as if the user
+    // never decided. Storage will be re-written on the next Accept/Decline.
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.removeItem(STORAGE_KEY);
+      } catch {
+        // Storage unavailable; banner re-shows via the state listener.
+      }
+    }
+    pushConsentUpdate({
+      analytics_storage: "denied",
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+    });
+    clearGaCookies();
     emitConsentChange();
   };
 
@@ -64,8 +89,24 @@ export function CookieConsent() {
       className="fixed inset-x-3 bottom-3 p-4 rounded-2xl border shadow-2xl backdrop-blur z-banner border-white/10 bg-background/95 sm:inset-x-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2"
     >
       <p className="text-sm leading-6 text-foreground">
-        This site uses privacy-respecting analytics to understand which guides
-        help the most. No personal data is collected. You can accept or decline.
+        This site uses {siteConfig.privacy.vendors.join(" and ")} to understand
+        which guides help the most. Data is retained for{" "}
+        {siteConfig.privacy.retentionDays} days. You can{" "}
+        <button
+          type="button"
+          className="font-medium rounded text-primary underline-offset-4 hover:underline focus-visible-ring"
+          onClick={handleRevoke}
+        >
+          revoke consent
+        </button>{" "}
+        at any time.{" "}
+        <Link
+          href={siteConfig.privacy.policyPath}
+          className="font-medium text-primary underline-offset-4 hover:underline"
+        >
+          Privacy policy
+        </Link>
+        .
       </p>
       <div className="flex flex-wrap gap-2 mt-3">
         <Button
@@ -97,8 +138,13 @@ function readClientVisibility(): boolean {
       if (
         parsed &&
         typeof parsed === "object" &&
-        "analytics_storage" in parsed
+        "state" in parsed &&
+        "expiresAt" in parsed
       ) {
+        if (typeof parsed.expiresAt === "number" && Date.now() >= parsed.expiresAt) {
+          // Expired — show the banner again and let the next click overwrite storage.
+          return !hasDoNotTrack();
+        }
         // User already made a decision — keep the banner hidden.
         return false;
       }
@@ -137,4 +183,21 @@ function pushConsentUpdate(state: ReturnType<typeof getStoredConsent>): void {
   const gtag = (window as Window & { gtag?: (...args: unknown[]) => void })
     .gtag;
   gtag?.("consent", "update", state);
+}
+
+function clearGaCookies(): void {
+  // Remove the GA4 client identifier and session cookie so the next session
+  // starts clean. Other domains set by GA4 (e.g. on ads.google.com) are not
+  // reachable from this origin and are cleaned up by GA's own signal expiry.
+  if (typeof document === "undefined") return;
+  const expires = "Thu, 01 Jan 1970 00:00:00 GMT";
+  const paths = ["/"];
+  const hosts = [window.location.hostname, `.${window.location.hostname}`];
+  for (const name of ["_ga", "_ga_*"]) {
+    for (const host of hosts) {
+      for (const path of paths) {
+        document.cookie = `${name}=; expires=${expires}; path=${path}; domain=${host}`;
+      }
+    }
+  }
 }
