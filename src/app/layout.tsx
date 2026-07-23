@@ -1,13 +1,13 @@
-import type { Metadata, Viewport } from 'next'
-import type { ReactNode } from 'react'
-import { Analytics } from '@/components/analytics/Analytics'
-import { PageViewTracker } from '@/components/analytics/PageViewTracker'
-import { CookieConsent } from '@/components/consent/CookieConsent'
-import { PageShell } from '@/components/site/PageShell'
-import { siteConfig } from '@/config/site'
-import '@/index.css'
-import '@/styles/components/progressive.css'
-import '@/styles/motion/home-motion.css'
+import type { Metadata, Viewport } from "next";
+import type { ReactNode } from "react";
+import { Analytics } from "@/components/analytics/Analytics";
+import { PageViewTracker } from "@/components/analytics/PageViewTracker";
+import { CookieConsent } from "@/components/consent/CookieConsent";
+import { PageShell } from "@/components/site/PageShell";
+import { siteConfig } from "@/config/site";
+import "@/index.css";
+import "@/styles/components/progressive.css";
+import "@/styles/motion/home-motion.css";
 
 export const viewport: Viewport = {
   colorScheme: "dark",
@@ -28,8 +28,11 @@ export const metadata: Metadata = {
   creator: siteConfig.author.name,
   publisher: siteConfig.organization.name,
   icons: {
-    icon: [{ url: "/moon-mark.svg", type: "image/svg+xml" }],
-    shortcut: "/moon-mark.svg",
+    icon: [
+      { url: "/moon-mark.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    shortcut: ["/moon-mark.svg", "/favicon.ico"],
     apple: "/moon-mark.svg",
   },
   verification: {
