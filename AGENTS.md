@@ -47,7 +47,20 @@ A change qualifies as a **small update** when it meets all of the following:
 - Does not require documentation changes outside the source-of-truth file itself.
 - Affects no user-visible behavior — copy edits, comment updates, robots.txt allowlist entries, and config additions all qualify. Behavior changes do not.
 
-For small updates, run `npm run lint` as the minimal gate (≈5s, catches import, syntax, type, and lint regressions). Then commit and push. Skip the per-step inspection and review of the Code Relationship Analysis Protocol because the change is already constrained to one file with no new dependencies.
+For small updates, pick the lightest gate that fits the change:
+
+| Situation                                                                                     | Gate                                       | Time        | What it covers                                                                   |
+| --------------------------------------------------------------------------------------------- | ------------------------------------------ | ----------- | -------------------------------------------------------------------------------- |
+| Whitespace, comments, README copy, AGENTS.md docs                                             | none — commit and push directly            | 0s          | No executable change                                                             |
+| Add a string to an existing allowlist (robots.txt, event names, label prefixes, region codes) | `npm run lint`                             | ≈5s         | Import, syntax, type, unused-symbol                                              |
+| Add or rename a token, CSS variable, Tailwind alias                                           | `npm run build`                            | ≈45s        | Static export must succeed; token system is build-time                           |
+| Touch a public function signature, props, route, or new export                                | `npm run check`                            | ≈90s        | typecheck + lint + tests + build + schema                                        |
+| Touch event allowlist, label prefix list, or anything read by `rendered-events.test.ts`       | `npm run test` first, then `npm run check` | ≈30s + ≈90s | Snapshot test guard catches label drift                                          |
+| Touch `CookieConsent`, `consent.ts`, `deferredScript.ts`, or GA4 wiring                       | `npm run check`                            | ≈90s        | Behavior + analytics contract must stay consistent with `docs/ga4-compliance.md` |
+| Touch `EmptyState`, `404`, or any other consumer of a shared primitive                        | `npm run test`                             | ≈30s        | Existing tests must still pass                                                   |
+| Touch anything in `out/` build output manually                                                | `npm run build`                            | ≈45s        | Do not hand-edit build output; rebuild                                           |
+
+Then commit and push. Skip the per-step inspection and review of the Code Relationship Analysis Protocol because the change is already constrained to one file with no new dependencies.
 
 If a small update turns out to require test changes, a second file, or a public-contract change, stop and use the full workflow with `npm run check`.
 
